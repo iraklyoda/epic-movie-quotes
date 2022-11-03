@@ -21,7 +21,7 @@
         </div>
       </header>
       <p
-        class="text-center text-xl mt-32 font-bold lg:text-6xl lg:leading-22.5 lg:mt-60"
+        class="text-center text-xl text-skinWhite mt-32 font-bold lg:text-6xl lg:leading-22.5 lg:mt-60"
       >
         Find any quote in <br />
         millions of movie lines
