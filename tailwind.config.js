@@ -10,13 +10,8 @@ module.exports = {
     },
     screens: {
       sm: "640px",
-      // => @media (min-width: 640px) { ... }
-
       md: "1024px",
-      // => @media (min-width: 1024px) { ... }
-
       lg: "1280px",
-      // => @media (min-width: 1280px) { ... }
     },
     extend: {
       lineHeight: {
@@ -29,16 +24,24 @@ module.exports = {
         helvetica: ["Helvetica Neue", "sans-serif"],
       },
       colors: {
+        fadeBlack: "rgba(0, 0, 0, 0.6)",
+        BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
         skinWhite: "#DDCCAA",
         niceRed: "#E31221",
         footerBlue: "#181623",
+        niceGrey: "#6C757D",
+        lightGrey: "#CED4DA",
+        SteelGray: "#222030",
+        RustyRed: "#DC3545",
       },
       height: {
         110: "27.5rem",
+        176: "44rem",
         300: "75rem",
       },
       width: {
+        150: "37.5rem",
         245: "61.25rem",
       },
       margin: {
