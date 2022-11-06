@@ -5,39 +5,40 @@
     <div class="h-0.5"></div>
     <div class="text-center">
       <h2 class="mt-16 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
-        Create an account
+        {{ $t("createAccount") }}
       </h2>
-      <p class="mt-3 text-niceGrey">Start your journey!</p>
+      <p class="mt-3 text-niceGrey">{{ $t("startJourney") }}</p>
     </div>
     <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5">
       <input-component
         v-model="nameInput"
         name="name"
-        label="Name"
-        placeholder="Enter your name"
+        :label="$t('name')"
+        :placeholder="$t('enterName')"
         :required="true"
         rules="required|min:3"
       />
       <input-component
         v-model="emailInput"
         name="email"
-        label="Email"
         type="email"
-        placeholder="Enter your email"
+        :label="$t('email')"
+        :placeholder="$t('enterEmail')"
         :required="true"
         rules="required|email"
       />
       <input-component
         v-model="passwordInput"
         name="password"
-        label="Password"
+        :label="$t('password')"
+        :placeholder="$t('password')"
         :type="passwordFieldType"
-        placeholder="Password"
         :required="true"
         :visibility="true"
         rules="required"
       >
         <button
+          type="button"
           @click="switchVisibility"
           class="absolute right-2.5 top-2 scale-110 lg:top-3.5"
         >
@@ -46,9 +47,9 @@
       </input-component>
       <input-component
         name="confirmation"
-        label="Confirm password"
+        :label="$t('confirmPassword')"
+        :placeholder="$t('confirmYourPassword')"
         :type="passwordFieldType"
-        placeholder="Confirm your password"
         :required="true"
         rules="required|confirmed:@password"
       >
@@ -61,19 +62,23 @@
         </button>
       </input-component>
       <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
-        Get started
+        {{ $t("getStarted") }}
       </button>
       <button
         type="button"
         class="py-1 border w-full rounded-md text-white mt-4 flex items-center justify-center gap-1.5 lg:p-2"
       >
         <google-icon class="mb-1" />
-        <p>Sign up with google</p>
+        <p>{{ $t("signUpGoogle") }}</p>
       </button>
       <p class="text-center mt-3 text-niceGrey lg:mt-9">
-        Already have an account?
-        <button type="button" @click="$emit('login')" class="text-BlueRibbon underline">
-          Log in
+        {{ $t("alreadyHaveAnAccount") }}
+        <button
+          type="button"
+          @click="$emit('login')"
+          class="text-BlueRibbon underline"
+        >
+          {{ $t("logIn") }}
         </button>
       </p>
     </Form>

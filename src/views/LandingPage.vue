@@ -16,7 +16,7 @@
     <!--            Dialog-->
     <section class="text-white bg-darkBlue h-110 lg:h-screen font-helvetica">
       <header class="flex justify-between mx-8 items-center">
-        <p class="mt-8 text-skinWhite">MOVIE QUOTES</p>
+        <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
         <nav class="flex lg:gap-4">
           <div class="lg:flex">
             <button
