@@ -29,6 +29,7 @@
         rules="required"
       >
         <button
+          type="button"
           @click="switchVisibility"
           class="absolute right-2.5 top-2 scale-110 lg:top-3.5"
         >
@@ -47,7 +48,7 @@
       </button>
       <p class="text-center mt-3 text-niceGrey lg:mt-9">
         Don't have an account?
-        <button @click="$emit('register')" class="text-BlueRibbon underline">
+        <button type="button" @click="$emit('register')" class="text-BlueRibbon underline">
           Sign up
         </button>
       </p>

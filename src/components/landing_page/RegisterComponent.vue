@@ -4,12 +4,12 @@
   >
     <div class="h-0.5"></div>
     <div class="text-center">
-      <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
+      <h2 class="mt-16 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
         Create an account
       </h2>
       <p class="mt-3 text-niceGrey">Start your journey!</p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
+    <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5">
       <input-component
         v-model="nameInput"
         name="name"
@@ -53,6 +53,7 @@
         rules="required|confirmed:@password"
       >
         <button
+          type="button"
           @click="switchVisibility"
           class="absolute right-2.5 top-2 scale-110 lg:top-3.5"
         >
@@ -71,7 +72,9 @@
       </button>
       <p class="text-center mt-3 text-niceGrey lg:mt-9">
         Already have an account?
-        <button @click="$emit('login')" class="text-BlueRibbon underline">Log in</button>
+        <button type="button" @click="$emit('login')" class="text-BlueRibbon underline">
+          Log in
+        </button>
       </p>
     </Form>
   </div>
