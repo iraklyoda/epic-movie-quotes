@@ -12,48 +12,46 @@ export const useUserStore = defineStore("user", () => {
   };
   const router = useRouter();
 
-  const register = (user) => {
+  const register = async (user) => {
     console.log(user);
-    axios
-      .post("http://localhost:8000/api/register", user)
-      .then(function (response) {
-        console.log(response.status);
-        router.push({
-          name: "NewsFeed",
-        });
-      })
-      .catch(function (error) {
-        alert(error.response.data.message);
-      });
+    try {
+      let response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/register",
+        user
+      );
+      console.log(response.status);
+      setJwtToken(response.data.access_token, response.data.expires_in);
+      router.push({ name: "NewsFeed" });
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   };
 
-  const login = (user) => {
-    console.log(user);
-    axios
-      .post("http://localhost:8000/api/login", user)
-      .then(function (response) {
-        alert("Login Successful!");
-        setJwtToken(response.data.access_token, response.data.expires_in);
-        router.push({ name: "NewsFeed" });
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.response.data.error);
-      });
+  const login = async (user) => {
+    try {
+      let response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/login",
+        user
+      );
+      alert("Login Successful!");
+      setJwtToken(response.data.access_token, response.data.expires_in);
+      router.push({ name: "NewsFeed" });
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.error);
+    }
   };
 
-  const logout = () => {
-    axios
-      .post("http://localhost:8000/api/logout")
-      .then(function () {
-        alert("Logout Successful!");
-        document.cookie = `jwt_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-        router.push({ name: "Landing" });
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.response.data.error);
-      });
+  const logout = async () => {
+    try {
+      await axios.post(import.meta.env.VITE_APP_ROOT_API + "/logout");
+      alert("Logout Successful!");
+      document.cookie = `jwt_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+      router.push({ name: "Landing" });
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.error);
+    }
   };
 
   const setUser = (userData) => {
