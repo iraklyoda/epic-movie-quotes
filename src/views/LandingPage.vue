@@ -74,6 +74,8 @@
 <script setup>
 import { ref } from "vue";
 import i18n from "@/config/i18n";
+import { setLocale } from "@vee-validate/i18n";
+
 
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
@@ -99,9 +101,11 @@ function switchToRegister() {
 }
 function changeLocale() {
   if (i18n.global.locale.value === "en") {
+    setLocale("ka");
     i18n.global.locale.value = "ka";
   } else {
     i18n.global.locale.value = "en";
+    setLocale("en");
   }
 }
 

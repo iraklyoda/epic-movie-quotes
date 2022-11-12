@@ -16,7 +16,7 @@
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
-        rules="required|min:3"
+        rules="required|min:3|max:15|alpha_num|lowercase"
       />
       <input-component
         v-model="emailInput"
@@ -35,7 +35,7 @@
         :type="passwordFieldType"
         :required="true"
         :visibility="true"
-        rules="required"
+        rules="required|min:8|max:15|alpha_num|lowercase"
       >
         <button
           type="button"
