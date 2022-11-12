@@ -23,7 +23,9 @@ export const useUserStore = defineStore("user", () => {
       setJwtToken(response.data.access_token, response.data.expires_in);
       router.push({ name: "NewsFeed" });
     } catch (error) {
-      alert(error.response.data.message);
+      if (error.response !== undefined) {
+        alert(error.response.data.message);
+      }
     }
   };
 
