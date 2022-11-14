@@ -21,7 +21,15 @@ const i18n = createI18n({
       confirmYourPassword: "Confirm your password",
       signUpGoogle: "Sign up with google",
       alreadyHaveAnAccount: "Already have an account?",
-
+      interstellar: "Interstellar, 2014",
+      interstellarQuote: "You have to leave something behind to go forward",
+      tenenbaums: "The Royal Tenenbaums, 2001",
+      tenenbaumsQuote:
+        "I think we’re just gonna have to be secretly in love with search other and leave it that",
+      lotr: "The Lord of the Rings, 2003",
+      lotrQuote:
+        "I see in your eyes the same fear that would take the heart of me....",
+      rightsReserved: "2022 MOVIE QUOTES. ALL RIGHTS RESERVED.",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -40,9 +48,17 @@ const i18n = createI18n({
       confirmYourPassword: "დაადასტურეთ პაროლი",
       signUpGoogle: "გუგლით რეგისტრაცია",
       alreadyHaveAnAccount: "უკვე გაქვთ ანგარიში?",
+      interstellar: "ინტერსტელარი",
+      interstellarQuote: "წინ წასვლის მიზნით რაღაცების დატოვება გიწევს",
+      tenenbaums: "ტენენბაუმების ოჯახი, 2001",
+      tenenbaumsQuote:
+        "ვფიქრობ, ერთმანეთი საიდუმლოდ უნდა გვიყვარდეს და ასევე დავტოვოთ",
+      lotr: "ბეჭდების მბრძანებელი, 2003",
+      lotrQuote:
+        "შენს თვალებში იგივე შიშს ვხედავ რომელიც ჩემს გულს წაიღებდა...",
+      rightsReserved: "2022 კინო ციტატები. ყველა უფლება დაცულია.",
     },
   },
 });
-
 
 export default i18n;

@@ -85,7 +85,7 @@
     </section>
     <footer class="bg-footerBlue py-3 lg:p-4">
       <p class="text-white text-xxs ml-8 font-medium font-helvetica lg:text-xs">
-        &#169; 2022 MOVIE QUOTES. ALL RIGHTS RESERVED.
+        &#169; {{$t("rightsReserved")}}
       </p>
     </footer>
   </main>
@@ -149,20 +149,20 @@ function changeLocale() {
 
 const movies = {
   interstellar: {
-    name_year: "Interstellar, 2014",
-    quote: "You have to leave something behind to go forward",
+    name_year: "interstellar",
+    quote: "interstellarQuote",
     bg: "bg-interstellar",
   },
   royal: {
-    name_year: "The Royal Tenebaums, 2001",
+    name_year: "tenenbaums",
     quote:
-      "I think we’re just gonna have to be secretly in love with search other and leave it that",
+      "tenenbaumsQuote",
     bg: "bg-royal",
   },
   lotr: {
-    name_year: "The Lord of the Rings, 2003",
+    name_year: "lotr",
     quote:
-      "I see in your eyes the same fear that would take the heart of me....",
+      "lotrQuote",
     bg: "bg-lotr",
   },
 };
