@@ -61,7 +61,10 @@ import { ref } from "vue";
 import { Form } from "vee-validate";
 import InputComponent from "@/components/ui/InputComponent.vue";
 import GoogleIcon from "@/components/icons/GoogleIcon.vue";
+import { useUserStore } from "@/stores/user.js";
 
+
+const store = useUserStore();
 const nameInput = ref("");
 const passwordInput = ref("");
 const passwordFieldType = ref("password");
@@ -73,7 +76,11 @@ function switchVisibility() {
 
 function onSubmit() {
   console.log("Happy User Making Happy Dance");
-  console.log(nameInput.value, passwordInput.value);
+  const user = {
+    username: nameInput.value,
+    password: passwordInput.value,
+  };
+  store.login(user);
 }
 
 defineEmits(["register"]);

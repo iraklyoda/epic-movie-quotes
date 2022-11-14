@@ -19,14 +19,34 @@
         <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
         <nav class="flex lg:gap-4">
           <div class="lg:flex">
-            <button
-              type="button"
-              @click="changeLocale"
-              class="px-6 py-1 justify-center items-center gap-2 mt-6 hidden lg:flex"
-            >
-              <p>Eng</p>
-              <down-arrow></down-arrow>
-            </button>
+            <div>
+              <div
+                v-if="langOpen"
+                class="absolute top-0 left-0 w-full h-screen flex justify-center items-center"
+              >
+                <div
+                  class="fixed w-full h-screen top-0"
+                  @click="langDown"
+                ></div>
+                <div class="relative"></div>
+              </div>
+              <button
+                @click="langDropdown"
+                type="button"
+                class="px-6 py-1 justify-center items-center gap-2 mt-6 hidden lg:flex"
+              >
+                <p>{{ currentLanguage }}</p>
+                <down-arrow
+                  class="transition-transform"
+                  :class="{ 'rotate-180': langOpen }"
+                ></down-arrow>
+              </button>
+              <div v-if="langOpen" class="absolute flex flex-col ml-6 mt-1">
+                <button type="button" @click="changeLocale">
+                  {{ currentLanguage === "En" ? "Ka" : "En" }}
+                </button>
+              </div>
+            </div>
             <button
               @click="registerOpen = true"
               class="block mx-auto bg-niceRed px-6 py-1 rounded mt-6 hidden lg:block"
@@ -65,15 +85,16 @@
     </section>
     <footer class="bg-footerBlue py-3 lg:p-4">
       <p class="text-white text-xxs ml-8 font-medium font-helvetica lg:text-xs">
-        &#169; 2022 MOVIE QUOTES. ALL RIGHTS RESERVED.
+        &#169; {{$t("rightsReserved")}}
       </p>
     </footer>
   </main>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import i18n from "@/config/i18n";
+import { setLocale } from "@vee-validate/i18n";
 
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
@@ -97,30 +118,51 @@ function switchToRegister() {
   authOpen.value = false;
   registerOpen.value = true;
 }
+
+const langOpen = ref(false);
+
+const currentLanguage = computed(() => {
+  if (i18n.global.locale.value === "ka") {
+    return "Ka";
+  } else {
+    return "En";
+  }
+});
+
+function langDropdown() {
+  langOpen.value = !langOpen.value;
+}
+
+function langDown() {
+  langOpen.value = false;
+}
+
 function changeLocale() {
   if (i18n.global.locale.value === "en") {
+    setLocale("ka");
     i18n.global.locale.value = "ka";
   } else {
     i18n.global.locale.value = "en";
+    setLocale("en");
   }
 }
 
 const movies = {
   interstellar: {
-    name_year: "Interstellar, 2014",
-    quote: "You have to leave something behind to go forward",
+    name_year: "interstellar",
+    quote: "interstellarQuote",
     bg: "bg-interstellar",
   },
   royal: {
-    name_year: "The Royal Tenebaums, 2001",
+    name_year: "tenenbaums",
     quote:
-      "I think we’re just gonna have to be secretly in love with search other and leave it that",
+      "tenenbaumsQuote",
     bg: "bg-royal",
   },
   lotr: {
-    name_year: "The Lord of the Rings, 2003",
+    name_year: "lotr",
     quote:
-      "I see in your eyes the same fear that would take the heart of me....",
+      "lotrQuote",
     bg: "bg-lotr",
   },
 };

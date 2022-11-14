@@ -16,7 +16,7 @@
         :rules="rules"
       />
     </div>
-    <ErrorMessage :name="name" class="text-red-300" />
+    <ErrorMessage :name="name" class="text-red-300 text-xs mt-1 lg:text-base" />
   </div>
 </template>
 

@@ -16,7 +16,7 @@
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
-        rules="required|min:3"
+        rules="required|min:3|max:15|alpha_num|lowercase"
       />
       <input-component
         v-model="emailInput"
@@ -35,7 +35,7 @@
         :type="passwordFieldType"
         :required="true"
         :visibility="true"
-        rules="required"
+        rules="required|min:8|max:15|alpha_num|lowercase"
       >
         <button
           type="button"
@@ -88,6 +88,8 @@
 <script setup>
 import { ref } from "vue";
 import { Form } from "vee-validate";
+import { useUserStore } from "@/stores/user.js";
+
 import InputComponent from "@/components/ui/InputComponent.vue";
 import GoogleIcon from "@/components/icons/GoogleIcon.vue";
 
@@ -95,6 +97,7 @@ const nameInput = ref("");
 const emailInput = ref("");
 const passwordInput = ref("");
 const passwordFieldType = ref("password");
+const store = useUserStore();
 
 function switchVisibility() {
   passwordFieldType.value =
@@ -102,8 +105,12 @@ function switchVisibility() {
 }
 
 function onSubmit() {
-  console.log("Happy User Making Happy Dance");
-  console.log(nameInput.value, emailInput.value, passwordInput.value);
+  const user = {
+    username: nameInput.value,
+    email: emailInput.value,
+    password: passwordInput.value,
+  };
+  store.register(user);
 }
 
 defineEmits(["login"]);
