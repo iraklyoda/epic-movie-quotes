@@ -41,7 +41,7 @@
                   :class="{ 'rotate-180': langOpen }"
                 ></down-arrow>
               </button>
-              <div v-if="langOpen" class="absolute flex flex-col ml-6 mt-1">
+              <div v-if="langOpen" class="absolute hidden flex-col ml-6 mt-1 lg:flex">
                 <button type="button" @click="changeLocale">
                   {{ currentLanguage === "En" ? "Ka" : "En" }}
                 </button>
@@ -85,7 +85,7 @@
     </section>
     <footer class="bg-footerBlue py-3 lg:p-4">
       <p class="text-white text-xxs ml-8 font-medium font-helvetica lg:text-xs">
-        &#169; {{$t("rightsReserved")}}
+        &#169; {{ $t("rightsReserved") }}
       </p>
     </footer>
   </main>
@@ -93,8 +93,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import i18n from "@/config/i18n";
-import { setLocale } from "@vee-validate/i18n";
+import { useUserStore } from "@/stores/user.js";
 
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
@@ -103,6 +102,7 @@ import AuthComponent from "@/components/landing_page/AuthComponent.vue";
 
 const registerOpen = ref(false);
 const authOpen = ref(false);
+const store = useUserStore();
 
 function closeRegister() {
   registerOpen.value = false;
@@ -122,7 +122,7 @@ function switchToRegister() {
 const langOpen = ref(false);
 
 const currentLanguage = computed(() => {
-  if (i18n.global.locale.value === "ka") {
+  if (store.appLanguage === "ka") {
     return "Ka";
   } else {
     return "En";
@@ -138,13 +138,12 @@ function langDown() {
 }
 
 function changeLocale() {
-  if (i18n.global.locale.value === "en") {
-    setLocale("ka");
-    i18n.global.locale.value = "ka";
+  if (store.appLanguage === "en") {
+    store.setAppLanguage("ka");
   } else {
-    i18n.global.locale.value = "en";
-    setLocale("en");
+    store.setAppLanguage("en");
   }
+  langDown();
 }
 
 const movies = {
@@ -155,14 +154,12 @@ const movies = {
   },
   royal: {
     name_year: "tenenbaums",
-    quote:
-      "tenenbaumsQuote",
+    quote: "tenenbaumsQuote",
     bg: "bg-royal",
   },
   lotr: {
     name_year: "lotr",
-    quote:
-      "lotrQuote",
+    quote: "lotrQuote",
     bg: "bg-lotr",
   },
 };

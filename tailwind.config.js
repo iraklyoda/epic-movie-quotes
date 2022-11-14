@@ -25,6 +25,8 @@ module.exports = {
       },
       colors: {
         fadeBlack: "rgba(0, 0, 0, 0.6)",
+        fadeBlue: "rgba(13, 110, 253, 0.25)",
+        validGreen: "#198754",
         BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
         skinWhite: "#DDCCAA",
