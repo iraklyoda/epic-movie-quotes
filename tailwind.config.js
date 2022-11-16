@@ -51,6 +51,7 @@ module.exports = {
         160: "40rem",
       },
       backgroundImage: {
+        blueGradient: "linear-gradient(131deg, rgba(32,29,47,1) 20%, rgba(46,42,69,0.5186449579831933) 100%)",
         interstellar:
           "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/interstellar.png')",
         lotr: "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/lotr.png')",

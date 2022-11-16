@@ -39,18 +39,25 @@
       <div class="flex justify-between my-3 text-white">
         <div class="flex gap-2">
           <input
-              v-model="rememberMe"
-              @click="setRememberToken"
+            v-model="rememberMe"
+            @click="setRememberToken"
             type="checkbox"
             :value="true"
             name="remember_token"
+            id="remember_token"
             class="accent-success"
           />
-          <label for="remember_token" class="text-md">{{
-            $t("rememberMe")
-          }}</label>
+          <label
+            for="remember_token"
+            class="text-md"
+            >{{ $t("rememberMe") }}
+          </label>
         </div>
-        <div>{{ $t("forgotPassword") }}</div>
+        <div class="text-BlueRibbon underline">
+          <button type="button" @click="$emit('forgotPassword')">
+            {{ $t("forgotPassword") }}
+          </button>
+        </div>
       </div>
       <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
         {{ $t("getStarted") }}
@@ -81,18 +88,18 @@ import { ref } from "vue";
 import { Form } from "vee-validate";
 import InputComponent from "@/components/ui/InputComponent.vue";
 import GoogleIcon from "@/components/icons/GoogleIcon.vue";
+
 import { useUserStore } from "@/stores/user.js";
+const store = useUserStore();
 
 const nameInput = ref("");
 const passwordInput = ref("");
 const passwordFieldType = ref("password");
 const rememberMe = ref(false);
-const store = useUserStore();
 
 function setRememberToken() {
   store.rememberMe = !store.rememberMe;
 }
-
 
 function switchVisibility() {
   passwordFieldType.value =
@@ -110,5 +117,5 @@ function onSubmit() {
   store.login(user);
 }
 
-defineEmits(["register"]);
+defineEmits(["register", "forgotPassword"]);
 </script>

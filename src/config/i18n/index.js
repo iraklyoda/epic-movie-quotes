@@ -26,6 +26,20 @@ const i18n = createI18n({
       dontHaveAnAccount: "Don't have an account?",
       rememberMe: "Remember me",
       forgotPassword: "Forgot password",
+      resetPassword: "Reset password",
+      backToLogIn: "Back to log in",
+      thankYou: "Thank you",
+      checkMail:
+        "Please check your email and follow the instructions to activate your account.",
+      userNotFound: "User not found",
+      passwordResetInstructions:
+        "Enter the email and we’ll send an email with instructions to reset your password",
+      goToMyEmail: "Go to my email",
+      createNewPassword: "Create new password",
+      newPasswordMustBe:
+        "Your new password must be different from previous used passwords",
+      accountActivated: "Your account has been activated!",
+      sendInstructions: "Send instructions",
       interstellar: "Interstellar, 2014",
       interstellarQuote: "You have to leave something behind to go forward",
       tenenbaums: "The Royal Tenenbaums, 2001",
@@ -57,8 +71,22 @@ const i18n = createI18n({
       alreadyHaveAnAccount: "უკვე გაქვთ ანგარიში?",
       dontHaveAnAccount: "არ გაქვთ ანგარიში?",
       rememberMe: "დამიმახსოვრე",
-      forgotPassword: "დამავიწყდა პაროლი",
-      interstellar: "ინტერსტელარი",
+      forgotPassword: "დაგავიწყდა პაროლი",
+      resetPassword: "შეცვალე პაროლი",
+      backToLogIn: "უკან ავტორიზაციაზე",
+      thankYou: "მადლობა",
+      checkMail:
+        "გთხოვთ შეამოწმოთ თქვენი ელ-ფოსტა და მიყვეთ ინსტრუქციებს ექაუნთის გასააქტიურებლად",
+      userNotFound: "მომხმარებელი ვერ მოიძებნა",
+      goToMyEmail: "გადაგი მეილზე",
+      createNewPassword: "შექმენი ახალი პაროლი",
+      newPasswordMustBe:
+        "შენი ახალი პაროლი უნდა განსხვავდებოდეს წინა პაროლებისაგან",
+      accountActivated: "თქვენი ანგარიში გააქტიურდა!",
+      passwordResetInstructions:
+        "შეიყვანეთ ელ-ფოსტა და გამოგიგზავნით ინსტრუქციას პაროლის შეცვლასთან დაკავშირებით",
+      sendInstructions: "გამოგზავნეთ ინსტრუქცია",
+      interstellar: "ინტერსტელარი, 2014",
       interstellarQuote: "წინ წასვლის მიზნით რაღაცების დატოვება გიწევს",
       tenenbaums: "ტენენბაუმების ოჯახი, 2001",
       tenenbaumsQuote:

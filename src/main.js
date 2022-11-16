@@ -13,6 +13,9 @@ import GoogleIcon from "@/components/icons/GoogleIcon.vue";
 import VisibilityIcon from "@/components/icons/VisibilityIcon.vue";
 import InvalidIcon from "@/components/icons/InvalidIcon.vue";
 import ValidIcon from "@/components/icons/ValidIcon.vue";
+import LeftArrowIcon from "@/components/icons/LeftArrowIcon.vue";
+import CheckEmailIcon from "@/components/icons/CheckEmailIcon.vue";
+import EmailSentIcon from "@/components/icons/EmailSentIcon.vue";
 import InputComponent from "@/components/ui/InputComponent.vue";
 
 const app = createApp(App);
@@ -22,6 +25,9 @@ app.component("GoogleIcon", GoogleIcon);
 app.component("VisibilityIcon", VisibilityIcon);
 app.component("InvalidIcon", InvalidIcon);
 app.component("ValidIcon", ValidIcon);
+app.component("LeftArrowIcon", LeftArrowIcon);
+app.component("CheckEmail", CheckEmailIcon);
+app.component("EmailSent", EmailSentIcon);
 
 const pinia = createPinia();
 app.use(pinia);
