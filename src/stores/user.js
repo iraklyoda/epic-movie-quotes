@@ -112,7 +112,7 @@ export const useUserStore = defineStore("user", () => {
   const forgotOpen = ref(false);
   const checkOpen = ref(false);
   const sentOpen = ref(false);
-  const createOpen = ref(true);
+  const createOpen = ref(false);
 
   function closeRegister() {
     registerOpen.value = false;

@@ -47,9 +47,7 @@
             id="remember_token"
             class="accent-success"
           />
-          <label
-            for="remember_token"
-            class="text-md"
+          <label for="remember_token" class="text-md"
             >{{ $t("rememberMe") }}
           </label>
         </div>
@@ -62,13 +60,14 @@
       <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
         {{ $t("getStarted") }}
       </button>
-      <button
-        type="button"
-        class="py-1 border w-full rounded-md text-white mt-4 flex items-center justify-center gap-1.5 lg:p-2"
-      >
-        <google-icon class="mb-1" />
-        <p>{{ $t("signUpGoogle") }}</p>
-      </button>
+      <form :action="googleLogin">
+        <button
+          class="py-1 border w-full rounded-md text-white mt-4 flex items-center justify-center gap-1.5 lg:p-2"
+        >
+          <google-icon class="mb-1" />
+          <p>{{ $t("signUpGoogle") }}</p>
+        </button>
+      </form>
       <p class="text-center mt-3 text-niceGrey lg:mt-9">
         {{ $t("dontHaveAnAccount") }}
         <button
@@ -96,6 +95,8 @@ const nameInput = ref("");
 const passwordInput = ref("");
 const passwordFieldType = ref("password");
 const rememberMe = ref(false);
+const googleLogin = ref(import.meta.env.VITE_APP_ROOT_API + "/google/login");
+
 
 function setRememberToken() {
   store.rememberMe = !store.rememberMe;
