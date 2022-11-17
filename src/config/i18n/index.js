@@ -8,6 +8,7 @@ const i18n = createI18n({
       movieQuotes: "MOVIE QUOTES",
       signUp: "Sign up",
       logIn: "Log in",
+      logOut: "Log out",
       logInToYourAccount: "Log in to your account",
       welcomeBack: "Welcome back! Please enter your details.",
       getStarted: "Get Started",
@@ -29,6 +30,9 @@ const i18n = createI18n({
       resetPassword: "Reset password",
       backToLogIn: "Back to log in",
       thankYou: "Thank you",
+      checkYourEmail: "Check your email",
+      passwordRecover:
+        "We have sent a password recover instructions to your email",
       checkMail:
         "Please check your email and follow the instructions to activate your account.",
       userNotFound: "User not found",
@@ -49,11 +53,13 @@ const i18n = createI18n({
       lotrQuote:
         "I see in your eyes the same fear that would take the heart of me....",
       rightsReserved: "2022 MOVIE QUOTES. ALL RIGHTS RESERVED.",
+      writeNewQuote: "Write new quote",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
       signUp: "დარეგისტრირება",
       logIn: "შესვლა",
+      logOut: "გამოსვლა",
       logInToYourAccount: "დალოგინდით თქვენს ანგარიშზე",
       welcomeBack: "კეთილი იყოს თქვენი დაბრუნება. შეიყვანეთ თქვენი დეტალები",
       getStarted: "დაწყება",
@@ -77,6 +83,8 @@ const i18n = createI18n({
       thankYou: "მადლობა",
       checkMail:
         "გთხოვთ შეამოწმოთ თქვენი ელ-ფოსტა და მიყვეთ ინსტრუქციებს ექაუნთის გასააქტიურებლად",
+      checkYourEmail: "შეამოწმეთ თქვენი ელფოსტა",
+      passwordRecover: "პაროლის აღდგენის ინსტრუქცია გამოგიგზავნეთ ელ-ფოსტაზე",
       userNotFound: "მომხმარებელი ვერ მოიძებნა",
       goToMyEmail: "გადაგი მეილზე",
       createNewPassword: "შექმენი ახალი პაროლი",
@@ -95,6 +103,7 @@ const i18n = createI18n({
       lotrQuote:
         "შენს თვალებში იგივე შიშს ვხედავ რომელიც ჩემს გულს წაიღებდა...",
       rightsReserved: "2022 კინო ციტატები. ყველა უფლება დაცულია.",
+      writeNewQuote: "დაწერე ახალი ციტატა",
     },
   },
 });

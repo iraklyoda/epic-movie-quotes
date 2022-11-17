@@ -6,13 +6,15 @@
         store.authOpen ||
         store.forgotOpen ||
         store.checkOpen ||
-        store.createOpen,
+        store.createOpen ||
+        store.passwordOpen,
       'overflow-hidden':
         store.registerOpen ||
         store.authOpen ||
         store.forgotOpen ||
         store.checkOpen ||
-        store.createOpen,
+        store.createOpen ||
+        store.passwordOpen,
     }"
     class="lg:h-auto lg:overflow-auto"
   >
@@ -31,6 +33,9 @@
     </dialog-component>
     <dialog-component @close="store.closeCheck" :open="store.checkOpen">
       <check-component @close="store.closeCheck"></check-component>
+    </dialog-component>
+    <dialog-component @close="store.closePassword" :open="store.passwordOpen">
+      <check-password @close="store.closePassword"></check-password>
     </dialog-component>
     <dialog-component @close="store.closeSent" :open="store.sentOpen">
       <sent-component></sent-component>
@@ -129,6 +134,7 @@ import DialogComponent from "@/components/ui/DialogComponent.vue";
 import RegisterComponent from "@/components/landing_page/RegisterComponent.vue";
 import AuthComponent from "@/components/landing_page/AuthComponent.vue";
 import CheckComponent from "@/components/landing_page/CheckComponent.vue";
+import CheckPassword from "@/components/landing_page/CheckPassword.vue";
 import ForgotPassword from "@/components/landing_page/ForgotPassword.vue";
 import SentComponent from "@/components/landing_page/SentComponent.vue";
 import CreateComponent from "@/components/landing_page/CreateComponent.vue";

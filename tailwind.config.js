@@ -9,7 +9,8 @@ module.exports = {
       16: "4rem",
     },
     screens: {
-      sm: "640px",
+      xs: "280px",
+      sm: "420px",
       md: "1024px",
       lg: "1280px",
     },
@@ -26,16 +27,20 @@ module.exports = {
       colors: {
         fadeBlack: "rgba(0, 0, 0, 0.6)",
         fadeBlue: "rgba(13, 110, 253, 0.25)",
+        fadeGrey: "rgba(239, 239, 239, 0.3)",
         validGreen: "#198754",
         BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
         skinWhite: "#DDCCAA",
         niceRed: "#E31221",
         footerBlue: "#181623",
+        headerBlue: "#24222F",
         niceGrey: "#6C757D",
         lightGrey: "#CED4DA",
         SteelGray: "#222030",
         RustyRed: "#DC3545",
+        cinder: "#11101A",
+        mirage: "#181624",
       },
       height: {
         110: "27.5rem",
@@ -43,6 +48,7 @@ module.exports = {
         300: "75rem",
       },
       width: {
+        15: "3.75rem",
         150: "37.5rem",
         176: "44rem",
         245: "61.25rem",

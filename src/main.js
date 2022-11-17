@@ -16,6 +16,15 @@ import ValidIcon from "@/components/icons/ValidIcon.vue";
 import LeftArrowIcon from "@/components/icons/LeftArrowIcon.vue";
 import CheckEmailIcon from "@/components/icons/CheckEmailIcon.vue";
 import EmailSentIcon from "@/components/icons/EmailSentIcon.vue";
+import MenuIcon from "@/components/icons/MenuIcon.vue";
+import SearchIcon from "@/components/icons/SearchIcon.vue";
+import NotificationIcon from "@/components/icons/NotificationIcon.vue";
+import WriteIcon from "@/components/icons/WriteIcon.vue";
+import CommentIcon from "@/components/icons/CommentIcon.vue";
+import HeartIcon from "@/components/icons/HeartIcon.vue";
+import HomeIcon from "@/components/icons/HomeIcon.vue";
+import MovieIcon from "@/components/icons/MovieIcon.vue";
+
 import InputComponent from "@/components/ui/InputComponent.vue";
 
 const app = createApp(App);
@@ -28,6 +37,18 @@ app.component("ValidIcon", ValidIcon);
 app.component("LeftArrowIcon", LeftArrowIcon);
 app.component("CheckEmail", CheckEmailIcon);
 app.component("EmailSent", EmailSentIcon);
+app.component("SearchIcon", SearchIcon);
+app.component("MenuIcon", MenuIcon);
+app.component("NotificationIcon", NotificationIcon);
+app.component("WriteIcon", WriteIcon);
+app.component("CommentIcon", CommentIcon);
+app.component("HeartIcon", HeartIcon);
+app.component("HomeIcon", HomeIcon);
+app.component("MovieIcon", MovieIcon);
+
+
+
+
 
 const pinia = createPinia();
 app.use(pinia);

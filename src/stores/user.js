@@ -70,6 +70,7 @@ export const useUserStore = defineStore("user", () => {
         email
       );
       resetErrors.value = null;
+      switchForgotToPassword();
       alert("Email Sent");
     } catch (error) {
       console.log(error.response.data);
@@ -84,6 +85,7 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
+      switchCreateToLogin();
       alert("Password Updated");
     } catch (error) {
       console.log(error.response.data);
@@ -111,6 +113,7 @@ export const useUserStore = defineStore("user", () => {
   const authOpen = ref(false);
   const forgotOpen = ref(false);
   const checkOpen = ref(false);
+  const passwordOpen = ref(false);
   const sentOpen = ref(false);
   const createOpen = ref(false);
 
@@ -125,6 +128,9 @@ export const useUserStore = defineStore("user", () => {
   }
   function closeCheck() {
     checkOpen.value = false;
+  }
+  function closePassword() {
+    passwordOpen.value = false;
   }
   function closeSent() {
     sentOpen.value = false;
@@ -153,18 +159,24 @@ export const useUserStore = defineStore("user", () => {
     createOpen.value = false;
     authOpen.value = true;
   }
+  function switchForgotToPassword(){
+    forgotOpen.value = false;
+    passwordOpen.value = true;
+  }
 
   return {
     registerOpen,
     authOpen,
     forgotOpen,
     checkOpen,
+    passwordOpen,
     sentOpen,
     createOpen,
     closeRegister,
     closeAuth,
     closeForgot,
     closeCheck,
+    closePassword,
     closeSent,
     closeCreate,
     switchToLogin,
