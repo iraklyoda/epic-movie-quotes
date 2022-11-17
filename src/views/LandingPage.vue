@@ -1,17 +1,42 @@
 <template>
   <main
     :class="{
-      'h-screen': registerOpen || authOpen,
-      'overflow-hidden': registerOpen || authOpen,
+      'h-screen':
+        store.registerOpen ||
+        store.authOpen ||
+        store.forgotOpen ||
+        store.checkOpen ||
+        store.createOpen,
+      'overflow-hidden':
+        store.registerOpen ||
+        store.authOpen ||
+        store.forgotOpen ||
+        store.checkOpen ||
+        store.createOpen,
     }"
     class="lg:h-auto lg:overflow-auto"
   >
     <!--          Dialog  -->
-    <dialog-component @close="closeRegister" :open="registerOpen">
-      <register-component @login="switchToLogin"> </register-component>
+    <dialog-component @close="store.closeRegister" :open="store.registerOpen">
+      <register-component @login="store.switchToLogin"> </register-component>
     </dialog-component>
-    <dialog-component @close="closeAuth" :open="authOpen">
-      <auth-component @register="switchToRegister"></auth-component>
+    <dialog-component @close="store.closeAuth" :open="store.authOpen">
+      <auth-component
+        @register="store.switchToRegister"
+        @forgotPassword="store.switchToForgotPassword"
+      ></auth-component>
+    </dialog-component>
+    <dialog-component @close="store.closeForgot" :open="store.forgotOpen">
+      <forgot-password @login="store.switchToLogin"></forgot-password>
+    </dialog-component>
+    <dialog-component @close="store.closeCheck" :open="store.checkOpen">
+      <check-component @close="store.closeCheck"></check-component>
+    </dialog-component>
+    <dialog-component @close="store.closeSent" :open="store.sentOpen">
+      <sent-component></sent-component>
+    </dialog-component>
+    <dialog-component @close="store.closeCreate" :open="store.createOpen">
+      <create-component @login="store.switchCreateToLogin"></create-component>
     </dialog-component>
     <!--            Dialog-->
     <section class="text-white bg-darkBlue h-110 lg:h-screen font-helvetica">
@@ -41,14 +66,17 @@
                   :class="{ 'rotate-180': langOpen }"
                 ></down-arrow>
               </button>
-              <div v-if="langOpen" class="absolute flex flex-col ml-6 mt-1">
+              <div
+                v-if="langOpen"
+                class="absolute hidden flex-col ml-6 mt-1 lg:flex"
+              >
                 <button type="button" @click="changeLocale">
                   {{ currentLanguage === "En" ? "Ka" : "En" }}
                 </button>
               </div>
             </div>
             <button
-              @click="registerOpen = true"
+              @click="store.registerOpen = true"
               class="block mx-auto bg-niceRed px-6 py-1 rounded mt-6 hidden lg:block"
             >
               {{ $t("signUp") }}
@@ -56,7 +84,7 @@
           </div>
           <button
             class="mr-2 mt-6 border py-1.5 px-5 rounded"
-            @click="authOpen = true"
+            @click="store.authOpen = true"
           >
             {{ $t("logIn") }}
           </button>
@@ -85,44 +113,56 @@
     </section>
     <footer class="bg-footerBlue py-3 lg:p-4">
       <p class="text-white text-xxs ml-8 font-medium font-helvetica lg:text-xs">
-        &#169; {{$t("rightsReserved")}}
+        &#169; {{ $t("rightsReserved") }}
       </p>
     </footer>
   </main>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import i18n from "@/config/i18n";
-import { setLocale } from "@vee-validate/i18n";
+import { ref, computed, onMounted, onBeforeMount } from "vue";
+import { useUserStore } from "@/stores/user.js";
+import { setJwtToken } from "@/helpers/jwt/index.js";
 
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
 import RegisterComponent from "@/components/landing_page/RegisterComponent.vue";
 import AuthComponent from "@/components/landing_page/AuthComponent.vue";
+import CheckComponent from "@/components/landing_page/CheckComponent.vue";
+import ForgotPassword from "@/components/landing_page/ForgotPassword.vue";
+import SentComponent from "@/components/landing_page/SentComponent.vue";
+import CreateComponent from "@/components/landing_page/CreateComponent.vue";
 
-const registerOpen = ref(false);
-const authOpen = ref(false);
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 
-function closeRegister() {
-  registerOpen.value = false;
-}
-function closeAuth() {
-  authOpen.value = false;
-}
-function switchToLogin() {
-  registerOpen.value = false;
-  authOpen.value = true;
-}
-function switchToRegister() {
-  authOpen.value = false;
-  registerOpen.value = true;
-}
+const store = useUserStore();
+
+onBeforeMount(() => {
+  if (route.query.token && route.query.expires) {
+    setJwtToken(route.query.token, route.query.expires);
+    router.push({ name: "NewsFeed" });
+  }
+});
+
+onMounted(() => {
+  if (route.query.reset === "yes" && route.query.token) {
+    store.registerOpen = true;
+  }
+  if (route.query.verified === "yes") {
+    store.sentOpen = true;
+  }
+  if (route.query.token && route.query.email) {
+    store.createOpen = true;
+  }
+  console.log(route.query);
+});
 
 const langOpen = ref(false);
 
 const currentLanguage = computed(() => {
-  if (i18n.global.locale.value === "ka") {
+  if (store.appLanguage === "ka") {
     return "Ka";
   } else {
     return "En";
@@ -138,13 +178,12 @@ function langDown() {
 }
 
 function changeLocale() {
-  if (i18n.global.locale.value === "en") {
-    setLocale("ka");
-    i18n.global.locale.value = "ka";
+  if (store.appLanguage === "en") {
+    store.setAppLanguage("ka");
   } else {
-    i18n.global.locale.value = "en";
-    setLocale("en");
+    store.setAppLanguage("en");
   }
+  langDown();
 }
 
 const movies = {
@@ -155,14 +194,12 @@ const movies = {
   },
   royal: {
     name_year: "tenenbaums",
-    quote:
-      "tenenbaumsQuote",
+    quote: "tenenbaumsQuote",
     bg: "bg-royal",
   },
   lotr: {
     name_year: "lotr",
-    quote:
-      "lotrQuote",
+    quote: "lotrQuote",
     bg: "bg-lotr",
   },
 };

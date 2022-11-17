@@ -1,13 +1,15 @@
 import { createI18n } from "vue-i18n";
 const i18n = createI18n({
   // default locale
-  locale: "en",
+  locale: localStorage.getItem("appLanguage") || "en",
   // translations
   messages: {
     en: {
       movieQuotes: "MOVIE QUOTES",
       signUp: "Sign up",
       logIn: "Log in",
+      logInToYourAccount: "Log in to your account",
+      welcomeBack: "Welcome back! Please enter your details.",
       getStarted: "Get Started",
       findAnyQuote: "Find any quote in millions of movie lines",
       createAccount: "Create an account",
@@ -21,6 +23,23 @@ const i18n = createI18n({
       confirmYourPassword: "Confirm your password",
       signUpGoogle: "Sign up with google",
       alreadyHaveAnAccount: "Already have an account?",
+      dontHaveAnAccount: "Don't have an account?",
+      rememberMe: "Remember me",
+      forgotPassword: "Forgot password",
+      resetPassword: "Reset password",
+      backToLogIn: "Back to log in",
+      thankYou: "Thank you",
+      checkMail:
+        "Please check your email and follow the instructions to activate your account.",
+      userNotFound: "User not found",
+      passwordResetInstructions:
+        "Enter the email and we’ll send an email with instructions to reset your password",
+      goToMyEmail: "Go to my email",
+      createNewPassword: "Create new password",
+      newPasswordMustBe:
+        "Your new password must be different from previous used passwords",
+      accountActivated: "Your account has been activated!",
+      sendInstructions: "Send instructions",
       interstellar: "Interstellar, 2014",
       interstellarQuote: "You have to leave something behind to go forward",
       tenenbaums: "The Royal Tenenbaums, 2001",
@@ -35,6 +54,8 @@ const i18n = createI18n({
       movieQuotes: "კინო ციტატები",
       signUp: "დარეგისტრირება",
       logIn: "შესვლა",
+      logInToYourAccount: "დალოგინდით თქვენს ანგარიშზე",
+      welcomeBack: "კეთილი იყოს თქვენი დაბრუნება. შეიყვანეთ თქვენი დეტალები",
       getStarted: "დაწყება",
       findAnyQuote: "იპოვე ციტატები მილიონობით ფილმის დიალოგიდან",
       createAccount: "შექმენით ანგარიში",
@@ -48,7 +69,24 @@ const i18n = createI18n({
       confirmYourPassword: "დაადასტურეთ პაროლი",
       signUpGoogle: "გუგლით რეგისტრაცია",
       alreadyHaveAnAccount: "უკვე გაქვთ ანგარიში?",
-      interstellar: "ინტერსტელარი",
+      dontHaveAnAccount: "არ გაქვთ ანგარიში?",
+      rememberMe: "დამიმახსოვრე",
+      forgotPassword: "დაგავიწყდა პაროლი",
+      resetPassword: "შეცვალე პაროლი",
+      backToLogIn: "უკან ავტორიზაციაზე",
+      thankYou: "მადლობა",
+      checkMail:
+        "გთხოვთ შეამოწმოთ თქვენი ელ-ფოსტა და მიყვეთ ინსტრუქციებს ექაუნთის გასააქტიურებლად",
+      userNotFound: "მომხმარებელი ვერ მოიძებნა",
+      goToMyEmail: "გადაგი მეილზე",
+      createNewPassword: "შექმენი ახალი პაროლი",
+      newPasswordMustBe:
+        "შენი ახალი პაროლი უნდა განსხვავდებოდეს წინა პაროლებისაგან",
+      accountActivated: "თქვენი ანგარიში გააქტიურდა!",
+      passwordResetInstructions:
+        "შეიყვანეთ ელ-ფოსტა და გამოგიგზავნით ინსტრუქციას პაროლის შეცვლასთან დაკავშირებით",
+      sendInstructions: "გამოგზავნეთ ინსტრუქცია",
+      interstellar: "ინტერსტელარი, 2014",
       interstellarQuote: "წინ წასვლის მიზნით რაღაცების დატოვება გიწევს",
       tenenbaums: "ტენენბაუმების ოჯახი, 2001",
       tenenbaumsQuote:

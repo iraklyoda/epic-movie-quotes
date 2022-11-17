@@ -1,5 +1,5 @@
 import { configure } from "vee-validate";
-import { localize } from "@vee-validate/i18n";
+import { localize, setLocale } from "@vee-validate/i18n";
 import en from "@vee-validate/i18n/dist/locale/en.json ";
 import ka from "@vee-validate/i18n/dist/locale/ka.json ";
 configure({
@@ -16,6 +16,7 @@ configure({
         password: "პაროლი",
       },
       messages: {
+        _default: "{field}ს ველი არ არის ვალიდური",
         required: "აუცილებელი ველი",
         required_if: "აუცილებელი ველი",
         min: "{field} უნდა შედგებოდეს მინიმუმ 0:{length} სიმბოლოსგან",
@@ -30,3 +31,4 @@ configure({
     },
   }),
 });
+setLocale(localStorage.getItem("appLanguage") || "en");
