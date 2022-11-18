@@ -49,37 +49,7 @@
         <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
         <nav class="flex lg:gap-4">
           <div class="lg:flex">
-            <div>
-              <div
-                v-if="langOpen"
-                class="absolute top-0 left-0 w-full h-screen flex justify-center items-center"
-              >
-                <div
-                  class="fixed w-full h-screen top-0"
-                  @click="langDown"
-                ></div>
-                <div class="relative"></div>
-              </div>
-              <button
-                @click="langDropdown"
-                type="button"
-                class="px-6 py-1 justify-center items-center gap-2 mt-6 hidden lg:flex"
-              >
-                <p>{{ currentLanguage }}</p>
-                <down-arrow
-                  class="transition-transform"
-                  :class="{ 'rotate-180': langOpen }"
-                ></down-arrow>
-              </button>
-              <div
-                v-if="langOpen"
-                class="absolute hidden flex-col ml-6 mt-1 lg:flex"
-              >
-                <button type="button" @click="changeLocale">
-                  {{ currentLanguage === "En" ? "Ka" : "En" }}
-                </button>
-              </div>
-            </div>
+            <LanguageChange class="mt-8 mr-2"/>
             <button
               @click="store.registerOpen = true"
               class="block mx-auto bg-niceRed px-6 py-1 rounded mt-6 hidden lg:block"
@@ -125,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeMount } from "vue";
+import { onMounted, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores/user.js";
 import { setJwtToken } from "@/helpers/jwt/index.js";
 
@@ -164,33 +134,6 @@ onMounted(() => {
   }
   console.log(route.query);
 });
-
-const langOpen = ref(false);
-
-const currentLanguage = computed(() => {
-  if (store.appLanguage === "ka") {
-    return "Ka";
-  } else {
-    return "En";
-  }
-});
-
-function langDropdown() {
-  langOpen.value = !langOpen.value;
-}
-
-function langDown() {
-  langOpen.value = false;
-}
-
-function changeLocale() {
-  if (store.appLanguage === "en") {
-    store.setAppLanguage("ka");
-  } else {
-    store.setAppLanguage("en");
-  }
-  langDown();
-}
 
 const movies = {
   interstellar: {

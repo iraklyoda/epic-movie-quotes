@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
 import { useRouter, useRoute } from "vue-router";
@@ -97,15 +97,43 @@ export const useUserStore = defineStore("user", () => {
     user.token = userData.token;
   };
 
+  // Change Language
+  const langOpen = ref(false);
   const appLanguage = ref(
     localStorage.getItem("appLanguage") || i18n.global.locale.value
   );
+
+  function langDropDown() {
+    langOpen.value = !langOpen.value;
+    console.log(langOpen.value);
+  }
+
+  function langDown() {
+    langOpen.value = false;
+  }
 
   function setAppLanguage(lang) {
     appLanguage.value = lang;
     setLocale(lang);
     i18n.global.locale.value = lang;
     localStorage.setItem("appLanguage", lang);
+  }
+
+  const currentLanguage = computed(() => {
+    if (appLanguage.value === "ka") {
+      return "Ka";
+    } else {
+      return "En";
+    }
+  });
+
+  function changeLocale() {
+    if (appLanguage.value === "en") {
+      setAppLanguage("ka");
+    } else {
+      setAppLanguage("en");
+    }
+    langDown();
   }
 
   // Dialogs
@@ -159,12 +187,17 @@ export const useUserStore = defineStore("user", () => {
     createOpen.value = false;
     authOpen.value = true;
   }
-  function switchForgotToPassword(){
+  function switchForgotToPassword() {
     forgotOpen.value = false;
     passwordOpen.value = true;
   }
 
   return {
+    langOpen,
+    langDropDown,
+    langDown,
+    changeLocale,
+    currentLanguage,
     registerOpen,
     authOpen,
     forgotOpen,

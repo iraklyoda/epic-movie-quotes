@@ -8,37 +8,7 @@
           <div class="flex gap-5">
             <SearchIcon class="w-5 lg:hidden"></SearchIcon>
             <NotificationIcon class="w-5"></NotificationIcon>
-            <div class="text-white hidden lg:block">
-              <div
-                  v-if="langOpen"
-                  class="absolute top-0 left-0 w-full h-screen flex justify-center items-center"
-              >
-                <div
-                    class="fixed w-full h-screen top-0"
-                    @click="langDown"
-                ></div>
-                <div class="relative"></div>
-              </div>
-              <button
-                  @click="langDropdown"
-                  type="button"
-                  class="justify-center items-center gap-2 hidden lg:flex"
-              >
-                <p>{{ currentLanguage }}</p>
-                <down-arrow
-                    class="transition-transform"
-                    :class="{ 'rotate-180': langOpen }"
-                ></down-arrow>
-              </button>
-              <div
-                  v-if="langOpen"
-                  class="absolute hidden flex-col mt-1 lg:flex"
-              >
-                <button type="button" @click="changeLocale">
-                  {{ currentLanguage === "En" ? "Ka" : "En" }}
-                </button>
-              </div>
-            </div>
+            <LanguageChange/>
             <button
               @click="logout"
               class="block mx-auto px-6 py-1.5 -mt-1.5 border-2 rounded hidden lg:block"
@@ -52,7 +22,7 @@
     <main class="text-white">
       <div class="lg:ml-16 lg:flex">
         <!--        Profile      -->
-        <div class="hidden lg:flex lg:flex-col ">
+        <div class="hidden lg:flex lg:flex-col">
           <div class="mt-7 flex items-center gap-4">
             <img
               src="@/assets/images/user/profile_picture.png"
@@ -61,28 +31,30 @@
             />
             <div>
               <p class="text-2xl">Maia Nakashidze</p>
-              <p class="text-lightGrey">Edit your profile</p>
+              <p class="text-lightGrey">{{ $t("editYourProfile") }}</p>
             </div>
           </div>
           <div class="flex items-center mt-6 gap-8">
             <home-icon class="w-7 ml-3"></home-icon>
-            <p>News Feed</p>
+            <p>{{ $t("newsFeed") }}</p>
           </div>
           <div class="flex items-center mt-6 gap-8">
             <movie-icon class="w-7 ml-3"></movie-icon>
-            <p>List of movies</p>
+            <p>{{ $t("listOfMovies") }}</p>
           </div>
         </div>
         <!--        Posts        -->
         <div class="lg:ml-[15%]">
           <div class="lg:flex items-center justify-center">
-          <section class="bg-footerBlue py-5 flex gap-3 lg:bg-headerBlue lg:py-2 lg:mt-6 lg:rounded-lg lg:-mb-2 lg:ml-8 lg:w-4/5">
-            <write-icon class="ml-9 w-5 lg:ml-3"></write-icon>
-            <p>{{ $t("writeNewQuote") }}</p>
-          </section>
+            <section
+              class="bg-footerBlue py-5 flex gap-3 lg:bg-headerBlue lg:py-2 lg:mt-6 lg:rounded-lg lg:-mb-2 lg:ml-8 lg:w-4/5"
+            >
+              <write-icon class="ml-9 w-5 lg:ml-3"></write-icon>
+              <p>{{ $t("writeNewQuote") }}</p>
+            </section>
             <section class="hidden lg:flex mt-7 ml-2 gap-3 items-center">
               <search-icon class="w-5"></search-icon>
-              <p class="text">Search by</p>
+              <p class="text">{{ $t("searchBy") }}</p>
             </section>
           </div>
           <post-component></post-component>
@@ -98,34 +70,9 @@
 <script setup>
 import { useUserStore } from "@/stores/user.js";
 import PostComponent from "@/components/news_feed/PostComponent.vue";
-import { computed, ref } from "vue";
+import { ref } from "vue";
+import LanguageChange from "@/components/ui/LanguageChange.vue";
 const store = useUserStore();
-
-const langOpen = ref(false);
-
-const currentLanguage = computed(() => {
-  if (store.appLanguage === "ka") {
-    return "Ka";
-  } else {
-    return "En";
-  }
-});
-
-function langDropdown() {
-  langOpen.value = !langOpen.value;
-}
-function changeLocale() {
-  if (store.appLanguage === "en") {
-    store.setAppLanguage("ka");
-  } else {
-    store.setAppLanguage("en");
-  }
-  langDown();
-}
-
-function langDown() {
-  langOpen.value = false;
-}
 
 function logout() {
   store.logout();

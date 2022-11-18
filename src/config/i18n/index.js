@@ -54,6 +54,10 @@ const i18n = createI18n({
         "I see in your eyes the same fear that would take the heart of me....",
       rightsReserved: "2022 MOVIE QUOTES. ALL RIGHTS RESERVED.",
       writeNewQuote: "Write new quote",
+      searchBy: "Search by",
+      editYourProfile: "Edit your profile",
+      newsFeed: "News Feed",
+      listOfMovies: "List of movies",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -104,6 +108,10 @@ const i18n = createI18n({
         "შენს თვალებში იგივე შიშს ვხედავ რომელიც ჩემს გულს წაიღებდა...",
       rightsReserved: "2022 კინო ციტატები. ყველა უფლება დაცულია.",
       writeNewQuote: "დაწერე ახალი ციტატა",
+      searchBy: "ძებნა",
+      editYourProfile: "პროფილის რედაქტირება",
+      listOfMovies: "ჩემი ფილმები",
+      newsFeed: "ნიუს ფიდი",
     },
   },
 });

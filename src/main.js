@@ -26,6 +26,7 @@ import HomeIcon from "@/components/icons/HomeIcon.vue";
 import MovieIcon from "@/components/icons/MovieIcon.vue";
 
 import InputComponent from "@/components/ui/InputComponent.vue";
+import LanguageChange from "@/components/ui/LanguageChange.vue";
 
 const app = createApp(App);
 app.component("DownArrow", DownArrow);
@@ -45,6 +46,7 @@ app.component("CommentIcon", CommentIcon);
 app.component("HeartIcon", HeartIcon);
 app.component("HomeIcon", HomeIcon);
 app.component("MovieIcon", MovieIcon);
+app.component("LanguageChange", LanguageChange);
 
 
 
