@@ -59,9 +59,18 @@
             <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
           </div>
         </Field>
-        <Field name="categories" v-slot="{ meta }">
+        <Field
+          name="categories"
+          v-slot="{ meta }"
+          v-model="categoryTags"
+          rules="required"
+        >
           <div
             class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-2 rounded h-auto outline-none"
+            :class="{
+              'border-niceRed': !meta.valid && meta.touched,
+              'border-validGreen': meta.valid && meta.touched,
+            }"
           >
             <div class="flex flex-wrap gap-1">
               <div v-for="(tag, index) in categoryTags" :key="'tag' + index">
@@ -76,6 +85,7 @@
               <input
                 v-model="categoryTag"
                 @keyup.,="addTag"
+                @keydown.enter.prevent="addTag"
                 placeholder="კატეგორია..."
                 class="bg-transparent focus:outline-none placeholder-white"
                 :class="{
@@ -151,7 +161,7 @@
         </Field>
         <Field
           name="image"
-          v-slot="{ handleChange, handleBlur, meta, value, file }"
+          v-slot="{ handleChange, handleBlur, meta, value }"
           v-model="img"
           rules="required"
         >
@@ -183,7 +193,6 @@
               {{ value.name }}
             </div>
             <input
-              v-bind="file"
               type="file"
               @change="handleChange"
               @blur="handleBlur"
@@ -213,6 +222,7 @@ function onSubmit(values) {
   console.log(values);
   const movie = {
     image: values.image,
+    genres: JSON.stringify(values.categories),
     title_en: values.title_en,
     title_ka: values.title_ka,
     director_en: values.director_en,
