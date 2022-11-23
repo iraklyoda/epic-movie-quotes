@@ -24,11 +24,21 @@ import CommentIcon from "@/components/icons/CommentIcon.vue";
 import HeartIcon from "@/components/icons/HeartIcon.vue";
 import HomeIcon from "@/components/icons/HomeIcon.vue";
 import MovieIcon from "@/components/icons/MovieIcon.vue";
+import AddIcon from "@/components/icons/AddIcon.vue";
+import ChatIcon from "@/components/icons/ChatIcon.vue";
+import DialogComponent from "@/components/ui/DialogComponent.vue";
+import MovieDialog from "@/components/ui/MovieDialog.vue";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
+import CameraIcon from "@/components/icons/CameraIcon.vue";
+
+
 
 import InputComponent from "@/components/ui/InputComponent.vue";
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 
 const app = createApp(App);
+app.component("DialogComponent", DialogComponent);
+app.component("MovieDialog", MovieDialog);
 app.component("DownArrow", DownArrow);
 app.component("InputComponent", InputComponent);
 app.component("GoogleIcon", GoogleIcon);
@@ -47,6 +57,10 @@ app.component("HeartIcon", HeartIcon);
 app.component("HomeIcon", HomeIcon);
 app.component("MovieIcon", MovieIcon);
 app.component("LanguageChange", LanguageChange);
+app.component("AddIcon", AddIcon);
+app.component("ChatIcon", ChatIcon);
+app.component("CloseIcon", CloseIcon);
+app.component("CameraIcon", CameraIcon);
 
 
 

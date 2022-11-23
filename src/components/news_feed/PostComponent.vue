@@ -20,20 +20,19 @@
       </figure>
       <section class="flex mt-5 text-xl items-center">
         <span>3</span>
-        <comment-icon class="ml-3"></comment-icon>
+        <CommentIcon class="ml-3"/>
         <span class="ml-6">10</span>
-        <heart-icon class="ml-3"></heart-icon>
+        <HeartIcon class="ml-3"/>
       </section>
       <div class="border-b-2 mt-4 border-fadeGrey w-11/12 max-w-3xl"></div>
-      <comment-component></comment-component>
-      <comment-component></comment-component>
+      <CommentComponent/>
       <section class="mt-4 flex w-11/12 max-w-3xl mb-4 lg:pb-6">
         <img
           src="@/assets/images/user/profile_picture.png"
           alt="profile picture"
         />
         <input
-          placeholder="Write a comment"
+          :placeholder="$t('writeAComment')"
           class="block ml-3 pl-4 w-full bg-footerBlue rounded-md"
         />
       </section>
@@ -45,4 +44,6 @@
 
 <script setup>
 import CommentComponent from "@/components/news_feed/CommentComponent.vue";
+import CommentIcon from "@/components/icons/CommentIcon.vue";
+import HeartIcon from "@/components/icons/HeartIcon.vue";
 </script>

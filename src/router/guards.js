@@ -5,3 +5,9 @@ export function isAuthenticated() {
     return "/";
   }
 }
+
+export function isGuest() {
+  if(getJwtToken()) {
+    return "/newsfeed";
+  }
+}

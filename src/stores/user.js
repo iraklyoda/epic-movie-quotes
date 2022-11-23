@@ -1,7 +1,7 @@
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { setJwtToken } from "@/helpers/jwt/index.js";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
@@ -14,8 +14,6 @@ export const useUserStore = defineStore("user", () => {
   };
   const hello = ref("hello");
   const router = useRouter();
-  const route = useRoute();
-
   const remember_me = ref(false);
 
   const register = async (user) => {

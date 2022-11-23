@@ -58,6 +58,10 @@ const i18n = createI18n({
       editYourProfile: "Edit your profile",
       newsFeed: "News Feed",
       listOfMovies: "List of movies",
+      myListOfMovies: "My list of movies",
+      total: "Total",
+      writeAComment: "Write a comment",
+      addMovie: "Add movie",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -111,7 +115,11 @@ const i18n = createI18n({
       searchBy: "ძებნა",
       editYourProfile: "პროფილის რედაქტირება",
       listOfMovies: "ჩემი ფილმები",
+      myListOfMovies: "ჩემი ფილმების სია",
+      total: "სულ",
       newsFeed: "ნიუს ფიდი",
+      writeAComment: "დაწერე კომენტარი ",
+      addMovie: "ფილმის დამატება",
     },
   },
 });
