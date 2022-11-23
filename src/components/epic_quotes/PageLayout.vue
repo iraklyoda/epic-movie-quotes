@@ -40,13 +40,22 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
+import { useCrudStore } from "@/stores/crud.js";
+
 
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 import ProfileNavigation from "@/components/epic_quotes/ProfileNavigation.vue";
 
 const route = useRoute();
+const crud = useCrudStore();
+
+onMounted(() => {
+  crud.readMovies();
+});
+
 const store = useUserStore();
 defineProps(["search"]);
 

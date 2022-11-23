@@ -83,13 +83,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { Form } from "vee-validate";
 import InputComponent from "@/components/ui/InputComponent.vue";
 import GoogleIcon from "@/components/icons/GoogleIcon.vue";
 
 import { useUserStore } from "@/stores/user.js";
+
 const store = useUserStore();
+
 
 const nameInput = ref("");
 const passwordInput = ref("");
@@ -112,7 +114,7 @@ function onSubmit() {
   const user = {
     username: nameInput.value,
     password: passwordInput.value,
-    remember_token: rememberMe.value,
+    remember_me: rememberMe.value,
   };
 
   store.login(user);

@@ -10,6 +10,7 @@ import { setLocale } from "@vee-validate/i18n";
 import { useAuthStore } from "@/stores/auth";
 
 export const useUserStore = defineStore("user", () => {
+  const authStore = useAuthStore();
   const token = ref(false);
   const user = {
     data: {},
@@ -35,9 +36,11 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const login = async (user) => {
-    const authStore = useAuthStore();
     try {
-      const response = await axiosInstance.post(import.meta.env.VITE_APP_ROOT_API + "/login", user);
+      const response = await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API + "/login",
+        user
+      );
       authStore.authenticated = true;
       console.log(authStore.authenticated);
       console.log(response);
@@ -49,10 +52,16 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  function logout() {
-    document.cookie = `jwt_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-    router.push({ name: "Landing" });
-  }
+  const logout = async () => {
+    try {
+      await axiosInstance.get(import.meta.env.VITE_APP_ROOT_API + "/logout");
+      authStore.authenticated = false;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      router.push({ name: "Landing" });
+    }
+  };
 
   const resetErrors = ref(null);
 
