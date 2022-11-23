@@ -1,10 +1,13 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
+import axiosInstance from "@/config/axios/jwtAxios";
 import { useRouter } from "vue-router";
 import { setJwtToken } from "@/helpers/jwt/index.js";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
+
+import { useAuthStore } from "@/stores/auth";
 
 export const useUserStore = defineStore("user", () => {
   const token = ref(false);
@@ -32,25 +35,17 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const login = async (user) => {
+    const authStore = useAuthStore();
     try {
-      console.log(user);
-      let response = await axios.post(
-        import.meta.env.VITE_APP_ROOT_API + "/login",
-        user
-      );
-      alert("Login Successful!");
-      if (remember_me.value) {
-        setJwtToken(
-          response.data.access_token,
-          response.data.expires_in * 542141
-        );
-      } else {
-        setJwtToken(response.data.access_token, response.data.expires_in);
-      }
+      const response = await axiosInstance.post(import.meta.env.VITE_APP_ROOT_API + "/login", user);
+      authStore.authenticated = true;
+      console.log(authStore.authenticated);
+      console.log(response);
       router.push({ name: "NewsFeed" });
     } catch (error) {
+      console.log(user);
       console.log(error);
-      alert(error.response.data.message);
+      alert(error.response);
     }
   };
 

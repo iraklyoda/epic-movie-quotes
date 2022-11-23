@@ -5,6 +5,8 @@ import MovieList from "@/views/MovieList.vue";
 import PageLayout from "@/components/epic_quotes/PageLayout.vue";
 import AddMovie from "@/components/movies_list/AddMovie.vue";
 import { isAuthenticated, isGuest } from "@/router/guards.js";
+import { useAuthStore } from "@/stores/auth";
+import axios from "@/config/axios/jwtAxios.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,11 +39,28 @@ const router = createRouter({
             },
           ],
         },
-
       ],
       beforeEnter: [isAuthenticated],
     },
   ],
+});
+
+//
+
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
+
+  if (authStore.authenticated === null) {
+    try {
+      await axios.get(import.meta.env.VITE_APP_ROOT_API + "/me");
+      authStore.authenticated = true;
+    } catch (err) {
+      authStore.authenticated = false;
+    } finally {
+      return next();
+    }
+  }
+  return next();
 });
 
 export default router;
