@@ -1,12 +1,16 @@
-import { ref, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
-import { useRouter, useRoute } from "vue-router";
+import axiosInstance from "@/config/axios/jwtAxios";
+import { useRouter } from "vue-router";
 import { setJwtToken } from "@/helpers/jwt/index.js";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
 
+import { useAuthStore } from "@/stores/auth";
+
 export const useUserStore = defineStore("user", () => {
+  const authStore = useAuthStore();
   const token = ref(false);
   const user = {
     data: {},
@@ -14,8 +18,6 @@ export const useUserStore = defineStore("user", () => {
   };
   const hello = ref("hello");
   const router = useRouter();
-  const route = useRoute();
-
   const remember_me = ref(false);
 
   const register = async (user) => {
@@ -35,31 +37,31 @@ export const useUserStore = defineStore("user", () => {
 
   const login = async (user) => {
     try {
-      console.log(user);
-      let response = await axios.post(
+      const response = await axiosInstance.post(
         import.meta.env.VITE_APP_ROOT_API + "/login",
         user
       );
-      alert("Login Successful!");
-      if (remember_me.value) {
-        setJwtToken(
-          response.data.access_token,
-          response.data.expires_in * 542141
-        );
-      } else {
-        setJwtToken(response.data.access_token, response.data.expires_in);
-      }
+      authStore.authenticated = true;
+      console.log(authStore.authenticated);
+      console.log(response);
       router.push({ name: "NewsFeed" });
     } catch (error) {
+      console.log(user);
       console.log(error);
-      alert(error.response.data.message);
+      alert(error.response);
     }
   };
 
-  function logout() {
-    document.cookie = `jwt_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-    router.push({ name: "Landing" });
-  }
+  const logout = async () => {
+    try {
+      await axiosInstance.get(import.meta.env.VITE_APP_ROOT_API + "/logout");
+      authStore.authenticated = false;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      router.push({ name: "Landing" });
+    }
+  };
 
   const resetErrors = ref(null);
 
@@ -70,6 +72,7 @@ export const useUserStore = defineStore("user", () => {
         email
       );
       resetErrors.value = null;
+      switchForgotToPassword();
       alert("Email Sent");
     } catch (error) {
       console.log(error.response.data);
@@ -84,6 +87,7 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
+      switchCreateToLogin();
       alert("Password Updated");
     } catch (error) {
       console.log(error.response.data);
@@ -95,9 +99,20 @@ export const useUserStore = defineStore("user", () => {
     user.token = userData.token;
   };
 
+  // Change Language
+  const langOpen = ref(false);
   const appLanguage = ref(
     localStorage.getItem("appLanguage") || i18n.global.locale.value
   );
+
+  function langDropDown() {
+    langOpen.value = !langOpen.value;
+    console.log(langOpen.value);
+  }
+
+  function langDown() {
+    langOpen.value = false;
+  }
 
   function setAppLanguage(lang) {
     appLanguage.value = lang;
@@ -106,11 +121,29 @@ export const useUserStore = defineStore("user", () => {
     localStorage.setItem("appLanguage", lang);
   }
 
+  const currentLanguage = computed(() => {
+    if (appLanguage.value === "ka") {
+      return "Ka";
+    } else {
+      return "En";
+    }
+  });
+
+  function changeLocale() {
+    if (appLanguage.value === "en") {
+      setAppLanguage("ka");
+    } else {
+      setAppLanguage("en");
+    }
+    langDown();
+  }
+
   // Dialogs
   const registerOpen = ref(false);
   const authOpen = ref(false);
   const forgotOpen = ref(false);
   const checkOpen = ref(false);
+  const passwordOpen = ref(false);
   const sentOpen = ref(false);
   const createOpen = ref(false);
 
@@ -125,6 +158,9 @@ export const useUserStore = defineStore("user", () => {
   }
   function closeCheck() {
     checkOpen.value = false;
+  }
+  function closePassword() {
+    passwordOpen.value = false;
   }
   function closeSent() {
     sentOpen.value = false;
@@ -153,18 +189,29 @@ export const useUserStore = defineStore("user", () => {
     createOpen.value = false;
     authOpen.value = true;
   }
+  function switchForgotToPassword() {
+    forgotOpen.value = false;
+    passwordOpen.value = true;
+  }
 
   return {
+    langOpen,
+    langDropDown,
+    langDown,
+    changeLocale,
+    currentLanguage,
     registerOpen,
     authOpen,
     forgotOpen,
     checkOpen,
+    passwordOpen,
     sentOpen,
     createOpen,
     closeRegister,
     closeAuth,
     closeForgot,
     closeCheck,
+    closePassword,
     closeSent,
     closeCreate,
     switchToLogin,

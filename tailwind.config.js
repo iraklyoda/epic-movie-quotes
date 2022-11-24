@@ -9,11 +9,18 @@ module.exports = {
       16: "4rem",
     },
     screens: {
-      sm: "640px",
+      xs: "280px",
+      sm: "420px",
       md: "1024px",
       lg: "1280px",
     },
     extend: {
+      backdropBlur: {
+        xs: "2px",
+      },
+      borderWidth: {
+        1: "1px",
+      },
       lineHeight: {
         22.5: "5.625rem",
       },
@@ -26,16 +33,22 @@ module.exports = {
       colors: {
         fadeBlack: "rgba(0, 0, 0, 0.6)",
         fadeBlue: "rgba(13, 110, 253, 0.25)",
+        fadeGrey: "rgba(239, 239, 239, 0.2)",
+        fadePurple: "rgba(151, 71, 255, 0.4)",
+        fadePink: "rgba(190, 9, 103, 0.01)",
         validGreen: "#198754",
         BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
         skinWhite: "#DDCCAA",
         niceRed: "#E31221",
         footerBlue: "#181623",
+        headerBlue: "#24222F",
         niceGrey: "#6C757D",
         lightGrey: "#CED4DA",
         SteelGray: "#222030",
         RustyRed: "#DC3545",
+        cinder: "#11101A",
+        mirage: "#181624",
       },
       height: {
         110: "27.5rem",
@@ -43,15 +56,19 @@ module.exports = {
         300: "75rem",
       },
       width: {
+        15: "3.75rem",
+        110: "27.5rem",
         150: "37.5rem",
         176: "44rem",
+        240: "60rem",
         245: "61.25rem",
       },
       margin: {
         160: "40rem",
       },
       backgroundImage: {
-        blueGradient: "linear-gradient(131deg, rgba(32,29,47,1) 20%, rgba(46,42,69,0.5186449579831933) 100%)",
+        blueGradient:
+          "linear-gradient(131deg, rgba(32,29,47,1) 20%, rgba(46,42,69,0.5186449579831933) 100%)",
         interstellar:
           "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/interstellar.png')",
         lotr: "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/lotr.png')",

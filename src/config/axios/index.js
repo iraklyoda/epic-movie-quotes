@@ -11,5 +11,5 @@ const axiosInstance = axios.create({
     Authorization: "Bearer " + getJwtToken(),
   },
 });
-
+axiosInstance.defaults.withCredentials = true;
 export default axiosInstance;

@@ -1,7 +1,15 @@
-import { getJwtToken } from "@/helpers/jwt/index.js";
+import { useAuthStore } from "@/stores/auth";
 
-export function isAuthenticated() {
-  if (!getJwtToken()) {
+export const isAuthenticated = () => {
+  const authStore = useAuthStore();
+  if (!authStore.authenticated) {
     return "/";
   }
-}
+};
+
+export const isGuest = () => {
+  const authStore = useAuthStore();
+  if (authStore.authenticated) {
+    return "/newsfeed";
+  }
+};
