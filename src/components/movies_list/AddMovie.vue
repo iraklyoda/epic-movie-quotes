@@ -6,7 +6,7 @@
       <div class="h-0.5"></div>
       <nav class="flex justify-between items-center mx-9">
         <div class="w-3.5"></div>
-        <p class="text-xl place-self-end">Add Movie</p>
+        <p class="text-xl place-self-end">{{$t("addMovie")}}</p>
         <router-link :to="{ name: 'MovieList' }">
           <CloseIcon class="w-3.5" />
         </router-link>
@@ -86,7 +86,7 @@
                 v-model="categoryTag"
                 @keyup.,="addTag"
                 @keydown.enter.prevent="addTag"
-                placeholder="კატეგორია..."
+                :placeholder="$t('category') + '...'"
                 class="bg-transparent focus:outline-none placeholder-white"
                 :class="{
                   'pl-2': categoryTags.length > 0,
@@ -182,11 +182,11 @@
                 <camera-icon></camera-icon>
                 <span class="mt-1 lg:hidden">Upload image</span>
                 <span class="mt-1 invisible lg:visible"
-                  >Drag & drop your image here or
+                  >{{ $t("dragAndDrop") }}
                 </span>
               </div>
               <label for="movieImage" class="bg-fadePurple px-2 py-2"
-                >Choose file</label
+                >{{ $t("chooseFile") }}</label
               >
             </div>
             <div v-if="value">

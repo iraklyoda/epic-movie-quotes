@@ -62,6 +62,9 @@ const i18n = createI18n({
       total: "Total",
       writeAComment: "Write a comment",
       addMovie: "Add movie",
+      category: "Category",
+      dragAndDrop: "Drag & drop your image here or",
+      chooseFile: "Choose file",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -120,6 +123,9 @@ const i18n = createI18n({
       newsFeed: "ნიუს ფიდი",
       writeAComment: "დაწერე კომენტარი ",
       addMovie: "ფილმის დამატება",
+      category: "კატეგორია",
+      dragAndDrop: "ჩააგდეთ სურათი ამ ველში ან",
+      chooseFile: "აირჩიეთ ფაილი",
     },
   },
 });

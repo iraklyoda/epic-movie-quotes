@@ -6,5 +6,5 @@ export const useCrudStore = defineStore("crud", () => {
   const crud = ref(true);
   const movies = ref({});
 
-  return { crud, movies, readMovies };
+  return { crud, movies };
 });
