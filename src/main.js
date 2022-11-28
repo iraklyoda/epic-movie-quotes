@@ -30,13 +30,18 @@ import DialogComponent from "@/components/ui/DialogComponent.vue";
 import MovieDialog from "@/components/ui/MovieDialog.vue";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import CameraIcon from "@/components/icons/CameraIcon.vue";
-
+import EditIcon from "@/components/icons/EditIcon.vue";
+import DeleteIcon from "@/components/icons/DeleteIcon.vue";
+import DotsMenu from "@/components/icons/DotsMenu.vue";
+import EyeIcon from "@/components/icons/EyeIcon.vue";
 
 
 import InputComponent from "@/components/ui/InputComponent.vue";
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 
 const app = createApp(App);
+const pinia = createPinia();
+
 app.component("DialogComponent", DialogComponent);
 app.component("MovieDialog", MovieDialog);
 app.component("DownArrow", DownArrow);
@@ -61,12 +66,12 @@ app.component("AddIcon", AddIcon);
 app.component("ChatIcon", ChatIcon);
 app.component("CloseIcon", CloseIcon);
 app.component("CameraIcon", CameraIcon);
+app.component("EditIcon", EditIcon);
+app.component("DeleteIcon", DeleteIcon);
+app.component("EyeIcon", EyeIcon);
+app.component("DotsMenu", DotsMenu);
 
 
-
-
-
-const pinia = createPinia();
 app.use(pinia);
 app.use(i18n);
 app.use(router);

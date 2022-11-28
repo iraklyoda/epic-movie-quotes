@@ -1,9 +1,8 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
-import axiosInstance from "@/config/axios/jwtAxios";
+import axiosInstance from "@/config/axios/jwtAxios.js";
 import { useRouter } from "vue-router";
-import { setJwtToken } from "@/helpers/jwt/index.js";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
 
@@ -23,7 +22,7 @@ export const useUserStore = defineStore("user", () => {
   const register = async (user) => {
     console.log(user);
     try {
-      let response = await axios.post(
+      let response = await axiosInstance().post(
         import.meta.env.VITE_APP_ROOT_API + "/register",
         user
       );
@@ -42,8 +41,6 @@ export const useUserStore = defineStore("user", () => {
         user
       );
       authStore.authenticated = true;
-      console.log(authStore.authenticated);
-      console.log(response);
       router.push({ name: "NewsFeed" });
     } catch (error) {
       console.log(user);
@@ -225,6 +222,7 @@ export const useUserStore = defineStore("user", () => {
     register,
     token,
     setUser,
+    remember_me,
     resetRequest,
     updatePassword,
     hello,

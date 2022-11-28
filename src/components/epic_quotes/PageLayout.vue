@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bg-cinder min-h-screen text-white lg:bg-mirage"
-  >
+  <div class="bg-riverStyx min-h-screen h-auto text-white lg:bg-mirage">
     <!--    Dialog    -->
     <header>
       <nav class="bg-headerBlue py-5">
@@ -25,12 +23,16 @@
         </div>
       </nav>
       <div
-        class="h-full w-full bg-fadePink z-10 backdrop-blur-xs overflow-auto rounded-md"
+        class="h-5/6 w-full bg-fadePink z-10 backdrop-blur-xs overflow-auto rounded-md"
         :class="{ absolute: route.name === 'AddMovie' }"
+      ></div>
+      <div
+        class="h-full w-full bg-fadePink z-10 backdrop-blur-xs overflow-auto rounded-md"
+        :class="{ absolute: route.name === 'AddQuote' }"
       ></div>
     </header>
     <main class="text-white">
-      <div class="lg:ml-16 lg:flex">
+      <div class="lg:flex lg:flex-shrink">
         <!--        Profile      -->
         <ProfileNavigation class="z-20" />
         <RouterView />
@@ -42,15 +44,14 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
-import { useCrudStore } from "@/stores/crud.js";
-
 
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 import ProfileNavigation from "@/components/epic_quotes/ProfileNavigation.vue";
 
 const route = useRoute();
-const crud = useCrudStore();
-
+function getRoute() {
+  console.log(route.name);
+}
 
 const store = useUserStore();
 defineProps(["search"]);

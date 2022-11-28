@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden lg:flex lg:flex-col">
+  <div class="hidden lg:flex lg:pl-16  lg:flex-col">
     <div class="mt-7 flex items-center gap-4">
       <img
         src="@/assets/images/user/profile_picture.png"
@@ -29,7 +29,7 @@
     <router-link :to="{ name: 'MovieList' }">
       <div class="flex items-center mt-6 gap-8">
         <movie-icon
-          :color="[route.matched.some((route) => route.path.includes('/movielist')) ? '#E31221' : 'white']"
+          :color="[route.matched.some((route) => route.path.includes('/movielist')) ||  route.matched.some((route) => route.path.includes('/movie'))? '#E31221' : 'white']"
           class="w-7 ml-3"
         ></movie-icon>
         <p>{{ $t("listOfMovies") }}</p>

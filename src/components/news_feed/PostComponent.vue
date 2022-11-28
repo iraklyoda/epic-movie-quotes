@@ -10,22 +10,22 @@
       </div>
       <figure class="mt-3.5">
         <figcaption class="text-sm sm:text-base">
-          "Follow Your dream."movie- Billy Elliot. (2000)
+          {{ lang === "Ka" ? quote.ka : quote.en }}
         </figcaption>
         <img
-          src="@/assets/images/user/movie_picture.png"
+          :src="root + image"
           alt="movie"
           class="w-11/12 max-w-3xl mt-4"
         />
       </figure>
       <section class="flex mt-5 text-xl items-center">
         <span>3</span>
-        <CommentIcon class="ml-3"/>
+        <CommentIcon class="ml-3" />
         <span class="ml-6">10</span>
-        <HeartIcon class="ml-3"/>
+        <HeartIcon class="ml-3" />
       </section>
       <div class="border-b-2 mt-4 border-fadeGrey w-11/12 max-w-3xl"></div>
-      <CommentComponent/>
+      <CommentComponent />
       <section class="mt-4 flex w-11/12 max-w-3xl mb-4 lg:pb-6">
         <img
           src="@/assets/images/user/profile_picture.png"
@@ -46,4 +46,25 @@
 import CommentComponent from "@/components/news_feed/CommentComponent.vue";
 import CommentIcon from "@/components/icons/CommentIcon.vue";
 import HeartIcon from "@/components/icons/HeartIcon.vue";
+import {computed} from "vue";
+import i18n from "@/config/i18n";
+
+const root = import.meta.env.VITE_APP_ROOT;
+
+const lang = computed(() => {
+  if (i18n.global.locale.value === "ka") {
+    return "Ka";
+  } else {
+    return "En";
+  }
+});
+
+const props = defineProps({
+  quote: {
+    required: true,
+  },
+  image: {
+    required: true,
+  },
+});
 </script>

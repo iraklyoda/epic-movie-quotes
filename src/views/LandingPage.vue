@@ -98,9 +98,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores/user.js";
-import { setJwtToken } from "@/helpers/jwt/index.js";
 
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 import RegisterComponent from "@/components/landing_page/RegisterComponent.vue";
@@ -111,31 +109,8 @@ import ForgotPassword from "@/components/landing_page/ForgotPassword.vue";
 import SentComponent from "@/components/landing_page/SentComponent.vue";
 import CreateComponent from "@/components/landing_page/CreateComponent.vue";
 
-import { useRoute, useRouter } from "vue-router";
-const route = useRoute();
-const router = useRouter();
-
 const store = useUserStore();
 
-onBeforeMount(() => {
-  if (route.query.token && route.query.expires) {
-    setJwtToken(route.query.token, route.query.expires);
-    router.push({ name: "NewsFeed" });
-  }
-});
-
-onMounted(() => {
-  if (route.query.reset === "yes" && route.query.token) {
-    store.registerOpen = true;
-  }
-  if (route.query.verified === "yes") {
-    store.sentOpen = true;
-  }
-  if (route.query.token && route.query.email) {
-    store.createOpen = true;
-  }
-  console.log(route.query);
-});
 
 const movies = {
   interstellar: {

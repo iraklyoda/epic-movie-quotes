@@ -110,7 +110,6 @@ function switchVisibility() {
 }
 
 function onSubmit() {
-  console.log("Happy User Making Happy Dance");
   const user = {
     username: nameInput.value,
     password: passwordInput.value,

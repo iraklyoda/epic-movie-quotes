@@ -49,26 +49,36 @@ module.exports = {
         RustyRed: "#DC3545",
         cinder: "#11101A",
         mirage: "#181624",
+        riverStyx: "#181624",
       },
       height: {
         110: "27.5rem",
         176: "44rem",
         300: "75rem",
       },
+      maxHeight: {
+        176: "52rem",
+      },
       width: {
         15: "3.75rem",
         110: "27.5rem",
         150: "37.5rem",
         176: "44rem",
+        200: "50rem",
         240: "60rem",
         245: "61.25rem",
       },
       margin: {
         160: "40rem",
       },
+      blur: {
+        xs: "2px",
+      },
       backgroundImage: {
         blueGradient:
           "linear-gradient(131deg, rgba(32,29,47,1) 20%, rgba(46,42,69,0.5186449579831933) 100%)",
+        mirageGradient:
+          "linear-gradient(90deg, rgba(24,22,35,1) 0.07%, rgba(25,23,37,1) 50.6%, rgba(13,11,20,1) 96.88%)",
         interstellar:
           "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/interstellar.png')",
         lotr: "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url('@/assets/images/landing_movies/lotr.png')",

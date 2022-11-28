@@ -1,13 +1,19 @@
 <template>
-  <movie-dialog route="MovieList">
+  <movie-dialog
+    route="MoviePage"
+    :param="{ id: route.params.id }"
+    class="lg:mt-24 h-screen"
+  >
     <div
       class="w-screen h-auto bg-darkBlue pt-7 font-helvetica lg:w-240 lg:h-auto lg:rounded-xl"
     >
       <div class="h-0.5"></div>
       <nav class="flex justify-between items-center mx-9">
         <div class="w-3.5"></div>
-        <p class="text-xl place-self-end">{{ $t("addMovie") }}</p>
-        <router-link :to="{ name: 'MovieList' }">
+        <p class="text-xl place-self-end">{{ $t("editMovie") }}</p>
+        <router-link
+          :to="{ name: 'MoviePage', params: { id: route.params.id } }"
+        >
           <CloseIcon class="w-3.5" />
         </router-link>
       </nav>
@@ -25,17 +31,23 @@
         </div>
       </aside>
       <Form
+        v-for="movie in currentMovie"
+        v-bind:key="movie.title"
         @submit="onSubmit"
         class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
         enctype="multipart/form-data"
       >
-        <Field name="title_en" v-slot="{ field, meta }" rules="required|alpha_num">
+        <Field
+          name="title_en"
+          v-slot="{ field, meta }"
+          v-model="movieTitleEn"
+          rules="required"
+        >
           <div class="relative">
             <input
               v-bind="field"
               class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
               id="name"
-              placeholder="Movie name"
               :class="{
                 'border-niceRed': !meta.valid && meta.touched,
                 'border-validGreen': meta.valid && meta.touched,
@@ -44,7 +56,12 @@
             <span class="text-niceGrey absolute right-3 top-2">Eng</span>
           </div>
         </Field>
-        <Field name="title_ka" v-slot="{ field, meta }" rules="required|geo_num">
+        <Field
+          name="title_ka"
+          v-slot="{ field, meta }"
+          rules="required"
+          v-model="movieTitleKa"
+        >
           <div class="relative mt-4">
             <input
               v-bind="field"
@@ -97,7 +114,12 @@
             </div>
           </div>
         </Field>
-        <Field name="director_en" v-slot="{ field, meta }" rules="required">
+        <Field
+          name="director_en"
+          v-slot="{ field, meta }"
+          rules="required"
+          v-model="movieDirectorEn"
+        >
           <div class="relative mt-4">
             <input
               v-bind="field"
@@ -112,7 +134,12 @@
             <span class="text-niceGrey absolute right-3 top-2">Eng</span>
           </div>
         </Field>
-        <Field name="director_ka" v-slot="{ field, meta }" rules="required">
+        <Field
+          name="director_ka"
+          v-slot="{ field, meta }"
+          rules="required"
+          v-model="movieDirectorKa"
+        >
           <div class="relative mt-4">
             <input
               v-bind="field"
@@ -127,7 +154,12 @@
             <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
           </div>
         </Field>
-        <Field name="description_en" v-slot="{ field, meta }" rules="required">
+        <Field
+          name="description_en"
+          v-slot="{ field, meta }"
+          rules="required"
+          v-model="movieDescriptionEn"
+        >
           <div class="relative mt-4">
             <textarea
               v-bind="field"
@@ -143,7 +175,12 @@
             <span class="text-niceGrey absolute right-3 top-2">Eng</span>
           </div>
         </Field>
-        <Field name="description_ka" v-slot="{ field, meta }" rules="required">
+        <Field
+          name="description_ka"
+          v-slot="{ field, meta }"
+          rules="required"
+          v-model="movieDescriptionKa"
+        >
           <div class="relative mt-2">
             <textarea
               v-bind="field"
@@ -163,7 +200,6 @@
           name="image"
           v-slot="{ handleChange, handleBlur, meta, value }"
           v-model="img"
-          rules="required"
         >
           <div
             @dragenter="onDragEnter"
@@ -177,7 +213,28 @@
               'border-dotted border-4 border-blue-700': isDragging,
             }"
           >
-            <div class="flex justify-between lg:justify-start lg:gap-3">
+            <div class="lg:gap-3" v-if="!img">
+              <div class="relative">
+                <img
+                  :src="root + movieImageSrc"
+                  alt="current image"
+                  class="blur-xs opacity-95"
+                />
+                <label
+                  for="movieImage"
+                  class="bg-mirageGradient cursor-pointer opacity-80 px-3 py-3 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                >
+                  <CameraIcon class="mx-auto" />
+                  <p class="mt-4">
+                    {{ $t("changeImage") }}
+                  </p></label
+                >
+              </div>
+            </div>
+            <div
+              class="flex justify-between lg:justify-start lg:gap-3"
+              v-if="img"
+            >
               <div class="flex gap-3 items-center">
                 <camera-icon></camera-icon>
                 <span class="mt-1 lg:hidden">Upload image</span>
@@ -186,7 +243,7 @@
                 </span>
               </div>
               <label for="movieImage" class="bg-fadePurple px-2 py-2">{{
-                $t("chooseFile")
+                $t("changeImage")
               }}</label>
             </div>
             <div v-if="value">
@@ -213,16 +270,62 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { Form, Field } from "vee-validate";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
+import axiosInstance from "@/config/axios/index.js";
 import axios from "@/config/axios/jwtAxios.js";
+import { useRoute } from "vue-router";
+import { useSingleStore } from "@/stores/single.js";
+import CameraIcon from "@/components/icons/CameraIcon.vue";
+const root = import.meta.env.VITE_APP_ROOT;
+const route = useRoute();
+const currentMovie = ref([]);
 
+const movieTitleEn = ref("");
+const movieTitleKa = ref("");
+const categoryTag = ref("");
+const categoryTags = ref([]);
+const movieDirectorEn = ref("");
+const movieDirectorKa = ref("");
+const movieDescriptionEn = ref("");
+const movieDescriptionKa = ref("");
+const movieImageSrc = ref("");
+
+const singleMovie = useSingleStore();
+
+onBeforeMount(() => {
+  const getMovie = async () => {
+    try {
+      const response = await axios.get(
+        import.meta.env.VITE_APP_ROOT_API + "/movies/movie/" + route.params.id
+      );
+      const movie = response.data;
+      currentMovie.value.push({
+        id: movie.id,
+        image: movie.image,
+        genres: JSON.parse(movie.genres),
+        title: movie.title,
+        director: movie.director,
+        description: movie.description,
+      });
+      movieTitleEn.value = movie.title.en;
+      movieTitleKa.value = movie.title.ka;
+      movieDirectorEn.value = movie.director.en;
+      movieDirectorKa.value = movie.director.ka;
+      (categoryTags.value = JSON.parse(movie.genres)),
+        (movieDescriptionEn.value = movie.description.en);
+      movieDescriptionKa.value = movie.description.ka;
+      movieImageSrc.value = movie.image;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  getMovie();
+});
 
 function onSubmit(values) {
-  console.log(values);
   const movie = {
-    image: values.image,
     genres: JSON.stringify(values.categories),
     title_en: values.title_en,
     title_ka: values.title_ka,
@@ -231,22 +334,28 @@ function onSubmit(values) {
     description_en: values.description_en,
     description_ka: values.description_ka,
   };
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/movies/create", movie, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
+  if (img.value) {
+    movie.image = values.image;
+  }
+  console.log(movie);
+  axiosInstance
+    .post(
+      import.meta.env.VITE_APP_ROOT_API + "/movies/movie/" + route.params.id,
+      movie,
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    )
     .then(function (response) {
+      singleMovie.getMovie(route.params.id);
       console.log(response);
     })
     .catch(function (error) {
       console.log(error);
     });
 }
-
-const categoryTag = ref("");
-const categoryTags = ref([]);
 
 const isDragging = ref(false);
 const dragCount = ref(0);
