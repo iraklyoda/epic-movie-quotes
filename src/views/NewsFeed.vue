@@ -16,14 +16,14 @@
         <p class="text">{{ $t("searchBy") }}</p>
       </section>
     </div>
-    <post-component v-for="post in quotesStore.quotes" v-bind:key="post.id" :quote="post.quote" :image="post.image"></post-component>
+    <post-component v-for="post in quotesStore.quotes" v-bind:key="post.id" :quote="post.quote" :quoteId="post.id" :image="post.thumbnail" :comments="post.comments" ></post-component>
   </div>
 </template>
 
 <script setup>
 import PostComponent from "@/components/news_feed/PostComponent.vue";
 import { RouterView } from "vue-router";
-import { useQuotesStore } from "@/stores/quotes.js";
-const quotesStore = useQuotesStore();
+import { useAllQuotesStore } from "@/stores/allQuotes.js"
+const quotesStore = useAllQuotesStore();
 
 </script>

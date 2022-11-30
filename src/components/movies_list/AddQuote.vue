@@ -175,16 +175,20 @@
 import { onBeforeMount, ref, watch } from "vue";
 import { Form, Field } from "vee-validate";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import axios from "@/config/axios/jwtAxios.js";
 import axiosInstance from "@/config/axios/index.js";
-import { useMovieStore } from "@/stores/movie.js";
+import { useQuotesStore } from "@/stores/quotes.js";
 import { useUserStore } from "@/stores/user.js";
+import { useMovieStore } from "@/stores/movie.js";
+import {useAllQuotesStore} from "@/stores/allQuotes.js";
 
+const movieList = useMovieStore();
 const user = useUserStore();
-const movie = useMovieStore();
+const quotesStore = useQuotesStore();
 const root = import.meta.env.VITE_APP_ROOT;
 const route = useRoute();
+const router = useRouter();
 const currentMovie = ref([]);
 
 onBeforeMount(() => {
@@ -197,7 +201,7 @@ onBeforeMount(() => {
       currentMovie.value.push({
         id: movie.id,
         image: movie.image,
-        genres: JSON.parse(movie.genres),
+        genres: movie.genres,
         title: movie.title,
         director: movie.director,
         description: movie.description,
@@ -225,6 +229,10 @@ function onSubmit(values) {
     })
     .then(function (response) {
       console.log(response);
+      movieList.getMovies();
+      quotesStore.getQuotes(route.params.id);
+      useAllQuotesStore().getQuotes();
+      router.push({ name: "MoviePage", params: { id: route.params.id } });
     })
     .catch(function (error) {
       console.log(error);

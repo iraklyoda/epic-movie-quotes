@@ -27,24 +27,36 @@
       <Form
         @submit="onSubmit"
         class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
-        enctype="multipart/form-data"
+        v-slot="{ errors }"
       >
-        <Field name="title_en" v-slot="{ field, meta }" rules="required|alpha_num">
-          <div class="relative">
-            <input
-              v-bind="field"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="name"
-              placeholder="Movie name"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            />
-            <span class="text-niceGrey absolute right-3 top-2">Eng</span>
-          </div>
-        </Field>
-        <Field name="title_ka" v-slot="{ field, meta }" rules="required|geo_num">
+        <MovieInput
+          id="title"
+          name="title_en"
+          :errors="errors.title_en"
+          rules="required|min:5"
+          lang="Eng"
+          placeholder="Movie Name"
+        />
+        <!--        <Field name="title_en" v-slot="{ field, meta }" rules="required">-->
+        <!--          <div class="relative">-->
+        <!--            <input-->
+        <!--              v-bind="field"-->
+        <!--              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"-->
+        <!--              id="name"-->
+        <!--              placeholder="Movie name"-->
+        <!--              :class="{-->
+        <!--                'border-niceRed': !meta.valid && meta.touched,-->
+        <!--                'border-validGreen': meta.valid && meta.touched,-->
+        <!--              }"-->
+        <!--            />-->
+        <!--            <span class="text-niceGrey absolute right-3 top-2">Eng</span>-->
+        <!--          </div>-->
+        <!--        </Field>-->
+        <Field
+          name="title_ka"
+          v-slot="{ field, meta }"
+          rules="required|geo_num"
+        >
           <div class="relative mt-4">
             <input
               v-bind="field"
@@ -215,9 +227,13 @@
 <script setup>
 import { ref } from "vue";
 import { Form, Field } from "vee-validate";
+import { useRouter } from "vue-router";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
-import axios from "@/config/axios/jwtAxios.js";
-
+import axios from "@/config/axios/index.js";
+import { useMovieStore } from "@/stores/movie.js";
+import MovieInput from "@/components/ui/movies/MovieInput.vue";
+const movieList = useMovieStore();
+const router = useRouter();
 
 function onSubmit(values) {
   console.log(values);
@@ -239,6 +255,8 @@ function onSubmit(values) {
     })
     .then(function (response) {
       console.log(response);
+      movieList.getMovies();
+      router.push({ name: "MovieList" });
     })
     .catch(function (error) {
       console.log(error);

@@ -206,7 +206,7 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-4 rounded lg:py-2 outline-none"
+            class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-4 rounded lg:py-12 outline-none"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
@@ -304,7 +304,7 @@ onBeforeMount(() => {
       currentMovie.value.push({
         id: movie.id,
         image: movie.image,
-        genres: JSON.parse(movie.genres),
+        genres: movie.genres,
         title: movie.title,
         director: movie.director,
         description: movie.description,
@@ -313,7 +313,7 @@ onBeforeMount(() => {
       movieTitleKa.value = movie.title.ka;
       movieDirectorEn.value = movie.director.en;
       movieDirectorKa.value = movie.director.ka;
-      (categoryTags.value = JSON.parse(movie.genres)),
+      (categoryTags.value = movie.genres),
         (movieDescriptionEn.value = movie.description.en);
       movieDescriptionKa.value = movie.description.ka;
       movieImageSrc.value = movie.image;

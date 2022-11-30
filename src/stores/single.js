@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import axios from "@/config/axios/jwtAxios.js";
+import axiosInstance from "@/config/axios";
 
 export const useSingleStore = defineStore("single", () => {
   const crud = ref(true);
@@ -15,5 +16,17 @@ export const useSingleStore = defineStore("single", () => {
       console.log(e);
     }
   };
-  return { crud, getMovie, movie };
+
+  const deleteMovie = async (id) => {
+    try {
+      const response = await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API + "/movies/movie/delete/" + id
+      );
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return { crud, getMovie, deleteMovie, movie };
 });

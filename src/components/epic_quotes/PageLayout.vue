@@ -2,10 +2,11 @@
   <div class="bg-riverStyx min-h-screen h-auto text-white lg:bg-mirage">
     <!--    Dialog    -->
     <header>
+      <div v-if="page.menuOpen" class="absolute w-full h-screen top-0 z-20 lg:hidden" @click="page.changeMenu()"></div>
       <nav class="bg-headerBlue py-5">
         <div class="flex justify-between items-center mx-9">
           <p class="text-skinWhite hidden lg:block">{{ $t("movieQuotes") }}</p>
-          <MenuIcon class="mt-1 w-5 lg:hidden"></MenuIcon>
+          <MenuIcon class="mt-1 w-5 cursor-pointer lg:hidden" @click="page.changeMenu()"></MenuIcon>
           <div class="flex gap-5">
             <SearchIcon
               v-if="route.name === 'NewsFeed'"
@@ -44,6 +45,8 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
+import { usePageStore } from "@/stores/page.js";
+const page = usePageStore();
 
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 import ProfileNavigation from "@/components/epic_quotes/ProfileNavigation.vue";

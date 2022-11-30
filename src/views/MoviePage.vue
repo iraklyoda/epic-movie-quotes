@@ -4,11 +4,12 @@
     v-if="
       route.name !== 'MovieQuote' &&
       route.name !== 'EditMovie' &&
-      route.name !== 'ViewQuote'
+      route.name !== 'ViewQuote' &&
+      route.name !== 'EditQuote'
     "
   >
     <figure
-      class="mt-6 w-4/5 mx-auto lg:w-full lg:pl-24"
+      class="pt-6 w-4/5 mx-auto lg:w-full lg:pl-24"
       v-for="movie in movie.movie"
       v-bind:key="movie.title"
     >
@@ -23,7 +24,7 @@
           <div class="items-center gap-4 mt-4 hidden lg:flex">
             <div class="sm:hidden lg:flex items-center gap-2 text-xl">
               <h3>{{ $t("allQuotes") }}</h3>
-              <p>({{ $t("total") }} {{ quotes.length }})</p>
+              <p>({{ $t("total") }} {{ quotesStore.quotes.length }})</p>
             </div>
             <div class="border-l-2 border-l-niceGrey text-sm h-6"></div>
             <router-link
@@ -47,12 +48,12 @@
                 <EditIcon class="w-4" />
               </router-link>
               <div class="border-l-2 text-sm"></div>
-              <DeleteIcon class="w-4" />
+              <DeleteIcon class="w-4" @click="destroyMovie(route.params.id)" />
             </div>
           </div>
           <div class="flex flex-wrap gap-1 mt-7">
             <span
-              v-for="genre in JSON.parse(movie.genres)"
+              v-for="genre in movie.genres"
               v-bind:key="genre"
               class="bg-niceGrey text-white px-2 py-1 flex text-sm gap-2.5 items-center"
               ><p>{{ genre }}</p></span
@@ -81,20 +82,20 @@
       ></div>
       <div class="lg:hidden">
         <h3 class="text-xl mt-8">{{ $t("allQuotes") }}</h3>
-        <p>({{ $t("total") }} {{ quotes.length }})</p>
+        <p>({{ $t("total") }} {{ quotesStore.quotes.length }})</p>
       </div>
     </figure>
 
     <!--    Quotes    -->
     <div
-      v-for="quote in quotes"
+      v-for="quote in quotesStore.quotes"
       class="mt-6 lg:ml-24 lg:w-200 bg-cinder lg:rounded-2xl relative"
       v-bind:key="quote.quote"
     >
       <div class="mx-9">
         <div class="lg:flex lg:items-center lg:gap-8">
           <img
-            :src="root + quote.image"
+            :src="root + quote.thumbnail"
             alt="quote"
             class="pt-5 h-36 w-full lg:w-56 object-cover"
           />
@@ -102,12 +103,12 @@
             "{{ lang === "Ka" ? quote.quote.ka : quote.quote.en }}"
           </p>
           <DotsMenu
-            class="self-start mt-8 cursor-pointer"
+            class="self-start mt-8 cursor-pointer hidden lg:block"
             @click="toggleQuoteMenu(quote.id)"
           />
           <div
             v-if="openQuoteId === quote.id"
-            class="bg-headerBlue w-48 h-36 absolute -right-36 top-12 transition-transform rounded-xl z-40"
+            class="bg-headerBlue w-48 h-36 absolute right-6 bottom-4 lg:-right-36 lg:top-12 transition-transform rounded-xl z-40"
           >
             <div class="flex flex-col mt-2">
               <router-link
@@ -117,11 +118,17 @@
                 <EyeIcon />
                 <p>{{ $t("viewQuote") }}</p>
               </router-link>
-              <div class="flex items-center gap-3  hover:bg-cinder cursor-pointer pl-8 py-2">
+              <router-link
+                :to="{ name: 'EditQuote', params: { quoteId: quote.id } }"
+                class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+              >
                 <EditIcon />
                 <p>{{ $t("edit") }}</p>
-              </div>
-              <div class="flex items-center gap-3  hover:bg-cinder cursor-pointer pl-8 py-2">
+              </router-link>
+              <div
+                @click="destroyQuote(quote.id)"
+                class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+              >
                 <DeleteIcon />
                 <p>{{ $t("delete") }}</p>
               </div>
@@ -144,7 +151,7 @@
             <span class="ml-6">10</span>
             <HeartIcon class="ml-3" />
           </div>
-          <DotsMenu class="lg:hidden" />
+          <DotsMenu class="lg:hidden cursor-pointer" @click="toggleQuoteMenu(quote.id)" />
         </section>
       </div>
     </div>
@@ -155,17 +162,35 @@
 <script setup>
 import { onBeforeMount, ref, computed } from "vue";
 import i18n from "@/config/i18n";
-import { useRoute, RouterView } from "vue-router";
-import axios from "@/config/axios/jwtAxios";
+import { useRoute, useRouter, RouterView } from "vue-router";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import EditIcon from "@/components/icons/EditIcon.vue";
-const quotes = ref([]);
+import { useQuoteStore } from "@/stores/quote.js";
+import { useQuotesStore } from "@/stores/quotes.js";
+import { useMovieStore } from "@/stores/movie.js";
 const route = useRoute();
+const router = useRouter();
+const quotesStore = useQuotesStore();
+const quote = useQuoteStore();
+const movies = useMovieStore();
 
 import { useSingleStore } from "@/stores/single.js";
+
 const movie = useSingleStore();
 
 const openQuoteId = ref("");
+
+function destroyQuote(id) {
+  quote.deleteQuote(id);
+  quotesStore.getQuotes(route.params.id);
+  movies.getMovies();
+}
+
+function destroyMovie(id) {
+  router.push({ name: "MovieList" });
+  movie.deleteMovie(id);
+  movies.getMovies();
+}
 
 function toggleQuoteMenu(quoteId) {
   if (quoteId === openQuoteId.value) {
@@ -186,28 +211,9 @@ const lang = computed(() => {
 onBeforeMount(() => {
   const getMovies = async () => {
     await movie.getMovie(route.params.id);
-    console.log(movie.movie);
   };
   getMovies();
-
-  const getQuotes = async () => {
-    try {
-      const response = await axios.get(
-        import.meta.env.VITE_APP_ROOT_API + "/quotes/movie/" + route.params.id
-      );
-      response.data.forEach((quote) => {
-        quotes.value.unshift({
-          id: quote.id,
-          image: quote.thumbnail,
-          quote: quote.quote,
-        });
-      });
-      console.log();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  getQuotes();
+  quotesStore.getQuotes(route.params.id);
 });
 
 const root = import.meta.env.VITE_APP_ROOT;

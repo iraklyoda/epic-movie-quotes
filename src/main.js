@@ -8,6 +8,7 @@ import "@/config/vee-validate/rules.js";
 import "@/config/vee-validate/messages.js";
 import "@/style.css";
 
+import MovieInput from "@/components/ui/movies/MovieInput.vue";
 import DownArrow from "@/components/icons/ArrowDownIcon.vue";
 import GoogleIcon from "@/components/icons/GoogleIcon.vue";
 import VisibilityIcon from "@/components/icons/VisibilityIcon.vue";
@@ -70,6 +71,8 @@ app.component("EditIcon", EditIcon);
 app.component("DeleteIcon", DeleteIcon);
 app.component("EyeIcon", EyeIcon);
 app.component("DotsMenu", DotsMenu);
+app.component("MovieInput", MovieInput);
+
 
 
 app.use(pinia);

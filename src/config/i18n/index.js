@@ -76,6 +76,7 @@ const i18n = createI18n({
       viewQuote: "View Quote",
       edit: "Edit",
       delete: "Delete",
+      editQuote: "Edit Quote",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -148,6 +149,7 @@ const i18n = createI18n({
       viewQuote: "ციტატის ნახვა",
       edit: "რედაქტირება",
       delete: "წაშლა",
+      editQuote: "ციტატის რედაქტირება",
     },
   },
 });

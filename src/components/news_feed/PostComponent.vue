@@ -12,11 +12,7 @@
         <figcaption class="text-sm sm:text-base">
           {{ lang === "Ka" ? quote.ka : quote.en }}
         </figcaption>
-        <img
-          :src="root + image"
-          alt="movie"
-          class="w-11/12 max-w-3xl mt-4"
-        />
+        <img :src="root + image" alt="movie" class="w-11/12 max-w-3xl mt-4" />
       </figure>
       <section class="flex mt-5 text-xl items-center">
         <span>3</span>
@@ -25,16 +21,13 @@
         <HeartIcon class="ml-3" />
       </section>
       <div class="border-b-2 mt-4 border-fadeGrey w-11/12 max-w-3xl"></div>
-      <CommentComponent />
+      <CommentComponent v-for="(comment, index) in props.comments" v-bind:key="index" :comment="comment"/>
       <section class="mt-4 flex w-11/12 max-w-3xl mb-4 lg:pb-6">
         <img
           src="@/assets/images/user/profile_picture.png"
           alt="profile picture"
         />
-        <input
-          :placeholder="$t('writeAComment')"
-          class="block ml-3 pl-4 w-full bg-footerBlue rounded-md"
-        />
+        <PostComment :quoteId="props.quoteId"  class="w-full h-full"/>
       </section>
     </div>
   </div>
@@ -46,7 +39,8 @@
 import CommentComponent from "@/components/news_feed/CommentComponent.vue";
 import CommentIcon from "@/components/icons/CommentIcon.vue";
 import HeartIcon from "@/components/icons/HeartIcon.vue";
-import {computed} from "vue";
+import PostComment from "@/components/news_feed/PostComment.vue";
+import { computed } from "vue";
 import i18n from "@/config/i18n";
 
 const root = import.meta.env.VITE_APP_ROOT;
@@ -66,5 +60,9 @@ const props = defineProps({
   image: {
     required: true,
   },
+  quoteId: {
+    required: true,
+  },
+  comments: {},
 });
 </script>

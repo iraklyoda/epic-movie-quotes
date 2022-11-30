@@ -22,15 +22,13 @@ export const useUserStore = defineStore("user", () => {
   const register = async (user) => {
     console.log(user);
     try {
-      let response = await axiosInstance().post(
+      let response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/register",
         user
       );
       console.log(response.status);
     } catch (error) {
-      if (error.response !== undefined) {
-        alert(error.response.data.message);
-      }
+      console.log(error);
     }
   };
 

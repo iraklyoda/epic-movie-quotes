@@ -9,6 +9,7 @@ import AddQuote from "@/components/news_feed/AddQuote.vue";
 import MovieQuote from "@/components/movies_list/AddQuote.vue";
 import EditMovie from "@/components/movies_list/EditMovie.vue";
 import ViewQuote from "@/components/movies_list/ViewQuote.vue";
+import EditQuote from "@/components/movies_list/EditQuote.vue";
 import { isAuthenticated, isGuest } from "@/router/guards.js";
 import { useAuthStore } from "@/stores/auth";
 import axios from "@/config/axios/jwtAxios.js";
@@ -65,6 +66,11 @@ const router = createRouter({
               path: "viewquote/:quoteId",
               component: ViewQuote,
               name: "ViewQuote",
+            },
+            {
+              path: "editquote/:quoteId",
+              component: EditQuote,
+              name: "EditQuote",
             },
             {
               path: "editMovie",

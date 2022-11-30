@@ -9,7 +9,7 @@
     </router-link>
     <figcaption class="my-4">{{ title }}</figcaption>
     <div class="flex gap-2">
-      <p>10</p>
+      <p>{{quotes}}</p>
       <ChatIcon />
     </div>
   </figure>
@@ -26,6 +26,9 @@ defineProps({
   },
   id: {
     required: true,
+  },
+  quotes: {
+    required: false,
   },
 });
 </script>

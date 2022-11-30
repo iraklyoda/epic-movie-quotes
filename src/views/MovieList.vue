@@ -1,13 +1,13 @@
 <template>
   <div
-    class="lg:relative mt-8 justify-between mx-6 lg:w-[80%] pr-4 ml-9 lg:pl-2"
+    class="lg:relative pt-8 justify-between mx-6 lg:w-[80%] pr-4 ml-9 lg:pl-2"
   >
     <router-view class="z-20"></router-view>
     <div class="flex justify-between items-start w-full">
       <div>
         <h3 class="text-sm sm:text-lg lg:text-2xl">
           {{ $t("myListOfMovies") }}
-          <span class="invisible lg:visible">({{ $t("total") }} {{movie.movies.length}} )</span>
+          <span class="invisible lg:visible">({{ $t("total") }} {{movie.movies.length}})</span>
         </h3>
         <p class="text-xs lg:hidden">({{ $t("total") }} {{movie.movies.length}})</p>
       </div>
@@ -33,6 +33,7 @@
         :title="user.currentLanguage === 'Ka' ? movie.title.ka : movie.title.en"
         :id="movie.id"
         :img="movie.image"
+        :quotes="movie.quotes.length"
       />
     </div>
   </div>
