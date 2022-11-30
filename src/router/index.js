@@ -1,4 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
+
+import AuthComponent from "@/components/landing_page/AuthComponent.vue";
+import RegisterComponent from "@/components/landing_page/RegisterComponent.vue";
+import ForgotPassword from "@/components/landing_page/ForgotPassword.vue";
+import CheckComponent from "@/components/landing_page/CheckComponent.vue";
+import CheckPassword from "@/components/landing_page/CheckPassword.vue";
+import CreateComponent from "@/components/landing_page/CreateComponent.vue";
+import SentComponent from "@/components/landing_page/SentComponent.vue";
+
 import LandingPage from "@/views/LandingPage.vue";
 import NewsFeed from "@/views/NewsFeed.vue";
 import MovieList from "@/views/MovieList.vue";
@@ -22,6 +31,35 @@ const router = createRouter({
       component: LandingPage,
       name: "Landing",
       beforeEnter: [isGuest],
+      children: [
+        { path: "/login", component: AuthComponent, name: "Login" },
+        { path: "/register", component: RegisterComponent, name: "Register" },
+        {
+          path: "/forgotpassword",
+          component: ForgotPassword,
+          name: "ForgotPassword",
+        },
+        {
+          path: "/checkemail",
+          component: CheckComponent,
+          name: "CheckEmail",
+        },
+        {
+          path: "/checkpassword",
+          component: CheckPassword,
+          name: "CheckPassword",
+        },
+        {
+          path: "/createpassword",
+          component: CreateComponent,
+          name: "CreatePassword",
+        },
+        {
+          path: "emailactivated",
+          component: SentComponent,
+          name: "EmailActivated",
+        }
+      ],
     },
     {
       path: "/page",

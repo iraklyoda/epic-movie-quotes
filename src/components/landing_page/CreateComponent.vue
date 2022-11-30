@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl"
-  >
+<dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
       <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
@@ -58,7 +56,7 @@
         <span class="text-niceGrey">{{ $t("backToLogIn") }}</span>
       </button>
     </Form>
-  </div>
+</dialog-component>
 </template>
 
 <script setup>
@@ -67,6 +65,7 @@ import InputComponent from "@/components/ui/InputComponent.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user.js";
 import { useRoute } from "vue-router";
+import DialogComponent from "@/components/ui/DialogComponent.vue";
 const store = useUserStore();
 
 

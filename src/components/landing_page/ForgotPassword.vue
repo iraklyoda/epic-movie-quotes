@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl"
-  >
+  <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
       <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
@@ -21,20 +19,22 @@
         :required="true"
         rules="required|email"
       />
-      <p class="text-red-300 text-xs lg:text-base -mt-2 mb-2">{{ error ? $t(error) : "" }}</p>
+      <p class="text-red-300 text-xs lg:text-base -mt-2 mb-2">
+        {{ error ? $t(error) : "" }}
+      </p>
       <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
         {{ $t("sendInstructions") }}
       </button>
       <button
         type="button"
-        @click="$emit('login')"
+        @click="router.push({ name: 'Login' })"
         class="w-full flex justify-center items-center gap-2 my-8"
       >
         <left-arrow-icon></left-arrow-icon>
         <span class="text-niceGrey">{{ $t("backToLogIn") }}</span>
       </button>
     </Form>
-  </div>
+  </dialog-component>
 </template>
 
 <script setup>
@@ -43,6 +43,8 @@ import InputComponent from "@/components/ui/InputComponent.vue";
 import { ref, onMounted, computed } from "vue";
 const emailInput = ref("");
 import { useUserStore } from "@/stores/user.js";
+import DialogComponent from "@/components/ui/DialogComponent.vue";
+import router from "@/router";
 const store = useUserStore();
 
 const error = computed(() => {
@@ -57,12 +59,11 @@ onMounted(() => {
 });
 
 function onSubmit() {
+  router.push({ name: "CheckPassword" });
   const email = {
     email: emailInput.value,
   };
   store.resetRequest(email);
   console.log(emailInput.value);
 }
-
-defineEmits(["login"]);
 </script>

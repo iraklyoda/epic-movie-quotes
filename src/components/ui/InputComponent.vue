@@ -10,7 +10,6 @@
         <div>
           <input
             v-bind="field"
-            @input="$emit('update:modelValue', $event.target.value)"
             class="bg-lightGrey placeholder-niceGrey w-full px-2.5 py-1 rounded-md lg:py-2 focus:outline-none focus:ring-4 focus:ring-lightGrey focus:ring-opacity-30"
             :class="{
               'ring-1 ring-niceRed':
@@ -90,5 +89,4 @@ const isPassword = computed(() => {
 
 const name = toRef(props, "name");
 
-defineEmits(["update:modelValue"]);
 </script>

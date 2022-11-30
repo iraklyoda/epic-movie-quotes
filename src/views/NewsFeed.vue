@@ -24,6 +24,11 @@
 import PostComponent from "@/components/news_feed/PostComponent.vue";
 import { RouterView } from "vue-router";
 import { useAllQuotesStore } from "@/stores/allQuotes.js"
+import {onBeforeMount} from "vue";
 const quotesStore = useAllQuotesStore();
+
+onBeforeMount(() => {
+  quotesStore.getQuotes();
+})
 
 </script>

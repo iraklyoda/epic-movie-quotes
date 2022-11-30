@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import axios from "@/config/axios/jwtAxios.js";
 
 export const useAllQuotesStore = defineStore("allQuotes", () => {
@@ -15,8 +15,5 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
       console.log(e);
     }
   };
-  onBeforeMount(() => {
-    getQuotes();
-  });
   return { quotes, getQuotes };
 });
