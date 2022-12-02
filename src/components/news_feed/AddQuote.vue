@@ -28,39 +28,30 @@
         @submit="onSubmit"
         class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
         enctype="multipart/form-data"
+        v-slot="{ errors }"
       >
-        <Field name="quote_ka" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-2">
-            <textarea
-              v-bind="field"
-              rows="3"
-              class="bg-transparent border-1 border-niceGrey placeholder-lightGrey placeholder:italic w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="descriptionKa"
-              placeholder="ახალი ციტატა"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            ></textarea>
-            <span class="text-white absolute right-3 top-2">ქარ</span>
-          </div>
-        </Field>
-        <Field name="quote_en" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-4">
-            <textarea
-              v-bind="field"
-              rows="3"
-              class="bg-transparent border-1 border-niceGrey placeholder-lightGrey placeholder:italic w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="descriptionEn"
-              placeholder="Start create new quote"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            ></textarea>
-            <span class="text-white absolute right-3 top-2">Eng</span>
-          </div>
-        </Field>
+        <MovieInput
+          id="quoteKa"
+          name="quote_ka"
+          :errors="errors.quote_ka"
+          placeholder="ახალი ციტატა"
+          rows="3"
+          type="textarea"
+          isQuote="true"
+          rules="required"
+          lang="ქარ"
+        />
+        <MovieInput
+          id="quoteEn"
+          name="quote_en"
+          :errors="errors.quote_en"
+          placeholder="Start create new quote"
+          rows="3"
+          type="textarea"
+          isQuote="true"
+          rules="required"
+          lang="Eng"
+        />
         <Field
           name="image"
           v-slot="{ handleChange, handleBlur, meta, value }"
@@ -215,7 +206,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Form, Field } from "vee-validate";
+import { Form, Field, configure } from "vee-validate";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axios from "@/config/axios/index.js";
 import MovieIcon from "@/components/icons/MovieIcon.vue";
@@ -224,6 +215,13 @@ import { useUserStore } from "@/stores/user.js";
 const movie = useMovieStore();
 const user = useUserStore();
 const root = import.meta.env.VITE_APP_ROOT;
+
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
 
 function onSubmit(values) {
   const quote = {

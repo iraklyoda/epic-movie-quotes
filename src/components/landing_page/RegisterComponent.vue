@@ -10,7 +10,7 @@
     <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5">
       <input-component
         v-model="nameInput"
-        name="name"
+        name="username"
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
@@ -109,11 +109,11 @@ function switchVisibility() {
     passwordFieldType.value === "password" ? "text" : "password";
 }
 
-function onSubmit() {
+function onSubmit(values) {
   const user = {
-    username: nameInput.value,
-    email: emailInput.value,
-    password: passwordInput.value,
+    username: values.username,
+    email: values.email,
+    password: values.password,
   };
   store.register(user);
   router.push({name: "CheckEmail"});

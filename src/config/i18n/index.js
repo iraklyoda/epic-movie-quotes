@@ -79,6 +79,8 @@ const i18n = createI18n({
       edit: "Edit",
       delete: "Delete",
       editQuote: "Edit Quote",
+      notifications: "Notifications",
+      markAsAllRead: "Mark as all read",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -154,6 +156,8 @@ const i18n = createI18n({
       edit: "რედაქტირება",
       delete: "წაშლა",
       editQuote: "ციტატის რედაქტირება",
+      notifications: "შეტყობინებები",
+      markAsAllRead: "მონიშნე ყველა წაკითხულად",
     },
   },
 });

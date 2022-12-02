@@ -39,7 +39,7 @@
           {{ $t("findAnyQuote") }}
         </p>
         <button
-            @click="router.push({name: 'Login'})"
+          @click="router.push({ name: 'Login' })"
           class="block mx-auto bg-niceRed px-3 py-1.5 rounded mt-6 lg:px-4 lg:py-2"
         >
           {{ $t("getStarted") }}
@@ -66,12 +66,21 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { RouterView, useRouter, useRoute } from "vue-router";
-
 import MovieComponent from "@/components/landing_page/MovieComponent.vue";
 
 const router = useRouter();
 const route = useRoute();
+
+onMounted(() => {
+  if (route.query.token && route.query) {
+    router.push({
+      name: "CreatePassword",
+      params: { token: route.query.token, email: route.query.email },
+    });
+  }
+});
 
 const movies = {
   interstellar: {

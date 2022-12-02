@@ -30,49 +30,23 @@
         v-slot="{ errors }"
       >
         <MovieInput
-          id="title"
+          id="titleEn"
           name="title_en"
           :errors="errors.title_en"
-          rules="required|min:5"
+          rules="required"
           lang="Eng"
           placeholder="Movie Name"
         />
-        <!--        <Field name="title_en" v-slot="{ field, meta }" rules="required">-->
-        <!--          <div class="relative">-->
-        <!--            <input-->
-        <!--              v-bind="field"-->
-        <!--              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"-->
-        <!--              id="name"-->
-        <!--              placeholder="Movie name"-->
-        <!--              :class="{-->
-        <!--                'border-niceRed': !meta.valid && meta.touched,-->
-        <!--                'border-validGreen': meta.valid && meta.touched,-->
-        <!--              }"-->
-        <!--            />-->
-        <!--            <span class="text-niceGrey absolute right-3 top-2">Eng</span>-->
-        <!--          </div>-->
-        <!--        </Field>-->
-        <Field
+        <MovieInput
+          id="titleKa"
           name="title_ka"
-          v-slot="{ field, meta }"
+          :errors="errors.title_ka"
           rules="required|geo_num"
-        >
-          <div class="relative mt-4">
-            <input
-              v-bind="field"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="name"
-              placeholder="ფილმის სახელი"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            />
-            <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
-          </div>
-        </Field>
+          lang="ქარ"
+          placeholder="ფილმის სახელი"
+        />
         <Field
-          name="categories"
+          name="genres"
           v-slot="{ meta }"
           v-model="categoryTags"
           rules="required"
@@ -109,68 +83,42 @@
             </div>
           </div>
         </Field>
-        <Field name="director_en" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-4">
-            <input
-              v-bind="field"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="directorEn"
-              placeholder="Director"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            />
-            <span class="text-niceGrey absolute right-3 top-2">Eng</span>
-          </div>
-        </Field>
-        <Field name="director_ka" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-4">
-            <input
-              v-bind="field"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="directorKa"
-              placeholder="რეჟისორი"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            />
-            <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
-          </div>
-        </Field>
-        <Field name="description_en" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-4">
-            <textarea
-              v-bind="field"
-              rows="3"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="descriptionEn"
-              placeholder="Movie description"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            ></textarea>
-            <span class="text-niceGrey absolute right-3 top-2">Eng</span>
-          </div>
-        </Field>
-        <Field name="description_ka" v-slot="{ field, meta }" rules="required">
-          <div class="relative mt-2">
-            <textarea
-              v-bind="field"
-              rows="3"
-              class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-              id="descriptionKa"
-              placeholder="ფილმის აღწერა"
-              :class="{
-                'border-niceRed': !meta.valid && meta.touched,
-                'border-validGreen': meta.valid && meta.touched,
-              }"
-            ></textarea>
-            <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
-          </div>
-        </Field>
+        <MovieInput
+          id="directorEn"
+          name="director_en"
+          rules="required"
+          :errors="errors.director_en"
+          placeholder="Director"
+          lang="Eng"
+        />
+        <MovieInput
+          id="directorKa"
+          name="director_ka"
+          rules="required"
+          :errors="errors.director_ka"
+          placeholder="რეჟისორი"
+          lang="ქარ"
+        />
+        <MovieInput
+          type="textarea"
+          rows="3"
+          id="descriptionEn"
+          name="description_en"
+          rules="required"
+          :errors="errors.description_en"
+          placeholder="Movie Description"
+          lang="Eng"
+        />
+        <MovieInput
+          type="textarea"
+          rows="3"
+          id="descriptionKa"
+          name="description_ka"
+          rules="required"
+          :errors="errors.description_en"
+          placeholder="ფილმის აღწერა"
+          lang="Geo"
+        />
         <Field
           name="image"
           v-slot="{ handleChange, handleBlur, meta, value }"
@@ -226,7 +174,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { Form, Field } from "vee-validate";
+import { Form, Field, configure } from "vee-validate";
 import { useRouter } from "vue-router";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axios from "@/config/axios/index.js";
@@ -235,20 +183,17 @@ import MovieInput from "@/components/ui/movies/MovieInput.vue";
 const movieList = useMovieStore();
 const router = useRouter();
 
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
+
 function onSubmit(values) {
   console.log(values);
-  const movie = {
-    image: values.image,
-    genres: JSON.stringify(values.categories),
-    title_en: values.title_en,
-    title_ka: values.title_ka,
-    director_en: values.director_en,
-    director_ka: values.director_ka,
-    description_en: values.description_en,
-    description_ka: values.description_ka,
-  };
   axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/movies/create", movie, {
+    .post(import.meta.env.VITE_APP_ROOT_API + "/movies/create", values, {
       headers: {
         "content-type": "multipart/form-data",
       },

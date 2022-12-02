@@ -10,7 +10,7 @@
         class="w-10 lg:w-15"
       />
       <div>
-        <p class="text-md lg:text-2xl whitespace-nowrap">Maia Nakashidze</p>
+        <p class="text-md lg:text-2xl whitespace-nowrap">{{ profile.user.username }}</p>
         <p class="text-sm lg:text-base text-lightGrey whitespace-nowrap">
           {{ $t("editYourProfile") }}
         </p>
@@ -50,6 +50,9 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import {usePageStore} from "@/stores/page.js";
+import { useProfileStore } from "@/stores/profile.js";
+
+const profile = useProfileStore();
 const page = usePageStore();
 const route = useRoute();
 const menuOpen = ref(true);

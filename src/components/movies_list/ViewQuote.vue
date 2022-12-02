@@ -6,7 +6,12 @@
       <div class="h-0.5"></div>
       <nav class="flex justify-between items-center mx-9">
         <div class="flex gap-3 justify-center py-3 rounded-lg">
-          <router-link :to="{name: 'EditQuote', params: { quoteId: route.params.quoteId }}">
+          <router-link
+            :to="{
+              name: 'EditQuote',
+              params: { quoteId: route.params.quoteId },
+            }"
+          >
             <EditIcon class="w-4" />
           </router-link>
           <div class="border-l-2 text-xs h-4"></div>
@@ -51,27 +56,31 @@
           class="mx-auto h-80 mt-6 lg:mx-0 lg:w-full lg:h-110 object-cover rounded-xl"
         />
         <div class="flex items-center pt-4">
-          <span>3</span>
+          <span>{{ quote.comments.length }}</span>
           <CommentIcon class="ml-3" />
-          <span class="ml-6">10</span>
+          <span class="ml-6">{{ quote.likes.length }}</span>
           <HeartIcon class="ml-3" />
         </div>
+        <section class="px-9 lg: px-0">
+          <div class="border-b-2 mt-4 border-fadeGrey"></div>
+          <CommentComponent
+            v-for="comment in quote.comments"
+            :comment="comment"
+            v-bind:key="comment.id"
+          />
+          <div class="mt-4 flex mb-4 lg:pb-6">
+            <img
+              src="@/assets/images/user/profile_picture.png"
+              alt="profile picture"
+            />
+            <input
+              :placeholder="$t('writeAComment')"
+              class="block ml-3 pl-4 w-full bg-footerBlue rounded-md"
+            />
+          </div>
+        </section>
       </section>
-      <div class="border-b-2 mt-4 border-fadeGrey mx-9"></div>
       <!--      Comments -->
-      <section class="px-9">
-        <CommentComponent />
-        <div class="mt-4 flex  mb-4 lg:pb-6">
-          <img
-            src="@/assets/images/user/profile_picture.png"
-            alt="profile picture"
-          />
-          <input
-            :placeholder="$t('writeAComment')"
-            class="block ml-3 pl-4 w-full bg-footerBlue rounded-md"
-          />
-        </div>
-      </section>
       <div class="h-screen lg:h-12"></div>
     </div>
   </movie-dialog>
@@ -83,6 +92,7 @@ import { onBeforeMount } from "vue";
 import { useQuoteStore } from "@/stores/quote.js";
 import CommentComponent from "@/components/news_feed/CommentComponent.vue";
 const quoteStore = useQuoteStore();
+console.log(quoteStore.quote.comments);
 const route = useRoute();
 onBeforeMount(() => {
   quoteStore.getQuote(route.params.quoteId);

@@ -54,16 +54,9 @@ const error = computed(() => {
   return false;
 });
 
-onMounted(() => {
-  console.log(store.resetErrors);
-});
-
-function onSubmit() {
+function onSubmit(values) {
   router.push({ name: "CheckPassword" });
-  const email = {
-    email: emailInput.value,
-  };
-  store.resetRequest(email);
+  store.resetRequest(values);
   console.log(emailInput.value);
 }
 </script>

@@ -106,6 +106,7 @@ const login = async (user) => {
       import.meta.env.VITE_APP_ROOT_API + "/login",
       user
     );
+    console.log(response);
     authStore.authenticated = true;
     loginError.value = "";
     router.push({ name: "NewsFeed" });

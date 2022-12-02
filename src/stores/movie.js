@@ -10,7 +10,6 @@ export const useMovieStore = defineStore("movie", () => {
         import.meta.env.VITE_APP_ROOT_API + "/movies/read"
       );
       movies.value = response.data;
-      console.log(movies.value);
       return movies;
     } catch (e) {
       console.log(e);

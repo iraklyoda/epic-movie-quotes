@@ -50,7 +50,7 @@ const router = createRouter({
           name: "CheckPassword",
         },
         {
-          path: "/createpassword",
+          path: "/createpassword/:token/:email",
           component: CreateComponent,
           name: "CreatePassword",
         },

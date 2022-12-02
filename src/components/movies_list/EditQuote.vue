@@ -40,48 +40,27 @@
         <Form
           @submit="onSubmit"
           class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
-          enctype="multipart/form-data"
+          v-slot="{ errors }"
         >
           <Field name="movie_id" :value="quote.movie_id" class="hidden" />
-          <Field
-            name="quote_en"
+          <MovieInput
+            type="textarea"
+            id="quoteEn"
+            :errors="errors.quote_en"
             :value="quote.quote.en"
-            v-slot="{ field, meta }"
+            name="quote_en"
+            lang="Eng"
             rules="required"
-          >
-            <div class="relative">
-              <textarea
-                v-bind="field"
-                class="bg-transparent border-1 pr-12 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-                id="name"
-                :class="{
-                  'border-niceRed': !meta.valid && meta.touched,
-                  'border-validGreen': meta.valid && meta.touched,
-                }"
-              ></textarea>
-              <span class="text-niceGrey absolute right-3 top-2">Eng</span>
-            </div>
-          </Field>
-          <Field
-            name="quote_ka"
+          />
+          <MovieInput
+            type="textarea"
+            id="quoteKa"
+            :errors="errors.quote_ka"
             :value="quote.quote.ka"
-            v-slot="{ field, meta }"
+            name="quote_ka"
+            lang="ქარ"
             rules="required"
-          >
-            <div class="relative mt-4">
-              <textarea
-                v-bind="field"
-                class="bg-transparent border-1 pr-12 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
-                id="name"
-                placeholder="ფილმის სახელი"
-                :class="{
-                  'border-niceRed': !meta.valid && meta.touched,
-                  'border-validGreen': meta.valid && meta.touched,
-                }"
-              ></textarea>
-              <span class="text-niceGrey absolute right-3 top-2">ქარ</span>
-            </div>
-          </Field>
+          />
           <Field
             name="thumbnail"
             v-slot="{ handleChange, handleBlur, meta, value }"
@@ -162,9 +141,19 @@ import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useQuoteStore } from "@/stores/quote.js";
 import { useQuotesStore } from "@/stores/quotes.js";
-import { Field, Form } from "vee-validate";
+import { useSingleStore } from "@/stores/single.js";
+import { configure, Field, Form } from "vee-validate";
 import axiosInstance from "@/config/axios/index.js";
+import router from "@/router";
 const quoteStore = useQuoteStore();
+const movie = useSingleStore();
+
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
 
 const route = useRoute();
 
@@ -220,8 +209,10 @@ function onSubmit(values) {
     )
     .then(function (response) {
       const quotesStore = useQuotesStore();
+      movie.getMovie(route.params.id);
       quoteStore.getQuote(route.params.quoteId);
       quotesStore.getQuotes(route.params.id);
+      router.push({ name: "MoviePage" });
       console.log(response);
     })
     .catch(function (error) {

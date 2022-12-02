@@ -50,9 +50,11 @@ module.exports = {
         cinder: "#11101A",
         mirage: "#181624",
         riverStyx: "#181624",
+        borderGrey: "rgba(108, 117, 125, 0.5)",
       },
       height: {
         110: "27.5rem",
+        130: "35rem",
         176: "44rem",
         300: "75rem",
       },

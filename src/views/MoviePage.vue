@@ -24,7 +24,7 @@
           <div class="items-center gap-4 mt-4 hidden lg:flex">
             <div class="sm:hidden lg:flex items-center gap-2 text-xl">
               <h3>{{ $t("allQuotes") }}</h3>
-              <p>({{ $t("total") }} {{ quotesStore.quotes.length }})</p>
+              <p>({{ $t("total") }} {{ movie.quotes.length }})</p>
             </div>
             <div class="border-l-2 border-l-niceGrey text-sm h-6"></div>
             <router-link
@@ -82,79 +82,83 @@
       ></div>
       <div class="lg:hidden">
         <h3 class="text-xl mt-8">{{ $t("allQuotes") }}</h3>
-        <p>({{ $t("total") }} {{ quotesStore.quotes.length }})</p>
+        <p>({{ $t("total") }} {{ movie.quotes.length }})</p>
+      </div>
+      <!--      Quotes-->
+      <div
+        v-for="quote in movie.quotes"
+        class="mt-6 lg:ml-24 lg:w-200 bg-cinder lg:rounded-2xl relative"
+        v-bind:key="quote.quote"
+      >
+        <div class="mx-9">
+          <div class="lg:flex lg:items-center lg:gap-8">
+            <img
+              :src="root + quote.thumbnail"
+              alt="quote"
+              class="pt-5 h-36 w-full lg:w-56 object-cover"
+            />
+            <p class="text-xl text-lightGrey w-9/12 mt-6 italic">
+              "{{ lang === "Ka" ? quote.quote.ka : quote.quote.en }}"
+            </p>
+            <DotsMenu
+              class="self-start mt-8 cursor-pointer hidden lg:block"
+              @click="toggleQuoteMenu(quote.id)"
+            />
+            <div
+              v-if="openQuoteId === quote.id"
+              class="bg-headerBlue w-48 h-36 absolute right-6 bottom-4 lg:-right-36 lg:top-12 transition-transform rounded-xl z-40"
+            >
+              <div class="flex flex-col mt-2">
+                <router-link
+                  :to="{ name: 'ViewQuote', params: { quoteId: quote.id } }"
+                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                >
+                  <EyeIcon />
+                  <p>{{ $t("viewQuote") }}</p>
+                </router-link>
+                <router-link
+                  :to="{ name: 'EditQuote', params: { quoteId: quote.id } }"
+                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                >
+                  <EditIcon />
+                  <p>{{ $t("edit") }}</p>
+                </router-link>
+                <div
+                  @click="destroyQuote(quote.id)"
+                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                >
+                  <DeleteIcon />
+                  <p>{{ $t("delete") }}</p>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="openQuoteId"
+              class="fixed w-full h-screen left-0 top-0 z-30"
+              @click="openQuoteId = ''"
+            ></div>
+          </div>
+          <div
+            class="border-b-2 mt-4 border-fadeGrey w-full hidden lg:block"
+          ></div>
+          <div class="border-b-2 mt-4 border-fadeGrey w-full lg:hidden"></div>
+          <section class="mt-2 pb-4 text-xl flex items-center justify-between">
+            <div class="flex items-center">
+              <span>{{ quote.comments.length }}</span>
+              <CommentIcon class="ml-3" />
+              <span class="ml-6">{{ quote.likes.length }}</span>
+              <HeartIcon class="ml-3" />
+            </div>
+            <DotsMenu
+              class="lg:hidden cursor-pointer"
+              @click="toggleQuoteMenu(quote.id)"
+            />
+          </section>
+        </div>
       </div>
     </figure>
 
     <!--    Quotes    -->
-    <div
-      v-for="quote in quotesStore.quotes"
-      class="mt-6 lg:ml-24 lg:w-200 bg-cinder lg:rounded-2xl relative"
-      v-bind:key="quote.quote"
-    >
-      <div class="mx-9">
-        <div class="lg:flex lg:items-center lg:gap-8">
-          <img
-            :src="root + quote.thumbnail"
-            alt="quote"
-            class="pt-5 h-36 w-full lg:w-56 object-cover"
-          />
-          <p class="text-xl text-lightGrey w-9/12 mt-6 italic">
-            "{{ lang === "Ka" ? quote.quote.ka : quote.quote.en }}"
-          </p>
-          <DotsMenu
-            class="self-start mt-8 cursor-pointer hidden lg:block"
-            @click="toggleQuoteMenu(quote.id)"
-          />
-          <div
-            v-if="openQuoteId === quote.id"
-            class="bg-headerBlue w-48 h-36 absolute right-6 bottom-4 lg:-right-36 lg:top-12 transition-transform rounded-xl z-40"
-          >
-            <div class="flex flex-col mt-2">
-              <router-link
-                :to="{ name: 'ViewQuote', params: { quoteId: quote.id } }"
-                class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
-              >
-                <EyeIcon />
-                <p>{{ $t("viewQuote") }}</p>
-              </router-link>
-              <router-link
-                :to="{ name: 'EditQuote', params: { quoteId: quote.id } }"
-                class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
-              >
-                <EditIcon />
-                <p>{{ $t("edit") }}</p>
-              </router-link>
-              <div
-                @click="destroyQuote(quote.id)"
-                class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
-              >
-                <DeleteIcon />
-                <p>{{ $t("delete") }}</p>
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="openQuoteId"
-            class="fixed w-full h-screen left-0 top-0 z-30"
-            @click="openQuoteId = ''"
-          ></div>
-        </div>
-        <div
-          class="border-b-2 mt-4 border-fadeGrey w-full hidden lg:block"
-        ></div>
-        <div class="border-b-2 mt-4 border-fadeGrey w-full lg:hidden"></div>
-        <section class="mt-2 pb-4 text-xl flex items-center justify-between">
-          <div class="flex items-center">
-            <span>3</span>
-            <CommentIcon class="ml-3" />
-            <span class="ml-6">10</span>
-            <HeartIcon class="ml-3" />
-          </div>
-          <DotsMenu class="lg:hidden cursor-pointer" @click="toggleQuoteMenu(quote.id)" />
-        </section>
-      </div>
-    </div>
     <!--    Quotes   -->
   </div>
 </template>
@@ -177,13 +181,13 @@ const movies = useMovieStore();
 import { useSingleStore } from "@/stores/single.js";
 
 const movie = useSingleStore();
+console.log(movie.movie);
 
 const openQuoteId = ref("");
 
 function destroyQuote(id) {
   quote.deleteQuote(id);
-  quotesStore.getQuotes(route.params.id);
-  movies.getMovies();
+  movie.getMovie(route.params.id);
 }
 
 function destroyMovie(id) {
@@ -209,11 +213,7 @@ const lang = computed(() => {
 });
 
 onBeforeMount(() => {
-  const getMovies = async () => {
-    await movie.getMovie(route.params.id);
-  };
-  getMovies();
-  quotesStore.getQuotes(route.params.id);
+  movie.getMovie(route.params.id);
 });
 
 const root = import.meta.env.VITE_APP_ROOT;
