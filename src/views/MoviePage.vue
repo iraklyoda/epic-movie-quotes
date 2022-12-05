@@ -51,7 +51,7 @@
               <DeleteIcon class="w-4" @click="destroyMovie(route.params.id)" />
             </div>
           </div>
-          <div class="flex flex-wrap gap-1 mt-7">
+          <div class="flex flex-wrap gap-1 mt-7 lg:w-96">
             <span
               v-for="genre in movie.genres"
               v-bind:key="genre"

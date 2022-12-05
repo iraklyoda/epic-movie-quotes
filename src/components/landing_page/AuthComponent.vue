@@ -89,6 +89,8 @@ import { Form } from "vee-validate";
 import { useAuthStore } from "@/stores/auth";
 import router from "@/router";
 import axiosInstance from "@/config/axios/jwtAxios";
+import axios from "@/config/axios/index.js";
+import Echo from "laravel-echo";
 const authStore = useAuthStore();
 
 const passwordFieldType = ref("password");

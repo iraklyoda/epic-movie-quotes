@@ -2,9 +2,11 @@ import { createApp, watchEffect } from "vue";
 import { createPinia } from "pinia";
 import App from "@/App.vue";
 import router from "@/router";
+import axios from "@/config/axios/index.js";
 import i18n from "@/config/i18n";
-import Echo from "laravel-echo";
 import { isAuthenticated } from "@/router/guards.js";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
 import "@/config/vee-validate/rules.js";
 import "@/config/vee-validate/messages.js";
@@ -37,12 +39,33 @@ import EditIcon from "@/components/icons/EditIcon.vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import DotsMenu from "@/components/icons/DotsMenu.vue";
 import EyeIcon from "@/components/icons/EyeIcon.vue";
+import SuccessIcon from "@/components/icons/SuccessIcon.vue";
 
 import InputComponent from "@/components/ui/InputComponent.vue";
 import LanguageChange from "@/components/ui/LanguageChange.vue";
+import SuccessComponent from "@/components/profile_page/SuccessComponent.vue";
 
 const app = createApp(App);
 const pinia = createPinia();
+
+
+watchEffect(() => {
+  if (isAuthenticated) {
+    Pusher.Runtime.createXHR = function () {
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      return xhr;
+    };
+    window.Echo = new Echo({
+      authEndpoint: `${import.meta.env.VITE_APP_ROOT}/api/broadcasting/auth`,
+      broadcaster: "pusher",
+      key: import.meta.env.VITE_PUSHER_APP_KEY,
+      cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+      forceTLS: true,
+      // withCredentials: true,
+    });
+  }
+});
 
 app.component("DialogComponent", DialogComponent);
 app.component("MovieDialog", MovieDialog);
@@ -73,23 +96,13 @@ app.component("DeleteIcon", DeleteIcon);
 app.component("EyeIcon", EyeIcon);
 app.component("DotsMenu", DotsMenu);
 app.component("MovieInput", MovieInput);
+app.component("SuccessComponent", SuccessComponent);
+app.component("SuccessIcon", SuccessIcon);
 
 app.use(pinia);
 app.use(i18n);
 app.use(router);
 
-const watchAuth = watchEffect(() => {
-  if (isAuthenticated) {
-    window.Echo = new Echo({
-      authEndpoint: `${import.meta.env.VITE_API_BASE_URL}broadcasting/auth`,
-      broadcaster: "pusher",
-      key: import.meta.env.VITE_PUSHER_APP_KEY,
-      cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-      forceTLS: true,
-      withCredentials: true,
-      enabledTransports: ["ws", "wss"],
-    });
-  }
-});
+
 
 app.mount("#app");

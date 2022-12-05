@@ -6,7 +6,7 @@
       v-model="bodyInput"
       name="body"
       :placeholder="$t('writeAComment')"
-      class="block ml-3 pl-4 py-2 w-full bg-footerBlue rounded-md"
+      class="ml-3 block w-full rounded-md bg-footerBlue py-2 pl-4"
       @keypress.enter.prevent="handleSubmit($event, onSubmit)"
     />
   </Form>
@@ -16,18 +16,27 @@
 import { ref } from "vue";
 import { Form, Field } from "vee-validate";
 import axiosInstance from "@/config/axios/index.js";
+import { useProfileStore } from "@/stores/profile.js";
+
+const profile = useProfileStore();
 
 const bodyInput = ref("");
 
 function onSubmit(values) {
-  console.log(values);
+  const quote = ref({
+    body: values.body,
+    user_id: profile.user.id,
+    quote_author: props.quoteAuthor,
+    type: "comment",
+  });
+  console.log(quote.value);
   axiosInstance
     .post(
       import.meta.env.VITE_APP_ROOT_API +
         "/quotes/" +
         props.quoteId +
         "/comments",
-      values
+      quote.value
     )
     .then(function (response) {
       console.log(response);
@@ -40,6 +49,9 @@ function onSubmit(values) {
 
 const props = defineProps({
   quoteId: {
+    required: true,
+  },
+  quoteAuthor: {
     required: true,
   },
 });

@@ -12,6 +12,9 @@ import LandingPage from "@/views/LandingPage.vue";
 import NewsFeed from "@/views/NewsFeed.vue";
 import MovieList from "@/views/MovieList.vue";
 import PageLayout from "@/components/epic_quotes/PageLayout.vue";
+import ChangeUsername from "@/components/profile_page/ChangeUsername.vue";
+import ProfileLayout from "@/components/profile_page/ProfileLayout.vue";
+import ProfilePage from "@/views/ProfilePage.vue";
 import AddMovie from "@/components/movies_list/AddMovie.vue";
 import MoviePage from "@/views/MoviePage.vue";
 import AddQuote from "@/components/news_feed/AddQuote.vue";
@@ -58,7 +61,7 @@ const router = createRouter({
           path: "emailactivated",
           component: SentComponent,
           name: "EmailActivated",
-        }
+        },
       ],
     },
     {
@@ -66,6 +69,23 @@ const router = createRouter({
       component: PageLayout,
       children: [
         { path: "", redirect: "/newsfeed" },
+        {
+          path: "/profile",
+          component: ProfileLayout,
+          children: [
+            { path: "", redirect: "edit" },
+            {
+              path: "edit",
+              component: ProfilePage,
+              name: "ProfilePage",
+            },
+            {
+              path: "changename",
+              component: ChangeUsername,
+              name: "ChangeName",
+            },
+          ],
+        },
         {
           path: "/newsfeed",
           component: NewsFeed,

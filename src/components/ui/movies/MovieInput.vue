@@ -66,7 +66,7 @@ defineProps({
   },
   value: {
     required: false,
-  }
+  },
 });
 
 defineEmits(["update:modelValue"]);

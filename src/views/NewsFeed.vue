@@ -19,6 +19,7 @@
     <post-component
       v-for="(post, index) in quotesStore.quotes"
       v-bind:key="index"
+      :quote-author="post.user_id"
       :quote="post.quote"
       :user="post.movie.user"
       :index="index"
@@ -45,6 +46,7 @@ window.Echo.channel("add-like").listen(".new-like", () => {
 window.Echo.channel("add-comment").listen(".new-comment", () => {
   quotesStore.getQuotes();
 });
+
 
 const change = ref(null);
 
