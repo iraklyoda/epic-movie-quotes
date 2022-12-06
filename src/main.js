@@ -40,6 +40,7 @@ import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import DotsMenu from "@/components/icons/DotsMenu.vue";
 import EyeIcon from "@/components/icons/EyeIcon.vue";
 import SuccessIcon from "@/components/icons/SuccessIcon.vue";
+import CheckValid from "@/components/icons/CheckValid.vue";
 
 import InputComponent from "@/components/ui/InputComponent.vue";
 import ProfileInput from "@/components/profile_page/ProfileInput.vue";
@@ -48,7 +49,6 @@ import SuccessComponent from "@/components/profile_page/SuccessComponent.vue";
 
 const app = createApp(App);
 const pinia = createPinia();
-
 
 watchEffect(() => {
   if (isAuthenticated) {
@@ -100,11 +100,10 @@ app.component("MovieInput", MovieInput);
 app.component("SuccessComponent", SuccessComponent);
 app.component("SuccessIcon", SuccessIcon);
 app.component("ProfileInput", ProfileInput);
+app.component("CheckValid", CheckValid);
 
 app.use(pinia);
 app.use(i18n);
 app.use(router);
-
-
 
 app.mount("#app");

@@ -56,15 +56,12 @@
           </Field>
         </div>
         <!--        Add Email -->
-        <router-link :to="{ name: 'AddEmail' }" class="bg-red-800 px-2 py-2">
-          Add Email
-        </router-link>
         <!--    Username-->
-        <div class="px-9 pt-12 lg:px-48">
+        <div class="px-9 pt-12 lg:pl-48">
           <p>{{ $t("username") }}</p>
-          <div class="mt-1 flex justify-between lg:items-center">
+          <div class="mt-1 flex gap-6 lg:items-center">
             <p
-              class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+              class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
             >
               {{ userStore.user.username }}
             </p>
@@ -97,6 +94,50 @@
             <ErrorMessage name="username" class="mt-2" />
           </div>
 
+          <div
+            class="mt-4 border-b-2 border-fadeGrey lg:mt-10 lg:w-10/12 lg:border-fadeLightGray"
+          ></div>
+        </div>
+        <!--        Email-->
+        <div class="px-9 pt-12 lg:pl-20" v-if="!userStore.user.google_id">
+          <p>{{ $t("email") }}</p>
+          <!--          Primary -->
+          <div class="relative flex items-center gap-8">
+            <p
+              class="> text-lg lg:w-8/12 lg:rounded-md lg:border lg:border-1 lg:border-validGreen lg:bg-fadeGreen lg:py-2 lg:pl-4 lg:text-white lg:text-black"
+            >
+              {{ userStore.user.email }}
+            </p>
+            <CheckValid class="right-24 top-4 -ml-14" />
+            <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              >Primary Mail</span
+            >
+          </div>
+          <!--          All emails-->
+          <div
+            class="relative flex items-center gap-6 py-4"
+            v-for="email in userStore.user.emails"
+            v-bind:key="email.id"
+          >
+            <p
+              class="text-lg lg:w-8/12 lg:rounded-md lg:py-2 lg:pl-4 lg:text-black"
+              :class="{
+                'lg:bg-lightGrey': email.is_email_verified === 1,
+                'lg:bg-yellow-300': email.is_email_verified === 0,
+              }"
+            >
+              {{ email.email }}
+            </p>
+            <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              >Make this primary</span
+            >
+            <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              >Remove</span
+            >
+          </div>
+          <router-link :to="{ name: 'AddEmail' }">
+            <p class="mt-20 w-3/12 bg-red-800 px-2 py-2">Add Email</p>
+          </router-link>
           <div
             class="mt-4 border-b-2 border-fadeGrey lg:mt-10 lg:w-10/12 lg:border-fadeLightGray"
           ></div>

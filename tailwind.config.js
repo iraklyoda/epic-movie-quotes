@@ -39,6 +39,7 @@ module.exports = {
         fadePink: "rgba(190, 9, 103, 0.01)",
         darkGreen : "#0F5132",
         validGreen: "#198754",
+        fadeGreen: "rgba(25, 135, 84, 0.2)",
         successGreen: "#BADBCC",
         BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
