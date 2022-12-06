@@ -1,25 +1,25 @@
 <template>
-  <movie-dialog route="MoviePage" class="lg:mt-24 h-screen">
+  <movie-dialog route="MoviePage" class="h-screen lg:mt-24">
     <div
-      class="w-screen h-auto bg-darkBlue pt-7 font-helvetica lg:w-240 lg:h-auto lg:rounded-xl"
+      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
     >
       <div class="h-0.5"></div>
-      <nav class="flex justify-between items-center mx-9">
-        <div class="flex gap-3 justify-center py-3 rounded-lg">
+      <nav class="mx-9 flex items-center justify-between">
+        <div class="flex justify-center gap-3 rounded-lg py-3">
           <router-link to="">
             <EditIcon class="w-4" />
           </router-link>
-          <div class="border-l-2 text-xs h-4"></div>
+          <div class="h-4 border-l-2 text-xs"></div>
           <DeleteIcon class="w-4" />
         </div>
-        <p class="text-xl mx-auto hidden lg:block">{{ $t("editQuote") }}</p>
+        <p class="mx-auto hidden text-xl lg:block">{{ $t("editQuote") }}</p>
         <router-link
           :to="{ name: 'MoviePage', params: { id: route.params.id } }"
         >
           <CloseIcon class="w-3.5" />
         </router-link>
       </nav>
-      <div class="border-b-2 mt-4 border-fadeGrey w-full"></div>
+      <div class="mt-4 w-full border-b-2 border-fadeGrey"></div>
       <aside class="pl-9">
         <div class="mt-7 flex items-center gap-4">
           <img
@@ -28,18 +28,18 @@
             class="w-10"
           />
           <div>
-            <p class="text-xl whitespace-nowrap">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
           </div>
         </div>
       </aside>
       <section
-        class="px-9 pt-10 lg:pt-0 italic lg:text-xl"
+        class="px-9 pt-10 italic lg:pt-0 lg:text-xl"
         v-for="quote in quoteStore.quote"
         v-bind:key="quote.quote"
       >
         <Form
           @submit="onSubmit"
-          class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
+          class="mx-9 mt-7 lg:mx-0 lg:w-full lg:px-9"
           v-slot="{ errors }"
         >
           <Field name="movie_id" :value="quote.movie_id" class="hidden" />
@@ -71,11 +71,11 @@
               @dragleave="onDragLeave"
               @dragover.prevent
               @drop="onDrop"
-              class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-4 rounded lg:py-12 outline-none"
+              class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-12"
               :class="{
                 'border-niceRed': !meta.valid && meta.touched,
                 'border-validGreen': meta.valid && meta.touched,
-                'border-dotted border-4 border-blue-700': isDragging,
+                'border-4 border-dotted border-blue-700': isDragging,
               }"
             >
               <div class="lg:gap-3" v-if="!img">
@@ -83,11 +83,11 @@
                   <img
                     :src="root + quote.thumbnail"
                     alt="current image"
-                    class="blur-xs opacity-95"
+                    class="opacity-95 blur-xs"
                   />
                   <label
                     for="quoteImage"
-                    class="bg-mirageGradient cursor-pointer opacity-80 px-3 py-3 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-lg bg-mirageGradient px-3 py-3 opacity-80"
                   >
                     <CameraIcon class="mx-auto" />
                     <p class="mt-4">
@@ -100,10 +100,10 @@
                 class="flex justify-between lg:justify-start lg:gap-3"
                 v-if="img"
               >
-                <div class="flex gap-3 items-center">
+                <div class="flex items-center gap-3">
                   <camera-icon></camera-icon>
                   <span class="mt-1 lg:hidden">Upload image</span>
-                  <span class="mt-1 invisible lg:visible"
+                  <span class="invisible mt-1 lg:visible"
                     >{{ $t("dragAndDrop") }}
                   </span>
                 </div>
@@ -124,7 +124,7 @@
             </div>
           </Field>
           <button
-            class="bg-niceRed py-3 mt-4 w-full rounded-md text-white lg:p-2"
+            class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
           >
             {{ $t("getStarted") }}
           </button>
@@ -195,29 +195,31 @@ function onSubmit(values) {
     quote.image = values.thumbnail;
   }
   console.log(values);
-  axiosInstance
-    .post(
-      import.meta.env.VITE_APP_ROOT_API +
-        "/quotes/quote/" +
-        route.params.quoteId,
-      quote,
-      {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      }
-    )
-    .then(function (response) {
+
+  const editQuote = async () => {
+    try {
+      const response = await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API +
+          "/quotes/quote/" +
+          route.params.quoteId,
+        quote,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       const quotesStore = useQuotesStore();
       movie.getMovie(route.params.id);
       quoteStore.getQuote(route.params.quoteId);
       quotesStore.getQuotes(route.params.id);
       router.push({ name: "MoviePage" });
       console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  editQuote();
 }
 
 onBeforeMount(() => {

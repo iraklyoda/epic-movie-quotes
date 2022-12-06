@@ -2,22 +2,22 @@
   <movie-dialog
     route="MoviePage"
     :param="{ id: route.params.id }"
-    class="lg:mt-24 h-screen"
+    class="h-screen lg:mt-24"
   >
     <div
-      class="w-screen h-auto bg-darkBlue pt-7 font-helvetica lg:w-240 lg:h-auto lg:rounded-xl"
+      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
     >
       <div class="h-0.5"></div>
-      <nav class="flex justify-between items-center mx-9">
+      <nav class="mx-9 flex items-center justify-between">
         <div class="w-3.5"></div>
-        <p class="text-xl place-self-end">{{ $t("editMovie") }}</p>
+        <p class="place-self-end text-xl">{{ $t("editMovie") }}</p>
         <router-link
           :to="{ name: 'MoviePage', params: { id: route.params.id } }"
         >
           <CloseIcon class="w-3.5" />
         </router-link>
       </nav>
-      <div class="border-b-2 mt-4 border-fadeGrey w-full"></div>
+      <div class="mt-4 w-full border-b-2 border-fadeGrey"></div>
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
@@ -26,7 +26,7 @@
             class="w-10"
           />
           <div>
-            <p class="text-xl whitespace-nowrap">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
           </div>
         </div>
       </aside>
@@ -34,7 +34,7 @@
         v-for="movie in currentMovie"
         v-bind:key="movie.title"
         @submit="onSubmit"
-        class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
+        class="mx-9 mt-7 lg:mx-0 lg:w-full lg:px-9"
         v-slot="{ errors }"
       >
         <MovieInput
@@ -60,7 +60,7 @@
           rules="required"
         >
           <div
-            class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-2 rounded h-auto outline-none"
+            class="relative mt-4 h-auto w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-2 placeholder-white outline-none"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
@@ -69,7 +69,7 @@
             <div class="flex flex-wrap gap-1">
               <div v-for="(tag, index) in categoryTags" :key="'tag' + index">
                 <span
-                  class="bg-niceGrey text-white px-2 py-1 flex text-sm gap-2.5 items-center"
+                  class="flex items-center gap-2.5 bg-niceGrey px-2 py-1 text-sm text-white"
                   ><p>{{ tag }}</p>
                   <CloseIcon
                     class="w-2 cursor-pointer"
@@ -81,7 +81,7 @@
                 @keyup.,="addTag"
                 @keydown.enter.prevent="addTag"
                 :placeholder="$t('category') + '...'"
-                class="bg-transparent focus:outline-none placeholder-white"
+                class="bg-transparent placeholder-white focus:outline-none"
                 :class="{
                   'pl-2': categoryTags.length > 0,
                   'border-niceRed': !meta.valid && meta.touched,
@@ -137,11 +137,11 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-4 rounded lg:py-12 outline-none"
+            class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-12"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
-              'border-dotted border-4 border-blue-700': isDragging,
+              'border-4 border-dotted border-blue-700': isDragging,
             }"
           >
             <div class="lg:gap-3" v-if="!img">
@@ -149,11 +149,11 @@
                 <img
                   :src="root + movieImageSrc"
                   alt="current image"
-                  class="blur-xs opacity-95"
+                  class="opacity-95 blur-xs"
                 />
                 <label
                   for="movieImage"
-                  class="bg-mirageGradient cursor-pointer opacity-80 px-3 py-3 rounded-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-lg bg-mirageGradient px-3 py-3 opacity-80"
                 >
                   <CameraIcon class="mx-auto" />
                   <p class="mt-4">
@@ -166,10 +166,10 @@
               class="flex justify-between lg:justify-start lg:gap-3"
               v-if="img"
             >
-              <div class="flex gap-3 items-center">
+              <div class="flex items-center gap-3">
                 <camera-icon></camera-icon>
                 <span class="mt-1 lg:hidden">Upload image</span>
-                <span class="mt-1 invisible lg:visible"
+                <span class="invisible mt-1 lg:visible"
                   >{{ $t("dragAndDrop") }}
                 </span>
               </div>
@@ -190,7 +190,7 @@
           </div>
         </Field>
         <button
-          class="bg-niceRed py-3 mt-4 w-full rounded-md text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
         >
           {{ $t("getStarted") }}
         </button>
@@ -277,23 +277,24 @@ function onSubmit(values) {
     movie.image = values.image;
   }
   console.log(movie);
-  axiosInstance
-    .post(
-      import.meta.env.VITE_APP_ROOT_API + "/movies/movie/" + route.params.id,
-      movie,
-      {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      }
-    )
-    .then(function (response) {
+  const editMovie = async () => {
+    try {
+      const response = await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API + "/movies/movie/" + route.params.id,
+        movie,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       singleMovie.getMovie(route.params.id);
       console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  editMovie();
 }
 
 const isDragging = ref(false);

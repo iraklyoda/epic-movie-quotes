@@ -79,19 +79,23 @@ function onSubmit() {
 }
 
 function changeName() {
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/profile/create-email", {
-      email: email.value,
-    })
-    .then(function (response) {
+  const change = async () => {
+    try {
+      const response = axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/create-email",
+        {
+          email: email.value,
+        }
+      );
       console.log(response);
       profileStore.getProfile();
       profileStore.successUsername = true;
       router.push({ name: "ProfilePage" });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  change();
   console.log();
 }
 </script>

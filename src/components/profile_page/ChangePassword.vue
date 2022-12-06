@@ -148,19 +148,20 @@ function onSubmit(values) {
 }
 
 function changePassword() {
-  axios
-    .post(
-      import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
-      passwordValues.value
-    )
-    .then(function (response) {
+  const change = async () => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
+        passwordValues.value
+      );
       console.log(response);
       profileStore.getProfile();
       profileStore.successPassword = true;
       router.push({ name: "ProfilePage" });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  change();
 }
 </script>

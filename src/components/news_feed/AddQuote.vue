@@ -231,18 +231,23 @@ function onSubmit(values) {
     thumbnail: values.image,
   };
   console.log(quote);
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/quotes/create", quote, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
-    .then(function (response) {
+  const addQuote = async () => {
+    try {
+      const response = axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/quotes/create",
+        quote,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  addQuote();
 }
 
 const isDragging = ref(false);

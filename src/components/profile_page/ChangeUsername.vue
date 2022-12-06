@@ -45,7 +45,10 @@
         </button>
       </div>
     </main>
-    <section v-else class="mx-9 rounded-lg bg-headerBlue lg:bg-transparent py-8">
+    <section
+      v-else
+      class="mx-9 rounded-lg bg-headerBlue py-8 lg:bg-transparent"
+    >
       <p class="pt-8 text-center">Are you sure to make changes?</p>
       <div class="mt-8 border-b-2 border-fadeGrey"></div>
       <div class="mt-4 flex items-center justify-between px-9">
@@ -77,19 +80,22 @@ function onSubmit() {
 }
 
 function changeName() {
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/profile/update-user", {
-      username: username.value,
-    })
-    .then(function (response) {
+  const change = async () => {
+    try {
+      const response = axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
+        {
+          username: username.value,
+        }
+      );
       console.log(response);
       profileStore.getProfile();
       profileStore.successUsername = true;
       router.push({ name: "ProfilePage" });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  console.log();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  change();
 }
 </script>

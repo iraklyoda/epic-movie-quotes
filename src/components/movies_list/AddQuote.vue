@@ -5,19 +5,19 @@
     class="lg:mt-24"
   >
     <div
-      class="w-screen h-auto bg-darkBlue pt-7 font-helvetica lg:overflow-auto lg:w-200 lg:h-auto lg:rounded-xl lg:overflow-x-hidden"
+      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-200 lg:overflow-auto lg:overflow-x-hidden lg:rounded-xl"
     >
       <div class="h-0.5"></div>
-      <nav class="flex justify-between items-center mx-9">
+      <nav class="mx-9 flex items-center justify-between">
         <div class="w-3.5"></div>
-        <p class="text-xl place-self-end">{{ $t("addQuote") }}</p>
+        <p class="place-self-end text-xl">{{ $t("addQuote") }}</p>
         <router-link
           :to="{ name: 'MoviePage', params: { id: route.params.id } }"
         >
           <CloseIcon class="w-3.5" />
         </router-link>
       </nav>
-      <div class="border-b-2 mt-4 border-fadeGrey w-full"></div>
+      <div class="mt-4 w-full border-b-2 border-fadeGrey"></div>
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
@@ -26,13 +26,13 @@
             class="w-10"
           />
           <div>
-            <p class="text-xl whitespace-nowrap">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
           </div>
         </div>
       </aside>
       <Form
         @submit="onSubmit"
-        class="mx-9 lg:mx-0 lg:px-9 mt-7 lg:w-full"
+        class="mx-9 mt-7 lg:mx-0 lg:w-full lg:px-9"
         enctype="multipart/form-data"
         v-slot="{ errors }"
       >
@@ -44,11 +44,11 @@
           :value="movie.id"
         >
           <div
-            class="relative mt-4 bg-black lg:bg-transparent placeholder-white w-full py-4 rounded lg:py-2"
+            class="relative mt-4 w-full rounded bg-black py-4 placeholder-white lg:bg-transparent lg:py-2"
           >
             <div class="flex items-center justify-between">
               <div
-                class="w-full px-2.5 pb-2 rounded lg:py-2 block flex gap-2"
+                class="block flex w-full gap-2 rounded px-2.5 pb-2 lg:py-2"
                 :for="movie.title.en"
               >
                 <img
@@ -76,7 +76,7 @@
                     <span
                       v-for="genre in movie.genres"
                       v-bind:key="genre"
-                      class="bg-niceGrey text-white px-2 py-1 flex text-sm gap-2.5 items-center"
+                      class="flex items-center gap-2.5 bg-niceGrey px-2 py-1 text-sm text-white"
                       ><p>{{ genre }}</p></span
                     >
                   </div>
@@ -116,15 +116,15 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-4 rounded lg:py-2 outline-none"
+            class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
-              'border-dotted border-4 border-blue-700': isDragging,
+              'border-4 border-dotted border-blue-700': isDragging,
             }"
           >
             <div class="flex justify-between lg:justify-start lg:gap-3">
-              <div class="flex gap-3 items-center">
+              <div class="flex items-center gap-3">
                 <camera-icon></camera-icon>
                 <span class="mt-1 lg:hidden">{{ $t("uploadImage") }}</span>
                 <span class="mt-1 hidden lg:block"
@@ -133,7 +133,7 @@
               </div>
               <label
                 for="movieImage"
-                class="bg-fadePurple px-2 py-2 self-center xs:text-xs xs:whitespace-nowrap md:text-base"
+                class="self-center bg-fadePurple px-2 py-2 xs:whitespace-nowrap xs:text-xs md:text-base"
                 >{{ $t("chooseFile") }}</label
               >
             </div>
@@ -150,7 +150,7 @@
           </div>
         </Field>
         <button
-          class="bg-niceRed py-3 mt-4 w-full rounded-md text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
         >
           {{ $t("addQuote") }}
         </button>
@@ -217,21 +217,26 @@ function onSubmit(values) {
     quote_ka: values.quote_ka,
     thumbnail: values.image,
   };
-  axiosInstance
-    .post(import.meta.env.VITE_APP_ROOT_API + "/quotes/create", quote, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
-    .then(function () {
+  const addQuote = async () => {
+    try {
+      await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API + "/quotes/create",
+        quote,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       movieList.getMovies();
       useAllQuotesStore().getQuotes();
       movie.getMovie(route.params.id);
       router.push({ name: "MoviePage", params: { id: route.params.id } });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  addQuote();
   console.log(values);
 }
 

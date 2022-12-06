@@ -3,7 +3,7 @@
     <div class="lg:ml-6">
       <div class="mt-7 flex items-center gap-4 lg:pt-6">
         <img
-            class="w-12 h-12 rounded-full object-cover object-center"
+          class="h-12 w-12 rounded-full object-cover object-center"
           :src="root + props.user.profile_picture"
           alt="profile picture"
         />
@@ -35,7 +35,7 @@
         <img
           :src="profile.profilePicture"
           alt="profile picture"
-          class="w-10 h-10 rounded-full object-cover object-center"
+          class="h-10 w-10 rounded-full object-cover object-center"
         />
         <PostComment
           :quoteId="props.quoteId"
@@ -80,15 +80,17 @@ function like() {
     user_id: profile.user.id,
     type: "like",
   };
-  axiosInstance
-    .post(
-      import.meta.env.VITE_APP_ROOT_API + "/quote/" + props.quoteId + "/like",
-      values
-    )
-    .then(function () {})
-    .catch(function (error) {
-      console.log(error);
-    });
+  const like = async () => {
+    try {
+      axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API + "/quote/" + props.quoteId + "/like",
+        values
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  like();
 }
 
 const props = defineProps({

@@ -192,20 +192,25 @@ configure({
 
 function onSubmit(values) {
   console.log(values);
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/movies/create", values, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
-    .then(function (response) {
+  const addMovie = async () => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/movies/create",
+        values,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response);
       movieList.getMovies();
       router.push({ name: "MovieList" });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  addMovie();
 }
 
 const categoryTag = ref("");

@@ -55,8 +55,8 @@
             </div>
           </Field>
         </div>
-<!--        Add Email -->
-        <router-link :to="{name: 'AddEmail'}" class="px-2 py-2 bg-red-800">
+        <!--        Add Email -->
+        <router-link :to="{ name: 'AddEmail' }" class="bg-red-800 px-2 py-2">
           Add Email
         </router-link>
         <!--    Username-->
@@ -229,7 +229,6 @@ import { onBeforeMount, ref } from "vue";
 import { Form, Field, ErrorMessage, configure } from "vee-validate";
 import ProfileInput from "@/components/profile_page/ProfileInput.vue";
 import axios from "@/config/axios/index.js";
-import router from "@/router";
 const route = useRoute();
 const userStore = useProfileStore();
 const img = ref("");
@@ -264,13 +263,17 @@ function switchVisibility() {
 
 function onSubmit(values) {
   console.log(values);
-  axios
-    .post(import.meta.env.VITE_APP_ROOT_API + "/profile/update-user", values, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
-    .then(function (response) {
+  const update = async () => {
+    try {
+      const response = axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
+        values,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response);
       editUsername.value = false;
       editPassword.value = false;
@@ -278,10 +281,11 @@ function onSubmit(values) {
       img.value = "";
       userStore.getProfile();
       userStore.successChanges = true;
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  update();
 }
 
 onBeforeMount(() => {

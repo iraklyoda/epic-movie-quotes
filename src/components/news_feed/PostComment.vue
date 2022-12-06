@@ -30,21 +30,22 @@ function onSubmit(values) {
     type: "comment",
   });
   console.log(quote.value);
-  axiosInstance
-    .post(
-      import.meta.env.VITE_APP_ROOT_API +
-        "/quotes/" +
-        props.quoteId +
-        "/comments",
-      quote.value
-    )
-    .then(function (response) {
+  const postComment = async () => {
+    try {
+      const response = await axiosInstance.post(
+        import.meta.env.VITE_APP_ROOT_API +
+          "/quotes/" +
+          props.quoteId +
+          "/comments",
+        quote.value
+      );
       console.log(response);
       bodyInput.value = "";
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  postComment();
 }
 
 const props = defineProps({
