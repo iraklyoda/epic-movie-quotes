@@ -55,6 +55,10 @@
             </div>
           </Field>
         </div>
+<!--        Add Email -->
+        <router-link :to="{name: 'AddEmail'}" class="px-2 py-2 bg-red-800">
+          Add Email
+        </router-link>
         <!--    Username-->
         <div class="px-9 pt-12 lg:px-48">
           <p>{{ $t("username") }}</p>

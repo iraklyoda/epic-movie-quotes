@@ -19,6 +19,7 @@ import ProfilePage from "@/views/ProfilePage.vue";
 import AddMovie from "@/components/movies_list/AddMovie.vue";
 import MoviePage from "@/views/MoviePage.vue";
 import AddQuote from "@/components/news_feed/AddQuote.vue";
+import AddEmail from "@/components/profile_page/AddEmail.vue";
 import MovieQuote from "@/components/movies_list/AddQuote.vue";
 import EditMovie from "@/components/movies_list/EditMovie.vue";
 import ViewQuote from "@/components/movies_list/ViewQuote.vue";
@@ -89,6 +90,11 @@ const router = createRouter({
                   path: "changepassword",
                   component: ChangePassword,
                   name: "ChangePassword",
+                },
+                {
+                  path: "addemail",
+                  component: AddEmail,
+                  name: "AddEmail",
                 }
               ],
             },

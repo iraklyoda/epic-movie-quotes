@@ -114,9 +114,9 @@ const login = async (user) => {
     router.push({ name: "NewsFeed" });
   } catch (error) {
     console.log(error);
-    if (error.response.data.error === "Wrong email or password!") {
-      loginError.value = "wrongUser";
-    }
+    // if (error.response.data.error === "Wrong email or password!") {
+    //   loginError.value = "wrongUser";
+    // }
   }
 };
 
