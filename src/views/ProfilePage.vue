@@ -1,49 +1,286 @@
 <template>
-  <nav class="py-8 pl-9">
-    <router-link :to="{ name: 'NewsFeed' }">
-      <LeftArrowIcon class="scale-125" />
-    </router-link>
-  </nav>
-  <SuccessComponent v-if="userStore.success"/>
-  <section class="h-auto pb-12 bg-headerBlue">
-    <div class="flex flex-col items-center">
-      <img
-        src="@/assets/images/user/profile_picture.png"
-        alt="profile picture"
-        class="w-40 pt-10"
-      />
-      <p class="pt-2 text-lg">{{ $t("uploadNewPhoto") }}</p>
-    </div>
-    <div class="px-9 pt-12">
-      <p>{{ $t("username") }}</p>
-      <div class="mt-1 flex justify-between">
-        <p class="text-lg">{{ user.username }}</p>
-        <router-link :to="{ name: 'ChangeName' }">
-          <span class="text-niceGrey">Edit</span>
-        </router-link>
+  <router-view />
+  <div
+    :class="{
+      hidden: route.name === 'ChangeName' || route.name === 'ChangePassword',
+    }"
+    class="lg:block"
+  >
+    <nav class="py-8 pl-9 lg:hidden">
+      <router-link :to="{ name: 'NewsFeed' }">
+        <LeftArrowIcon class="scale-125" />
+      </router-link>
+    </nav>
+    <p class="hidden pl-12 pt-8 text-xl lg:block">My profile</p>
+    <!--    Success Messages-->
+    <SuccessComponent
+      v-if="userStore.successChanges"
+      msg="changes made succesfully"
+    />
+    <SuccessComponent
+      v-if="userStore.successUsername"
+      msg="Username changed successfully"
+    />
+    <SuccessComponent
+      v-if="userStore.successPassword"
+      msg="Password changed successfully"
+    />
+    <Form @submit="onSubmit">
+      <section
+        class="h-auto bg-headerBlue pb-12 lg:mt-32 lg:w-225 lg:rounded-xl lg:bg-cinder"
+      >
+        <!--        Profile Picture-->
+        <div class="flex flex-col items-center">
+          <img
+            :src="userStore.profilePicture"
+            alt="profile picture"
+            class="mt-10 h-40 w-40 rounded-full object-cover object-center lg:-mt-14"
+          />
+          <Field
+            v-slot="{ handleChange, handleBlur, value }"
+            name="profile_picture"
+            v-model="img"
+          >
+            <input
+              type="file"
+              @change="handleChange"
+              @blur="handleBlur"
+              id="profile_picture"
+            />
+            <label class="cursor-pointer pt-2 text-lg" for="profile_picture">{{
+              $t("uploadNewPhoto")
+            }}</label>
+            <div v-if="value">
+              {{ value.name }}
+            </div>
+          </Field>
+        </div>
+        <!--    Username-->
+        <div class="px-9 pt-12 lg:px-48">
+          <p>{{ $t("username") }}</p>
+          <div class="mt-1 flex justify-between lg:items-center">
+            <p
+              class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+            >
+              {{ userStore.user.username }}
+            </p>
+            <!--          Mobile Version -->
+            <router-link :to="{ name: 'ChangeName' }" class="lg:hidden">
+              <span class="text-niceGrey lg:text-lightGrey">Edit</span>
+            </router-link>
+            <!--          Desktop -->
+            <button
+              type="button"
+              class="hidden text-niceGrey lg:block lg:text-lightGrey"
+              @click="editUsername = true"
+              v-if="!editUsername"
+            >
+              Edit
+            </button>
+          </div>
+          <div v-if="editUsername">
+            <div class="mt-4 flex flex-col">
+              <label for="username" class="pb-2">{{
+                $t("enterNewUsername")
+              }}</label>
+              <Field
+                name="username"
+                id="username"
+                class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+                rules="required|min:3|max:15|alpha_num|lowercase"
+              />
+            </div>
+            <ErrorMessage name="username" class="mt-2" />
+          </div>
+
+          <div
+            class="mt-4 border-b-2 border-fadeGrey lg:mt-10 lg:w-10/12 lg:border-fadeLightGray"
+          ></div>
+        </div>
+        <!--    Password-->
+        <div class="px-9 pt-8 lg:px-48">
+          <p>{{ $t("password") }}</p>
+          <div class="mt-1 flex justify-between lg:items-center">
+            <p
+              class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+            >
+              ●●●●●●●●●
+            </p>
+            <!--            Mobile version-->
+            <router-link :to="{ name: 'ChangePassword' }" class="lg:hidden">
+              <span class="text-niceGrey lg:text-lightGrey">Edit</span>
+            </router-link>
+            <!--            Desktop Version -->
+            <button
+              class="hidden lg:block lg:text-lightGrey"
+              type="button"
+              @click="editPassword = true"
+              v-if="!editPassword"
+            >
+              Edit
+            </button>
+          </div>
+          <!--          Password -->
+          <div v-if="editPassword" class="lg:w-10/12">
+            <div
+              class="w-full rounded-md border border-2 border-fadeLightGray bg-cinder px-6 py-2 lg:mt-6 lg:bg-transparent"
+            >
+              <p>Passwords should contain:</p>
+              <div class="mt-4 flex items-center gap-2">
+                <div
+                  class="h-1.5 w-1.5 rounded-full"
+                  :class="{
+                    'bg-niceGrey': passwordInput.length < 8,
+                    'bg-validGreen': passwordInput.length >= 8,
+                  }"
+                ></div>
+                <p
+                  class="text-sm"
+                  :class="{
+                    'text-niceGrey': passwordInput.length < 8,
+                    'text-white': passwordInput.length >= 8,
+                  }"
+                >
+                  8 or more characters
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <div
+                  class="h-1.5 w-1.5 rounded-full"
+                  :class="{
+                    'bg-niceGrey':
+                      passwordInput.length < 8 || passwordInput.length > 15,
+                    'bg-validGreen':
+                      passwordInput.length >= 8 && passwordInput.length <= 15,
+                  }"
+                ></div>
+                <p
+                  class="text-sm"
+                  :class="{
+                    'text-niceGrey':
+                      passwordInput.length < 8 || passwordInput.length > 15,
+                    'text-white':
+                      passwordInput.length >= 8 && passwordInput.length <= 15,
+                  }"
+                >
+                  max 15 characters
+                </p>
+              </div>
+            </div>
+            <div class="relative">
+              <profile-input
+                v-model:modelValue="passwordInput"
+                id="new_password"
+                name="new_password"
+                :type="passwordFieldType"
+                label="new password"
+                rules="required|min:8|max:15|alpha_num|lowercase"
+              />
+              <VisibilityIcon
+                class="absolute right-4 top-12 scale-125 cursor-pointer"
+                @click="switchVisibility"
+              />
+              <ErrorMessage name="new_password" />
+            </div>
+            <div class="relative">
+              <profile-input
+                id="new_password_confirmation"
+                name="new_password_confirmation"
+                :type="passwordFieldType"
+                label="confirm new password"
+                rules="required|confirmed:@new_password"
+              />
+              <VisibilityIcon
+                class="absolute right-4 top-12 scale-125 cursor-pointer"
+                @click="switchVisibility"
+              />
+              <ErrorMessage name="new_password_confirmation" />
+            </div>
+          </div>
+          <div class="mt-4 border-b-2 border-fadeGrey lg:hidden"></div>
+        </div>
+      </section>
+      <div
+        class="mt-2 flex items-center justify-end gap-2"
+        :class="{
+          'hidden lg:flex': !img,
+          'lg:hidden': !editUsername && !editPassword && !img,
+          'lg:flex': editUsername || editPassword || img,
+        }"
+      >
+        <button type="button" class="text-niceGrey" @click="cancel">
+          Cancel
+        </button>
+        <button class="bg-niceRed px-2 py-2">Save changes</button>
       </div>
-      <div class="mt-4 border-b-2 border-fadeGrey"></div>
-    </div>
-    <div class="px-9 pt-8">
-      <p>{{ $t("password") }}</p>
-      <div class="mt-1 flex justify-between">
-        <p class="text-lg">●●●●●●●●●</p>
-        <span class="text-niceGrey">Edit</span>
-      </div>
-      <div class="mt-4 border-b-2 border-fadeGrey"></div>
-    </div>
-  </section>
+    </Form>
+  </div>
 </template>
 
 <script setup>
+import { RouterView } from "vue-router";
 import { useProfileStore } from "@/stores/profile.js";
-import {ref} from "vue";
-
+import { useRoute } from "vue-router";
+import { onBeforeMount, ref } from "vue";
+import { Form, Field, ErrorMessage, configure } from "vee-validate";
+import ProfileInput from "@/components/profile_page/ProfileInput.vue";
+import axios from "@/config/axios/index.js";
+import router from "@/router";
+const route = useRoute();
 const userStore = useProfileStore();
-const user = ref([]);
-setTimeout(()=>{
-  user.value = userStore.user;
-},100);
+const img = ref("");
 
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
 
+const editUsername = ref(false);
+const editPassword = ref(false);
+const editPicture = ref(false);
+
+const passwordInput = ref("");
+
+function cancel() {
+  passwordInput.value = "";
+  editUsername.value = false;
+  editPassword.value = false;
+  editPicture.value = false;
+  img.value = "";
+}
+
+// Passwords
+const passwordFieldType = ref("password");
+function switchVisibility() {
+  passwordFieldType.value =
+    passwordFieldType.value === "password" ? "text" : "password";
+}
+
+function onSubmit(values) {
+  console.log(values);
+  axios
+    .post(import.meta.env.VITE_APP_ROOT_API + "/profile/update-user", values, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    })
+    .then(function (response) {
+      console.log(response);
+      editUsername.value = false;
+      editPassword.value = false;
+      editPicture.value = false;
+      img.value = "";
+      userStore.getProfile();
+      userStore.successChanges = true;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+onBeforeMount(() => {
+  userStore.getProfile();
+});
 </script>

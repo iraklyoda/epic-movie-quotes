@@ -13,6 +13,7 @@ import NewsFeed from "@/views/NewsFeed.vue";
 import MovieList from "@/views/MovieList.vue";
 import PageLayout from "@/components/epic_quotes/PageLayout.vue";
 import ChangeUsername from "@/components/profile_page/ChangeUsername.vue";
+import ChangePassword from "@/components/profile_page/ChangePassword.vue";
 import ProfileLayout from "@/components/profile_page/ProfileLayout.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import AddMovie from "@/components/movies_list/AddMovie.vue";
@@ -78,11 +79,18 @@ const router = createRouter({
               path: "edit",
               component: ProfilePage,
               name: "ProfilePage",
-            },
-            {
-              path: "changename",
-              component: ChangeUsername,
-              name: "ChangeName",
+              children: [
+                {
+                  path: "changename",
+                  component: ChangeUsername,
+                  name: "ChangeName",
+                },
+                {
+                  path: "changepassword",
+                  component: ChangePassword,
+                  name: "ChangePassword",
+                }
+              ],
             },
           ],
         },

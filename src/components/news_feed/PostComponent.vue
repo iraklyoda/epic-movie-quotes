@@ -3,7 +3,8 @@
     <div class="lg:ml-6">
       <div class="mt-7 flex items-center gap-4 lg:pt-6">
         <img
-          src="@/assets/images/user/profile_picture.png"
+            class="w-12 h-12 rounded-full object-cover object-center"
+          :src="root + props.user.profile_picture"
           alt="profile picture"
         />
         <p>{{ props.user.username }}</p>
@@ -32,8 +33,9 @@
       />
       <section class="mt-4 mb-4 flex w-11/12 max-w-3xl lg:pb-6">
         <img
-          src="@/assets/images/user/profile_picture.png"
+          :src="profile.profilePicture"
           alt="profile picture"
+          class="w-10 h-10 rounded-full object-cover object-center"
         />
         <PostComment
           :quoteId="props.quoteId"
@@ -58,7 +60,6 @@ import axiosInstance from "@/config/axios/index.js";
 import { ref } from "vue";
 
 const profile = useProfileStore();
-
 const root = import.meta.env.VITE_APP_ROOT;
 
 function getActive() {

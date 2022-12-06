@@ -5,9 +5,16 @@
   >
     <div class="mt-7 flex items-center gap-4">
       <img
-        src="@/assets/images/user/profile_picture.png"
+        :src="
+          profile.profilePicture
+        "
         alt="profile picture"
-        class="w-10 lg:w-15"
+        class="w-10 rounded-full w-16 h-16 object-cover object-center"
+        :class="{
+          'border-2 border-niceRed': route.matched.some((route) =>
+            route.path.includes('/profile')
+          ),
+        }"
       />
       <div>
         <p class="text-md whitespace-nowrap lg:text-2xl">

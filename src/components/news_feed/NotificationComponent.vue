@@ -4,9 +4,9 @@
   >
     <div>
       <img
-        src="@/assets/images/user/profile_picture.png"
+        :src="root + notification.sender.profile_picture"
         alt="profile picture"
-        class="w-auto lg:w-15"
+        class="w-auto w-15 h-15 rounded-full object-cover object-center"
       />
     </div>
     <div>
@@ -30,6 +30,8 @@
 import HeartIcon from "@/components/icons/HeartIcon.vue";
 import { computed } from "vue";
 import i18n from "@/config/i18n";
+const root = import.meta.env.VITE_APP_ROOT;
+
 
 function timeAgo(time) {
   switch (typeof time) {
@@ -60,8 +62,6 @@ function timeAgo(time) {
       [29030400, "months", 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
       [58060800, "Last year", "Next year"], // 60*60*24*7*4*12*2
       [2903040000, "years", 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-      [5806080000, "Last century", "Next century"], // 60*60*24*7*4*12*100*2
-      [58060800000, "centuries", 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
   } else {
     time_formats = [
@@ -78,8 +78,6 @@ function timeAgo(time) {
       [29030400, "თვის", 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
       [58060800, "შარშან", "Next year"], // 60*60*24*7*4*12*2
       [2903040000, "წლის", 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-      [5806080000, "Last century", "Next century"], // 60*60*24*7*4*12*100*2
-      [58060800000, "centuries", 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
   }
   let seconds = (+new Date() - time) / 1000,

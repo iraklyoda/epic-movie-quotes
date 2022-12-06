@@ -42,6 +42,7 @@ import EyeIcon from "@/components/icons/EyeIcon.vue";
 import SuccessIcon from "@/components/icons/SuccessIcon.vue";
 
 import InputComponent from "@/components/ui/InputComponent.vue";
+import ProfileInput from "@/components/profile_page/ProfileInput.vue";
 import LanguageChange from "@/components/ui/LanguageChange.vue";
 import SuccessComponent from "@/components/profile_page/SuccessComponent.vue";
 
@@ -98,6 +99,7 @@ app.component("DotsMenu", DotsMenu);
 app.component("MovieInput", MovieInput);
 app.component("SuccessComponent", SuccessComponent);
 app.component("SuccessIcon", SuccessIcon);
+app.component("ProfileInput", ProfileInput);
 
 app.use(pinia);
 app.use(i18n);

@@ -9,27 +9,27 @@
     "
   >
     <figure
-      class="pt-6 w-4/5 mx-auto lg:w-full lg:pl-24"
+      class="mx-auto w-4/5 pt-6 lg:w-full lg:pl-24"
       v-for="movie in movie.movie"
       v-bind:key="movie.title"
     >
-      <h3 class="hidden lg:block text-lg mb-4">{{ $t("movieDescription") }}</h3>
-      <div class="lg:flex gap-12 lg:pl-25">
+      <h3 class="mb-4 hidden text-lg lg:block">{{ $t("movieDescription") }}</h3>
+      <div class="lg:pl-25 gap-12 lg:flex">
         <div>
           <img
             :src="root + movie.image"
             alt="Movie Title"
-            class="mx-auto h-80 lg:mx-0 lg:w-200 lg:h-110 object-cover rounded-xl"
+            class="mx-auto h-80 rounded-xl object-cover lg:mx-0 lg:h-110 lg:w-200"
           />
-          <div class="items-center gap-4 mt-4 hidden lg:flex">
-            <div class="sm:hidden lg:flex items-center gap-2 text-xl">
+          <div class="mt-4 hidden items-center gap-4 lg:flex">
+            <div class="items-center gap-2 text-xl sm:hidden lg:flex">
               <h3>{{ $t("allQuotes") }}</h3>
               <p>({{ $t("total") }} {{ movie.quotes.length }})</p>
             </div>
-            <div class="border-l-2 border-l-niceGrey text-sm h-6"></div>
+            <div class="h-6 border-l-2 border-l-niceGrey text-sm"></div>
             <router-link
               :to="{ name: 'MovieQuote' }"
-              class="items-center w-36 lg:w-auto gap-2 bg-niceRed py-2 px-3 whitespace-nowrap rounded-md hidden lg:flex"
+              class="hidden w-36 items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 lg:flex lg:w-auto"
             >
               <AddIcon />
               <p>{{ $t("addQuote") }}</p>
@@ -37,12 +37,12 @@
           </div>
         </div>
         <div>
-          <div class="hidden lg:flex items-center my-4">
+          <div class="my-4 hidden items-center lg:flex">
             <figcaption class="text-xl">
               {{ lang === "Ka" ? movie.title.ka : movie.title.en }}
             </figcaption>
             <div
-              class="flex ml-48 bg-headerBlue gap-3 w-24 justify-center py-3 rounded-lg"
+              class="ml-48 flex w-24 justify-center gap-3 rounded-lg bg-headerBlue py-3"
             >
               <router-link :to="{ name: 'EditMovie' }">
                 <EditIcon class="w-4" />
@@ -51,15 +51,15 @@
               <DeleteIcon class="w-4" @click="destroyMovie(route.params.id)" />
             </div>
           </div>
-          <div class="flex flex-wrap gap-1 mt-7 lg:w-96">
+          <div class="mt-7 flex flex-wrap gap-1 lg:w-96">
             <span
               v-for="genre in movie.genres"
               v-bind:key="genre"
-              class="bg-niceGrey text-white px-2 py-1 flex text-sm gap-2.5 items-center"
+              class="flex items-center gap-2.5 bg-niceGrey px-2 py-1 text-sm text-white"
               ><p>{{ genre }}</p></span
             >
           </div>
-          <aside class="flex my-5 gap-2">
+          <aside class="my-5 flex gap-2">
             <p class="text-lightGrey">{{ $t("director") }}:</p>
             <p>
               {{ lang === "Ka" ? movie.director.ka : movie.director.en }}
@@ -71,23 +71,23 @@
         </div>
         <router-link
           :to="{ name: 'MovieQuote' }"
-          class="flex items-center w-32 lg:w-48 mt-7 gap-2 bg-niceRed py-2 pl-3 whitespace rounded-md lg:hidden"
+          class="whitespace mt-7 flex w-32 items-center gap-2 rounded-md bg-niceRed py-2 pl-3 lg:hidden lg:w-48"
         >
           <AddIcon />
           <p>{{ $t("addQuote") }}</p>
         </router-link>
       </div>
       <div
-        class="border-b-2 mt-4 border-fadeGrey w-full max-w-3xl lg:hidden"
+        class="mt-4 w-full max-w-3xl border-b-2 border-fadeGrey lg:hidden"
       ></div>
       <div class="lg:hidden">
-        <h3 class="text-xl mt-8">{{ $t("allQuotes") }}</h3>
+        <h3 class="mt-8 text-xl">{{ $t("allQuotes") }}</h3>
         <p>({{ $t("total") }} {{ movie.quotes.length }})</p>
       </div>
       <!--      Quotes-->
       <div
         v-for="quote in movie.quotes"
-        class="mt-6 lg:ml-24 lg:w-200 bg-cinder lg:rounded-2xl relative"
+        class="relative mt-6 bg-cinder lg:ml-24 lg:w-200 lg:rounded-2xl"
         v-bind:key="quote.quote"
       >
         <div class="mx-9">
@@ -95,37 +95,37 @@
             <img
               :src="root + quote.thumbnail"
               alt="quote"
-              class="pt-5 h-36 w-full lg:w-56 object-cover"
+              class="h-36 w-full object-cover pt-5 lg:w-56"
             />
-            <p class="text-xl text-lightGrey w-9/12 mt-6 italic">
+            <p class="mt-6 w-9/12 text-xl italic text-lightGrey">
               "{{ lang === "Ka" ? quote.quote.ka : quote.quote.en }}"
             </p>
             <DotsMenu
-              class="self-start mt-8 cursor-pointer hidden lg:block"
+              class="mt-8 hidden cursor-pointer self-start lg:block"
               @click="toggleQuoteMenu(quote.id)"
             />
             <div
               v-if="openQuoteId === quote.id"
-              class="bg-headerBlue w-48 h-36 absolute right-6 bottom-4 lg:-right-36 lg:top-12 transition-transform rounded-xl z-40"
+              class="absolute right-6 bottom-4 z-40 h-36 w-48 rounded-xl bg-headerBlue transition-transform lg:-right-36 lg:top-12"
             >
-              <div class="flex flex-col mt-2">
+              <div class="mt-2 flex flex-col">
                 <router-link
                   :to="{ name: 'ViewQuote', params: { quoteId: quote.id } }"
-                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                  class="flex cursor-pointer items-center gap-3 py-2 pl-8 hover:bg-cinder"
                 >
                   <EyeIcon />
                   <p>{{ $t("viewQuote") }}</p>
                 </router-link>
                 <router-link
                   :to="{ name: 'EditQuote', params: { quoteId: quote.id } }"
-                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                  class="flex cursor-pointer items-center gap-3 py-2 pl-8 hover:bg-cinder"
                 >
                   <EditIcon />
                   <p>{{ $t("edit") }}</p>
                 </router-link>
                 <div
                   @click="destroyQuote(quote.id)"
-                  class="flex items-center gap-3 hover:bg-cinder cursor-pointer pl-8 py-2"
+                  class="flex cursor-pointer items-center gap-3 py-2 pl-8 hover:bg-cinder"
                 >
                   <DeleteIcon />
                   <p>{{ $t("delete") }}</p>
@@ -134,15 +134,15 @@
             </div>
             <div
               v-if="openQuoteId"
-              class="fixed w-full h-screen left-0 top-0 z-30"
+              class="fixed left-0 top-0 z-30 h-screen w-full"
               @click="openQuoteId = ''"
             ></div>
           </div>
           <div
-            class="border-b-2 mt-4 border-fadeGrey w-full hidden lg:block"
+            class="mt-4 hidden w-full border-b-2 border-fadeGrey lg:block"
           ></div>
-          <div class="border-b-2 mt-4 border-fadeGrey w-full lg:hidden"></div>
-          <section class="mt-2 pb-4 text-xl flex items-center justify-between">
+          <div class="mt-4 w-full border-b-2 border-fadeGrey lg:hidden"></div>
+          <section class="mt-2 flex items-center justify-between pb-4 text-xl">
             <div class="flex items-center">
               <span>{{ quote.comments.length }}</span>
               <CommentIcon class="ml-3" />
@@ -150,7 +150,7 @@
               <HeartIcon class="ml-3" />
             </div>
             <DotsMenu
-              class="lg:hidden cursor-pointer"
+              class="cursor-pointer lg:hidden"
               @click="toggleQuoteMenu(quote.id)"
             />
           </section>

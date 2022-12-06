@@ -96,7 +96,6 @@ import { Form } from "vee-validate";
 const nameInput = ref("");
 const emailInput = ref("");
 const passwordInput = ref("");
-const passwordFieldType = ref("password");
 const googleLogin = ref(import.meta.env.VITE_APP_ROOT_API + "/google/login");
 import { useUserStore } from "@/stores/user.js";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
@@ -104,6 +103,8 @@ import router from "@/router";
 
 const store = useUserStore();
 
+
+const passwordFieldType = ref("password");
 function switchVisibility() {
   passwordFieldType.value =
     passwordFieldType.value === "password" ? "text" : "password";
