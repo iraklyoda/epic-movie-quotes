@@ -11,7 +11,10 @@ export const useProfileStore = defineStore("profile", () => {
         import.meta.env.VITE_APP_ROOT_API + "/me"
       );
       user.value = response.data.user;
-      if (response.data.user.profile_picture) {
+      console.log(response.data);
+      if (response.data.user.google_id) {
+        profilePicture.value = response.data.user.profile_picture;
+      } else {
         profilePicture.value = root + response.data.user.profile_picture;
       }
       console.log(user.value);
@@ -25,6 +28,10 @@ export const useProfileStore = defineStore("profile", () => {
   const successPassword = ref(false);
   const successChanges = ref(false);
   const root = import.meta.env.VITE_APP_ROOT;
+
+  onMounted(() => {
+    getProfile();
+  });
   return {
     user,
     getProfile,

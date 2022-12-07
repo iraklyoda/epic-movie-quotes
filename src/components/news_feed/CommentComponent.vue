@@ -1,6 +1,10 @@
 <template>
   <div class="mt-7 flex items-center gap-4">
-    <img :src="root + props.comment.author.profile_picture" alt="profile picture" class="w-10 h-10 rounded-full object-cover object-center"/>
+    <img
+      :src="root + props.comment.author.profile_picture"
+      alt="profile picture"
+      class="h-10 w-10 rounded-full object-cover object-center"
+    />
     <p>{{ props.comment.author.username }}</p>
   </div>
   <p class="mt-3 break-words lg:mt-1 lg:pl-14 lg:pr-12">
@@ -10,6 +14,10 @@
 </template>
 
 <script setup>
-const root = import.meta.env.VITE_APP_ROOT;
+import {ref} from "vue";
+const root = ref(import.meta.env.VITE_APP_ROOT);
 const props = defineProps(["comment"]);
+if (props.comment.author.google_id) {
+  root.value = "";
+}
 </script>

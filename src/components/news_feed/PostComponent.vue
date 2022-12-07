@@ -4,7 +4,11 @@
       <div class="mt-7 flex items-center gap-4 lg:pt-6">
         <img
           class="h-12 w-12 rounded-full object-cover object-center"
-          :src="root + props.user.profile_picture"
+          :src="
+            props.user.google_id
+              ? props.user.profile_picture
+              : root + props.user.profile_picture
+          "
           alt="profile picture"
         />
         <p>{{ props.user.username }}</p>
@@ -60,7 +64,7 @@ import axiosInstance from "@/config/axios/index.js";
 import { ref } from "vue";
 
 const profile = useProfileStore();
-const root = import.meta.env.VITE_APP_ROOT;
+const root = ref(import.meta.env.VITE_APP_ROOT);
 
 function getActive() {
   const active = ref(false);
