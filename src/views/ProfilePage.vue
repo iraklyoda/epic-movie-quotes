@@ -143,11 +143,14 @@
               />
               {{ email.email }}
             </p>
-            <span
+            <button
+              type="button"
               class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
               v-if="email.is_email_verified === 1"
-              >Make this primary</span
+              @click="makePrimary(email.id)"
             >
+              Make this primary
+            </button>
             <span
               class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
               v-if="email.is_email_verified === 0"
@@ -322,6 +325,21 @@ const passwordFieldType = ref("password");
 function switchVisibility() {
   passwordFieldType.value =
     passwordFieldType.value === "password" ? "text" : "password";
+}
+
+function makePrimary(id) {
+  const primary = async (id) => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/email/make-primary/" + id
+      );
+      userStore.getProfile();
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  primary(id);
 }
 
 function onSubmit(values) {
