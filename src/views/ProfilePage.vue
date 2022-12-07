@@ -2,7 +2,11 @@
   <router-view />
   <div
     :class="{
-      hidden: route.name === 'ChangeName' || route.name === 'ChangePassword',
+      hidden:
+        route.name === 'ChangeName' ||
+        route.name === 'ChangePassword' ||
+        route.name === 'ProfileEmails' ||
+        route.name === 'AddEmail',
     }"
     class="lg:block"
   >
@@ -15,7 +19,7 @@
     <!--    Success Messages-->
     <SuccessComponent
       v-if="userStore.successChanges"
-      msg="changes made succesfully"
+      msg="changes made successfully"
     />
     <SuccessComponent
       v-if="userStore.successUsername"
@@ -156,12 +160,20 @@
               v-if="email.is_email_verified === 0"
               >Not verified</span
             >
-            <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
-              >Remove</span
+            <button
+                type="button"
+              class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              @click="deleteEmail(email.id)"
             >
+              Remove
+            </button>
           </div>
-          <router-link :to="{ name: 'AddEmail' }">
-            <p class="mt-20 w-3/12 bg-red-800 px-2 py-2">Add Email</p>
+          <router-link
+            :to="{ name: 'AddEmail' }"
+            class="mt-12 flex w-fit items-center gap-2 rounded-md border-2 border-white bg-transparent px-7 px-2 py-1.5 text-lg"
+          >
+            <AddIcon />
+            <p>Add Email</p>
           </router-link>
           <div
             class="mt-4 border-b-2 border-fadeGrey lg:mt-10 lg:w-10/12 lg:border-fadeLightGray"
@@ -170,7 +182,9 @@
         <!--    Password-->
         <div class="px-9 pt-8 lg:pl-20">
           <p>{{ $t("password") }}</p>
-          <div class="mt-1 flex justify-between lg:items-center">
+          <div
+            class="mt-1 flex justify-between lg:items-center lg:justify-start lg:gap-6"
+          >
             <p
               class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
             >
@@ -268,6 +282,15 @@
             </div>
           </div>
           <div class="mt-4 border-b-2 border-fadeGrey lg:hidden"></div>
+          <!--    Mobile Email -->
+          <div class="pt-8 lg:hidden lg:pl-20" v-if="!userStore.user.google_id">
+            <div class="flex items-center justify-between">
+              <p>{{ $t("email") }}</p>
+              <router-link :to="{ name: 'ProfileEmails' }">
+                <RightArrow />
+              </router-link>
+            </div>
+          </div>
         </div>
       </section>
       <div
@@ -295,6 +318,8 @@ import { onBeforeMount, ref } from "vue";
 import { Form, Field, ErrorMessage, configure } from "vee-validate";
 import ProfileInput from "@/components/profile_page/ProfileInput.vue";
 import axios from "@/config/axios/index.js";
+import AddIcon from "@/components/icons/AddIcon.vue";
+import RightArrow from "@/components/icons/RightArrow.vue";
 const route = useRoute();
 const userStore = useProfileStore();
 const img = ref(null);
@@ -340,6 +365,21 @@ function makePrimary(id) {
     }
   };
   primary(id);
+}
+
+function deleteEmail(id) {
+  const deleteMail = async (id) => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/email/delete/" + id
+      );
+      userStore.getProfile();
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  deleteMail(id);
 }
 
 function onSubmit(values) {

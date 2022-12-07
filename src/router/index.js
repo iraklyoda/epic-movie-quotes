@@ -15,11 +15,12 @@ import PageLayout from "@/components/epic_quotes/PageLayout.vue";
 import ChangeUsername from "@/components/profile_page/ChangeUsername.vue";
 import ChangePassword from "@/components/profile_page/ChangePassword.vue";
 import ProfileLayout from "@/components/profile_page/ProfileLayout.vue";
+import ProfileEmails from "@/components/profile_page/ProfileEmails.vue";
+import AddEmail from "@/components/profile_page/AddEmail.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import AddMovie from "@/components/movies_list/AddMovie.vue";
 import MoviePage from "@/views/MoviePage.vue";
 import AddQuote from "@/components/news_feed/AddQuote.vue";
-import AddEmail from "@/components/profile_page/AddEmail.vue";
 import MovieQuote from "@/components/movies_list/AddQuote.vue";
 import EditMovie from "@/components/movies_list/EditMovie.vue";
 import ViewQuote from "@/components/movies_list/ViewQuote.vue";
@@ -92,10 +93,15 @@ const router = createRouter({
                   name: "ChangePassword",
                 },
                 {
+                  path: "emails",
+                  component: ProfileEmails,
+                  name: "ProfileEmails",
+                },
+                {
                   path: "addemail",
                   component: AddEmail,
                   name: "AddEmail",
-                }
+                },
               ],
             },
           ],

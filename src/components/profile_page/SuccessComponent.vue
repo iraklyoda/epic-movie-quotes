@@ -33,7 +33,7 @@ setTimeout(() => {
   profileStore.successPassword = false;
   profileStore.successChanges = false;
   profileStore.successAddEmail = false;
-}, 3500);
+}, 5000);
 
 defineProps(["msg"]);
 </script>

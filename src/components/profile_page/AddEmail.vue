@@ -1,8 +1,11 @@
 <template>
-  <router-link :to="{ name: 'ProfilePage' }" class="hidden lg:block absolute w-screen h-screen bg-black opacity-40 top-0 left-0 z-10">
+  <router-link
+    :to="{ name: 'ProfilePage' }"
+    class="absolute top-0 left-0 z-10 hidden h-screen w-screen bg-black opacity-40 lg:block"
+  >
   </router-link>
   <div
-    class="lg:absolute lg:top-1/4 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:transform lg:bg-cinder z-20"
+    class="z-20 lg:absolute lg:top-1/4 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:transform lg:bg-cinder"
   >
     <nav class="py-8 pl-9 lg:py-6">
       <div class="lg:hidden">
@@ -15,13 +18,11 @@
       </div>
     </nav>
     <div class="hidden border-b-2 border-fadeGrey lg:block"></div>
-    <main v-if="!submitted">
+    <main>
       <section class="bg-headerBlue py-10 px-9 lg:bg-transparent lg:pt-16">
         <Form @submit="onSubmit">
           <div class="flex flex-col">
-            <label for="username" class="pb-2">{{
-              $t("newEmail")
-            }}</label>
+            <label for="username" class="pb-2">{{ $t("newEmail") }}</label>
             <Field
               v-model="email"
               name="email"
@@ -40,24 +41,14 @@
         <router-link :to="{ name: 'ProfilePage' }">
           <p>Cancel</p>
         </router-link>
-        <button @click="onSubmit" class="rounded-lg bg-red-500 px-2 py-2">
+        <button @click="changeName()" class="hidden lg:block rounded-lg bg-red-500 px-2 py-2">
+          Add
+        </button>
+        <button @click="changeNameMobile()" class="lg:hidden rounded-lg bg-red-500 px-2 py-2">
           Add
         </button>
       </div>
     </main>
-    <section
-      v-else
-      class="mx-9 rounded-lg bg-headerBlue py-8 lg:bg-transparent"
-    >
-      <p class="pt-8 text-center">Are you sure to make changes?</p>
-      <div class="mt-8 border-b-2 border-fadeGrey"></div>
-      <div class="mt-4 flex items-center justify-between px-9">
-        <p @click="submitted = false" class="cursor-pointer">Cancel</p>
-        <button class="rounded-lg bg-red-500 px-2 py-2" @click="changeName">
-          Confirm
-        </button>
-      </div>
-    </section>
   </div>
 </template>
 
@@ -92,6 +83,27 @@ function changeName() {
       profileStore.successAddEmail = true;
       profileStore.getProfile();
       router.push({ name: "ProfilePage" });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  change();
+  console.log();
+}
+
+function changeNameMobile() {
+  const change = async () => {
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_APP_ROOT_API + "/profile/create-email",
+        {
+          email: email.value,
+        }
+      );
+      console.log(response);
+      profileStore.successAddEmail = true;
+      profileStore.getProfile();
+      router.push({ name: "ProfileEmails" });
     } catch (e) {
       console.log(e);
     }

@@ -82,7 +82,7 @@ function onSubmit() {
 function changeName() {
   const change = async () => {
     try {
-      const response = axios.post(
+      const response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
         {
           username: username.value,

@@ -9,24 +9,24 @@
     <!--          Dialog  -->
     <RouterView />
     <!--            Dialog-->
-    <div class="snap-y snap-mandatory h-screen overflow-scroll">
+    <div class="h-screen snap-y snap-mandatory overflow-scroll">
       <section
-        class="text-white bg-darkBlue h-110 lg:h-screen font-helvetica snap-start"
+        class="h-110 snap-start bg-darkBlue font-helvetica text-white lg:h-screen"
       >
-        <header class="flex justify-between mx-8 items-center">
+        <header class="mx-8 flex items-center justify-between">
           <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
           <nav class="flex lg:gap-4">
             <div class="lg:flex">
               <LanguageChange class="mt-8 mr-2" />
               <button
                 @click="router.push({ name: 'Register' })"
-                class="block mx-auto bg-niceRed px-6 py-1 rounded mt-6 hidden lg:block"
+                class="mx-auto mt-6 block hidden rounded bg-niceRed px-6 py-1 lg:block"
               >
                 {{ $t("signUp") }}
               </button>
             </div>
             <button
-              class="mr-2 mt-6 border py-1.5 px-5 rounded"
+              class="mr-2 mt-6 rounded border py-1.5 px-5"
               @click="router.push({ name: 'Login' })"
             >
               {{ $t("logIn") }}
@@ -34,19 +34,19 @@
           </nav>
         </header>
         <p
-          class="text-center text-xl text-skinWhite mt-32 w-80 mx-auto font-bold lg:text-6xl lg:leading-22.5 lg:mt-60 lg:w-176"
+          class="mx-auto mt-32 w-80 text-center text-xl font-bold text-skinWhite lg:mt-60 lg:w-176 lg:text-6xl lg:leading-22.5"
         >
           {{ $t("findAnyQuote") }}
         </p>
         <button
           @click="router.push({ name: 'Login' })"
-          class="block mx-auto bg-niceRed px-3 py-1.5 rounded mt-6 lg:px-4 lg:py-2"
+          class="mx-auto mt-6 block rounded bg-niceRed px-3 py-1.5 lg:px-4 lg:py-2"
         >
           {{ $t("getStarted") }}
         </button>
         <h3></h3>
       </section>
-      <section class="text-white font-helvetica">
+      <section class="font-helvetica text-white">
         <movie-component
           class="snap-center"
           v-for="movie in movies"
@@ -58,7 +58,7 @@
       </section>
     </div>
     <footer class="bg-footerBlue py-3 lg:p-4">
-      <p class="text-white text-xxs ml-8 font-medium font-helvetica lg:text-xs">
+      <p class="ml-8 font-helvetica text-xxs font-medium text-white lg:text-xs">
         &#169; {{ $t("rightsReserved") }}
       </p>
     </footer>
