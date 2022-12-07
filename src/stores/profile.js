@@ -27,6 +27,8 @@ export const useProfileStore = defineStore("profile", () => {
   const successUsername = ref(false);
   const successPassword = ref(false);
   const successChanges = ref(false);
+  const successAddEmail = ref(false);
+
   const root = import.meta.env.VITE_APP_ROOT;
 
   onMounted(() => {
@@ -40,5 +42,6 @@ export const useProfileStore = defineStore("profile", () => {
     successChanges,
     usernameEditOpen,
     profilePicture,
+    successAddEmail,
   };
 });

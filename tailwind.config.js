@@ -45,6 +45,8 @@ module.exports = {
         darkBlue: "#11101A",
         skinWhite: "#DDCCAA",
         niceRed: "#E31221",
+        carrotOrange: "#EC9524",
+        carrotOrangeFade: "rgba(236, 149, 36, 0.2)",
         footerBlue: "#181623",
         headerBlue: "#24222F",
         niceGrey: "#6C757D",

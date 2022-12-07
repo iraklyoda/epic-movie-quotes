@@ -1,8 +1,8 @@
 <template>
-  <router-link :to="{ name: 'ProfilePage' }" class="hidden lg:block">
+  <router-link :to="{ name: 'ProfilePage' }" class="hidden lg:block absolute w-screen h-screen bg-black opacity-40 top-0 left-0 z-10">
   </router-link>
   <div
-    class="lg:absolute lg:top-1/4 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:transform lg:bg-cinder"
+    class="lg:absolute lg:top-1/4 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:transform lg:bg-cinder z-20"
   >
     <nav class="py-8 pl-9 lg:py-6">
       <div class="lg:hidden">
@@ -11,7 +11,7 @@
         </router-link>
       </div>
       <div class="hidden lg:block">
-        <p class="text-xl">Update username</p>
+        <p class="text-xl">{{ $t("addNewEmail") }}</p>
       </div>
     </nav>
     <div class="hidden border-b-2 border-fadeGrey lg:block"></div>
@@ -20,12 +20,13 @@
         <Form @submit="onSubmit">
           <div class="flex flex-col">
             <label for="username" class="pb-2">{{
-              $t("enterNewUsername")
+              $t("newEmail")
             }}</label>
             <Field
               v-model="email"
               name="email"
               id="email"
+              :placeholder="$t('addNewEmail')"
               class="rounded-md bg-lightGrey py-2 pl-2 text-black"
               rules="required|email"
             />
@@ -81,15 +82,15 @@ function onSubmit() {
 function changeName() {
   const change = async () => {
     try {
-      const response = axios.post(
+      const response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/profile/create-email",
         {
           email: email.value,
         }
       );
       console.log(response);
+      profileStore.successAddEmail = true;
       profileStore.getProfile();
-      profileStore.successUsername = true;
       router.push({ name: "ProfilePage" });
     } catch (e) {
       console.log(e);

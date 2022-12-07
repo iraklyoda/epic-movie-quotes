@@ -84,6 +84,8 @@ const i18n = createI18n({
       markAsAllRead: "Mark as all read",
       uploadNewPhoto: "Upload new photo",
       enterNewUsername: "Enter new username",
+      addNewEmail: "Add new Email",
+      newEmail: "New Email",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -164,6 +166,8 @@ const i18n = createI18n({
       markAsAllRead: "მონიშნე ყველა წაკითხულად",
       uploadNewPhoto: "ატვირთე ახალი ფოტო",
       enterNewUsername: "შეიყვანე ახალი უზერნეიმი",
+      addNewEmail: "შეიყვანე ახალი ელ-ფოსტა",
+      newEmail: "ახალი ელ-ფსტა",
     },
   },
 });

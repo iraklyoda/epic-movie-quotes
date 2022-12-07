@@ -25,6 +25,11 @@
       v-if="userStore.successPassword"
       msg="Password changed successfully"
     />
+    <SuccessComponent
+      v-if="userStore.successAddEmail"
+      msg="Please check email to verify new address"
+    />
+    <!--    Success Messages-->
     <Form @submit="onSubmit">
       <section
         class="h-auto bg-headerBlue pb-12 lg:mt-32 lg:w-225 lg:rounded-xl lg:bg-cinder"
@@ -57,9 +62,11 @@
         </div>
         <!--        Add Email -->
         <!--    Username-->
-        <div class="px-9 pt-12 lg:pl-48">
+        <div class="px-9 pt-12 lg:pl-20">
           <p>{{ $t("username") }}</p>
-          <div class="mt-1 flex gap-6 lg:items-center">
+          <div
+            class="mt-1 flex justify-between gap-6 lg:items-center lg:justify-start"
+          >
             <p
               class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
             >
@@ -87,7 +94,7 @@
               <Field
                 name="username"
                 id="username"
-                class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+                class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
                 rules="required|min:3|max:15|alpha_num|lowercase"
               />
             </div>
@@ -99,12 +106,15 @@
           ></div>
         </div>
         <!--        Email-->
-        <div class="px-9 pt-12 lg:pl-20" v-if="!userStore.user.google_id">
+        <div
+          class="hidden px-9 pt-12 lg:block lg:pl-20"
+          v-if="!userStore.user.google_id"
+        >
           <p>{{ $t("email") }}</p>
           <!--          Primary -->
           <div class="relative flex items-center gap-8">
             <p
-              class="> text-lg lg:w-8/12 lg:rounded-md lg:border lg:border-1 lg:border-validGreen lg:bg-fadeGreen lg:py-2 lg:pl-4 lg:text-white lg:text-black"
+              class="> text-lg lg:my-2 lg:w-8/12 lg:rounded-md lg:border lg:border-1 lg:border-validGreen lg:bg-fadeGreen lg:py-2 lg:pl-4 lg:text-white lg:text-black"
             >
               {{ userStore.user.email }}
             </p>
@@ -123,13 +133,25 @@
               class="text-lg lg:w-8/12 lg:rounded-md lg:py-2 lg:pl-4 lg:text-black"
               :class="{
                 'lg:bg-lightGrey': email.is_email_verified === 1,
-                'lg:bg-yellow-300': email.is_email_verified === 0,
+                'lg:border lg:border-2 lg:border-carrotOrange lg:bg-carrotOrangeFade lg:text-white':
+                  email.is_email_verified === 0,
               }"
             >
+              <AlertIcon
+                v-if="email.is_email_verified === 0"
+                class="absolute right-[17rem] top-8"
+              />
               {{ email.email }}
             </p>
-            <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+            <span
+              class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              v-if="email.is_email_verified === 1"
               >Make this primary</span
+            >
+            <span
+              class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
+              v-if="email.is_email_verified === 0"
+              >Not verified</span
             >
             <span class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
               >Remove</span
@@ -143,11 +165,11 @@
           ></div>
         </div>
         <!--    Password-->
-        <div class="px-9 pt-8 lg:px-48">
+        <div class="px-9 pt-8 lg:pl-20">
           <p>{{ $t("password") }}</p>
           <div class="mt-1 flex justify-between lg:items-center">
             <p
-              class="text-lg lg:w-10/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+              class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
             >
               ●●●●●●●●●
             </p>
@@ -166,7 +188,7 @@
             </button>
           </div>
           <!--          Password -->
-          <div v-if="editPassword" class="lg:w-10/12">
+          <div v-if="editPassword" class="lg:w-8/12">
             <div
               class="w-full rounded-md border border-2 border-fadeLightGray bg-cinder px-6 py-2 lg:mt-6 lg:bg-transparent"
             >
@@ -272,7 +294,7 @@ import ProfileInput from "@/components/profile_page/ProfileInput.vue";
 import axios from "@/config/axios/index.js";
 const route = useRoute();
 const userStore = useProfileStore();
-const img = ref("");
+const img = ref(null);
 
 configure({
   validateOnBlur: true,
@@ -292,7 +314,7 @@ function cancel() {
   editUsername.value = false;
   editPassword.value = false;
   editPicture.value = false;
-  img.value = "";
+  img.value = null;
 }
 
 // Passwords
@@ -319,7 +341,7 @@ function onSubmit(values) {
       editUsername.value = false;
       editPassword.value = false;
       editPicture.value = false;
-      img.value = "";
+      img.value = null;
       userStore.getProfile();
       userStore.successChanges = true;
     } catch (e) {

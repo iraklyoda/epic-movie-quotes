@@ -41,6 +41,7 @@ import DotsMenu from "@/components/icons/DotsMenu.vue";
 import EyeIcon from "@/components/icons/EyeIcon.vue";
 import SuccessIcon from "@/components/icons/SuccessIcon.vue";
 import CheckValid from "@/components/icons/CheckValid.vue";
+import AlertIcon from "@/components/icons/AlertIcon.vue";
 
 import InputComponent from "@/components/ui/InputComponent.vue";
 import ProfileInput from "@/components/profile_page/ProfileInput.vue";
@@ -101,6 +102,7 @@ app.component("SuccessComponent", SuccessComponent);
 app.component("SuccessIcon", SuccessIcon);
 app.component("ProfileInput", ProfileInput);
 app.component("CheckValid", CheckValid);
+app.component("AlertIcon", AlertIcon);
 
 app.use(pinia);
 app.use(i18n);
