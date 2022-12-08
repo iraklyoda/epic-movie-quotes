@@ -7,6 +7,7 @@ import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
 
 import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
 
 export const useUserStore = defineStore("user", () => {
   const authStore = useAuthStore();
@@ -50,11 +51,13 @@ export const useUserStore = defineStore("user", () => {
         email
       );
       resetErrors.value = null;
-      alert("Email Sent");
-    } catch (error) {
-      console.log(error.response.data);
-      alert(error.response.data.msg);
-      resetErrors.value = error.response.data.msg;
+      router.push({ name: "CheckPassword" });
+    } catch (e) {
+      console.log(e);
+      resetErrors.value = e.response.data.msg;
+      setTimeout(() => {
+        resetErrors.value = null;
+      }, 3500);
     }
   };
 
@@ -64,10 +67,9 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
-      alert("Password Updated");
-    } catch (error) {
-      console.log(error.response.data);
-      alert(error.response.data.msg);
+      router.push({ name: "LandingPage" });
+    } catch (e) {
+      console.log(e);
     }
   };
 

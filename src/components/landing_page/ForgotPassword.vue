@@ -40,7 +40,7 @@
 <script setup>
 import { Form } from "vee-validate";
 import InputComponent from "@/components/ui/InputComponent.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 const emailInput = ref("");
 import { useUserStore } from "@/stores/user.js";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
@@ -55,7 +55,6 @@ const error = computed(() => {
 });
 
 function onSubmit(values) {
-  router.push({ name: "CheckPassword" });
   store.resetRequest(values);
   console.log(emailInput.value);
 }

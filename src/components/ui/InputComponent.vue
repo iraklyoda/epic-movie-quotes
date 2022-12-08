@@ -13,21 +13,21 @@
             class="bg-lightGrey placeholder-niceGrey w-full px-2.5 py-1 rounded-md lg:py-2 focus:outline-none focus:ring-4 focus:ring-lightGrey focus:ring-opacity-30"
             :class="{
               'ring-1 ring-niceRed':
-                (!meta.valid && meta.touched) || store.resetErrors,
+                (!meta.valid && meta.touched),
               'ring-2 ring-validGreen':
-                meta.valid && meta.touched && !store.resetErrors,
+                meta.valid && meta.touched,
             }"
             :type="type"
             :id="name"
             :placeholder="placeholder"
           />
           <invalid-icon
-            v-if="(!meta.valid && meta.touched) || store.resetErrors"
+            v-if="(!meta.valid && meta.touched)"
             class="absolute top-1 right-2 lg:top-2.5"
             :class="{ 'right-7': isPassword }"
           ></invalid-icon>
           <valid-icon
-            v-if="meta.valid && meta.touched && !store.resetErrors"
+            v-if="meta.valid && meta.touched"
             class="absolute top-2 right-2 lg:top-3"
             :class="{ 'right-7': isPassword }"
           ></valid-icon>
