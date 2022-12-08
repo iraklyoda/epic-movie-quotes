@@ -21,3 +21,13 @@ defineRule("lowercase", (value) => {
     return true;
   }
 });
+
+defineRule("geo_num", (value) => {
+  const regexGeorgia = /[\u10A0-\u10FF]/;
+  if (!regexGeorgia.test(value)) {
+    return "გთხოვთ დარეგისტრირდეთ Redberry-ს მეილით (youremail@redberry.ge)";
+  }
+  return true;
+});
+
+

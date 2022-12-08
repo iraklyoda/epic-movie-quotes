@@ -1,25 +1,21 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
-import axiosInstance from "@/config/axios/jwtAxios";
+import axiosInstance from "@/config/axios/jwtAxios.js";
 import { useRouter } from "vue-router";
-import { setJwtToken } from "@/helpers/jwt/index.js";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
 
 import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
 
 export const useUserStore = defineStore("user", () => {
   const authStore = useAuthStore();
   const token = ref(false);
-  const user = {
-    data: {},
-    token: null,
-  };
   const hello = ref("hello");
   const router = useRouter();
-  const remember_me = ref(false);
 
+  const registerError = ref("");
   const register = async (user) => {
     console.log(user);
     try {
@@ -27,28 +23,11 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/register",
         user
       );
+      registerError.value = "";
       console.log(response.status);
     } catch (error) {
-      if (error.response !== undefined) {
-        alert(error.response.data.message);
-      }
-    }
-  };
-
-  const login = async (user) => {
-    try {
-      const response = await axiosInstance.post(
-        import.meta.env.VITE_APP_ROOT_API + "/login",
-        user
-      );
-      authStore.authenticated = true;
-      console.log(authStore.authenticated);
-      console.log(response);
-      router.push({ name: "NewsFeed" });
-    } catch (error) {
-      console.log(user);
       console.log(error);
-      alert(error.response);
+      registerError.value = "emailBusy";
     }
   };
 
@@ -72,12 +51,13 @@ export const useUserStore = defineStore("user", () => {
         email
       );
       resetErrors.value = null;
-      switchForgotToPassword();
-      alert("Email Sent");
-    } catch (error) {
-      console.log(error.response.data);
-      alert(error.response.data.msg);
-      resetErrors.value = error.response.data.msg;
+      router.push({ name: "CheckPassword" });
+    } catch (e) {
+      console.log(e);
+      resetErrors.value = e.response.data.msg;
+      setTimeout(() => {
+        resetErrors.value = null;
+      }, 3500);
     }
   };
 
@@ -87,16 +67,10 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
-      switchCreateToLogin();
-      alert("Password Updated");
-    } catch (error) {
-      console.log(error.response.data);
-      alert(error.response.data.msg);
+      router.push({ name: "LandingPage" });
+    } catch (e) {
+      console.log(e);
     }
-  };
-
-  const setUser = (userData) => {
-    user.token = userData.token;
   };
 
   // Change Language
@@ -138,97 +112,21 @@ export const useUserStore = defineStore("user", () => {
     langDown();
   }
 
-  // Dialogs
-  const registerOpen = ref(false);
-  const authOpen = ref(false);
-  const forgotOpen = ref(false);
-  const checkOpen = ref(false);
-  const passwordOpen = ref(false);
-  const sentOpen = ref(false);
-  const createOpen = ref(false);
-
-  function closeRegister() {
-    registerOpen.value = false;
-  }
-  function closeAuth() {
-    authOpen.value = false;
-  }
-  function closeForgot() {
-    forgotOpen.value = false;
-  }
-  function closeCheck() {
-    checkOpen.value = false;
-  }
-  function closePassword() {
-    passwordOpen.value = false;
-  }
-  function closeSent() {
-    sentOpen.value = false;
-  }
-  function closeCreate() {
-    createOpen.value = false;
-  }
-  function switchToLogin() {
-    forgotOpen.value = false;
-    registerOpen.value = false;
-    authOpen.value = true;
-  }
-  function switchToRegister() {
-    authOpen.value = false;
-    registerOpen.value = true;
-  }
-  function switchToForgotPassword() {
-    authOpen.value = false;
-    forgotOpen.value = true;
-  }
-  function switchSentToLogin() {
-    sentOpen.value = false;
-    authOpen.value = true;
-  }
-  function switchCreateToLogin() {
-    createOpen.value = false;
-    authOpen.value = true;
-  }
-  function switchForgotToPassword() {
-    forgotOpen.value = false;
-    passwordOpen.value = true;
-  }
-
   return {
     langOpen,
     langDropDown,
     langDown,
     changeLocale,
     currentLanguage,
-    registerOpen,
-    authOpen,
-    forgotOpen,
-    checkOpen,
-    passwordOpen,
-    sentOpen,
-    createOpen,
-    closeRegister,
-    closeAuth,
-    closeForgot,
-    closeCheck,
-    closePassword,
-    closeSent,
-    closeCreate,
-    switchToLogin,
-    switchToRegister,
-    switchToForgotPassword,
-    switchSentToLogin,
-    switchCreateToLogin,
-    login,
     resetErrors,
     logout,
     register,
     token,
-    setUser,
     resetRequest,
     updatePassword,
     hello,
     appLanguage,
     setAppLanguage,
+    registerError,
   };
 });

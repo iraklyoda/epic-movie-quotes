@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl"
-  >
+  <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
       <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
@@ -13,7 +11,6 @@
     </div>
     <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
       <input-component
-        v-model="passwordInput"
         name="password"
         :label="$t('password')"
         :placeholder="$t('password')"
@@ -51,14 +48,14 @@
       </button>
       <button
         type="button"
-        @click="$emit('login')"
+        @click="router.push({ name: 'Login' })"
         class="w-full flex justify-center items-center gap-2 my-8"
       >
         <left-arrow-icon></left-arrow-icon>
         <span class="text-niceGrey">{{ $t("backToLogIn") }}</span>
       </button>
     </Form>
-  </div>
+  </dialog-component>
 </template>
 
 <script setup>
@@ -66,12 +63,12 @@ import { Form } from "vee-validate";
 import InputComponent from "@/components/ui/InputComponent.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import DialogComponent from "@/components/ui/DialogComponent.vue";
 const store = useUserStore();
-
+const router = useRouter();
 
 const route = useRoute();
-const passwordInput = ref("");
 
 function switchVisibility() {
   passwordFieldType.value =
@@ -79,12 +76,14 @@ function switchVisibility() {
 }
 const passwordFieldType = ref("password");
 
-function onSubmit() {
+function onSubmit(values) {
   const newPassword = {
-    email: route.query.email,
-    password: passwordInput.value,
-    token: route.query.token,
+    email: route.params.email,
+    password: values.password,
+    token: route.params.token,
   };
+  console.log(values);
+  console.log(route.params);
   console.log(newPassword);
   console.log(passwordFieldType.value);
   store.updatePassword(newPassword);

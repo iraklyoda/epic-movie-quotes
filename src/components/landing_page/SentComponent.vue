@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl"
-  >
+  <dialog-component>
     <div class="h-0.5"></div>
     <div
       class="bg-blueGradient rounded-xl py-4 w-5/6 h-96 mt-20 mx-auto lg:bg-none lg:pb-12 lg:h-auto"
@@ -23,7 +21,7 @@
         {{ $t("logIn") }}
       </button>
     </div>
-  </div>
+  </dialog-component>
 </template>
 
 <script setup>

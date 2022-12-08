@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl"
-  >
+  <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
       <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
@@ -11,15 +9,13 @@
     </div>
     <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
       <input-component
-        v-model="nameInput"
-        name="name"
+        name="username"
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
         rules="required|min:3"
       />
       <input-component
-        v-model="passwordInput"
         name="password"
         :label="$t('password')"
         :placeholder="$t('password')"
@@ -36,14 +32,16 @@
           <visibility-icon />
         </button>
       </input-component>
+      <p class="text-red-300 text-xs mt-1 lg:text-base" v-if="loginError">
+        {{ $t(loginError) }}
+      </p>
       <div class="flex justify-between my-3 text-white">
         <div class="flex gap-2">
           <input
-            v-model="rememberMe"
             @click="setRememberToken"
             type="checkbox"
             :value="true"
-            name="remember_token"
+            name="remember_me"
             id="remember_token"
             class="accent-success"
           />
@@ -52,7 +50,10 @@
           </label>
         </div>
         <div class="text-BlueRibbon underline">
-          <button type="button" @click="$emit('forgotPassword')">
+          <button
+            type="button"
+            @click="router.push({ name: 'ForgotPassword' })"
+          >
             {{ $t("forgotPassword") }}
           </button>
         </div>
@@ -72,53 +73,54 @@
         {{ $t("dontHaveAnAccount") }}
         <button
           type="button"
-          @click="$emit('register')"
+          @click="router.push({ name: 'Register' })"
           class="text-BlueRibbon underline"
         >
           {{ $t("signUp") }}
         </button>
       </p>
     </Form>
-  </div>
+  </dialog-component>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { Form } from "vee-validate";
-import InputComponent from "@/components/ui/InputComponent.vue";
-import GoogleIcon from "@/components/icons/GoogleIcon.vue";
+import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
+import axiosInstance from "@/config/axios/jwtAxios";
+import axios from "@/config/axios/index.js";
+import Echo from "laravel-echo";
+const authStore = useAuthStore();
 
-import { useUserStore } from "@/stores/user.js";
-
-const store = useUserStore();
-
-
-const nameInput = ref("");
-const passwordInput = ref("");
 const passwordFieldType = ref("password");
-const rememberMe = ref(false);
 const googleLogin = ref(import.meta.env.VITE_APP_ROOT_API + "/google/login");
-
-
-function setRememberToken() {
-  store.rememberMe = !store.rememberMe;
-}
 
 function switchVisibility() {
   passwordFieldType.value =
     passwordFieldType.value === "password" ? "text" : "password";
 }
 
-function onSubmit() {
-  console.log("Happy User Making Happy Dance");
-  const user = {
-    username: nameInput.value,
-    password: passwordInput.value,
-    remember_me: rememberMe.value,
-  };
+const loginError = ref("");
+const login = async (user) => {
+  try {
+    const response = await axiosInstance.post(
+      import.meta.env.VITE_APP_ROOT_API + "/login",
+      user
+    );
+    console.log(response);
+    authStore.authenticated = true;
+    loginError.value = "";
+    router.push({ name: "NewsFeed" });
+  } catch (error) {
+    console.log(error);
+    // if (error.response.data.error === "Wrong email or password!") {
+    //   loginError.value = "wrongUser";
+    // }
+  }
+};
 
-  store.login(user);
+function onSubmit(values) {
+  login(values);
 }
-
-defineEmits(["register", "forgotPassword"]);
 </script>

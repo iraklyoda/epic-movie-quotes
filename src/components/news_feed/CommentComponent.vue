@@ -1,13 +1,23 @@
 <template>
-  <div class="mt-7 flex items-center gap-4 ">
-    <img src="@/assets/images/user/profile_picture.png" alt="profile picture" />
-    <p>Maia Nakashidze</p>
+  <div class="mt-7 flex items-center gap-4">
+    <img
+      :src="root + props.comment.author.profile_picture"
+      alt="profile picture"
+      class="h-10 w-10 rounded-full object-cover object-center"
+    />
+    <p>{{ props.comment.author.username }}</p>
   </div>
-  <p class="w-5/6 mt-3 lg:ml-14">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nunc
-    vel massa facilisis consequat elit morbi convallis convallis. Volutpat vitae
-    et nisl et. Adipiscing enim integer mi leo nisl. Arcu vitae mauris odio
-    eget.
+  <p class="mt-3 break-words lg:mt-1 lg:pl-14 lg:pr-12">
+    {{ props.comment.body }}
   </p>
-  <div class="border-b-2 mt-4 border-fadeGrey w-11/12 max-w-3xl"></div>
+  <div class="mt-4 border-b-2 border-fadeGrey"></div>
 </template>
+
+<script setup>
+import {ref} from "vue";
+const root = ref(import.meta.env.VITE_APP_ROOT);
+const props = defineProps(["comment"]);
+if (props.comment.author.google_id) {
+  root.value = "";
+}
+</script>
