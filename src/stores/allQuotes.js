@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import {onBeforeMount, ref} from "vue";
 import axios from "@/config/axios/jwtAxios.js";
 import { useProfileStore } from "@/stores/profile";
 
@@ -63,7 +63,6 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
       getQuotes();
     }
   };
-
   return {
     quotes,
     getQuotes,

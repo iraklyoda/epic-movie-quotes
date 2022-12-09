@@ -85,7 +85,7 @@ import PostComponent from "@/components/news_feed/PostComponent.vue";
 import { RouterView } from "vue-router";
 import { useAllQuotesStore } from "@/stores/allQuotes.js";
 import { usePageStore } from "@/stores/page.js";
-import { onBeforeMount, ref, watchEffect, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Form, Field } from "vee-validate";
 import LeftArrowIcon from "@/components/icons/LeftArrowIcon.vue";
 
@@ -121,6 +121,10 @@ function mobileFeedSubmit() {
 
 let timeOut = setTimeout(() => {
   console.log(searchValue.value);
+  quotesStore.searchedQuotes = [];
+  quotesStore.searchQuotes({
+    search: searchValue.value,
+  });
 }, 500);
 
 watch(searchValue, () => {
@@ -134,7 +138,6 @@ watch(searchValue, () => {
       quotesStore.searchQuotes({
         search: searchValue.value,
       });
-      console.log(searchValue.value);
     }, 500);
     quotesStore.searchedQuotes = [];
   } else {
@@ -176,9 +179,12 @@ window.Echo.channel("add-comment").listen(".new-comment", () => {
   quotesStore.getNumberQuotes();
 });
 
-const change = ref(null);
 
-onBeforeMount(() => {
-  quotesStore.getQuotes(1);
+onMounted(() => {
+  if(quotesStore.quotes.length){
+    quotesStore.getNumberQuotes(quotesStore.quotes.length);
+  } else {
+    quotesStore.getQuotes();
+  }
 });
 </script>
