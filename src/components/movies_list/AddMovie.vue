@@ -1,7 +1,7 @@
 <template>
   <movie-dialog route="MovieList">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
+      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:-ml-64 lg:h-auto lg:w-240 lg:rounded-xl"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -15,12 +15,12 @@
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profileStore.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="w-10 h-10 object-center object-cover rounded-full"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{profileStore.user.username}}</p>
           </div>
         </div>
       </aside>
@@ -52,8 +52,9 @@
           rules="required"
         >
           <div
-            class="relative mt-4 h-auto w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-2 placeholder-white outline-none"
+            class="relative mt-4 h-auto w-full rounded border-1 bg-transparent px-2.5 py-2 placeholder-white outline-none"
             :class="{
+              'border-niceGrey': !meta.touched,
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
             }"
@@ -73,8 +74,9 @@
                 @keyup.,="addTag"
                 @keydown.enter.prevent="addTag"
                 :placeholder="$t('category') + '...'"
-                class="bg-transparent placeholder-white focus:outline-none"
+                class="placeholder-white focus:outline-none"
                 :class="{
+                  'bg-transparent': true,
                   'pl-2': categoryTags.length > 0,
                   'border-niceRed': !meta.valid && meta.touched,
                   'border-validGreen': meta.valid && meta.touched,
@@ -130,7 +132,7 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
+            class="border-niceGray relative mt-4 w-full rounded border-1 bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
@@ -179,9 +181,11 @@ import { useRouter } from "vue-router";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axios from "@/config/axios/index.js";
 import { useMovieStore } from "@/stores/movie.js";
+import { useProfileStore } from "@/stores/profile.js";
 import MovieInput from "@/components/ui/movies/MovieInput.vue";
 const movieList = useMovieStore();
 const router = useRouter();
+const profileStore = useProfileStore();
 
 configure({
   validateOnBlur: true,

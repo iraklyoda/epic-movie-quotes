@@ -1,7 +1,7 @@
 <template>
   <movie-dialog route="NewsFeed">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-200 lg:overflow-auto lg:overflow-x-hidden lg:rounded-xl"
+      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:ml-24 lg:h-auto lg:w-200 lg:overflow-auto lg:overflow-x-hidden lg:rounded-xl"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -15,12 +15,12 @@
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profile.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover object-center"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{ profile.user.username }}</p>
           </div>
         </div>
       </aside>
@@ -63,11 +63,12 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
+            class="relative mt-4 w-full rounded border-1 bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
               'border-4 border-dotted border-blue-700': isDragging,
+              'border-niceGray': true,
             }"
           >
             <div class="flex justify-between lg:justify-start lg:gap-3">
@@ -80,7 +81,7 @@
               </div>
               <label
                 for="movieImage"
-                class="self-center bg-fadePurple px-2 py-2 xs:whitespace-nowrap xs:text-xs md:text-base"
+                class="cursor-pointer self-center bg-fadePurple px-2 py-2 xs:whitespace-nowrap xs:text-xs md:text-base"
                 >{{ $t("chooseFile") }}</label
               >
             </div>
@@ -153,7 +154,7 @@
           </div>
           <div
             v-if="open"
-            class="relative mt-1 h-24 w-full overflow-scroll rounded bg-black px-2.5 py-10 placeholder-white lg:py-2"
+            class="relative mt-1 h-24 h-32 w-full overflow-scroll rounded bg-black px-2.5 py-10 placeholder-white lg:py-2"
           >
             <div v-for="movie in movie.movies" v-bind:key="movie.title">
               <label
@@ -212,9 +213,13 @@ import axios from "@/config/axios/index.js";
 import MovieIcon from "@/components/icons/MovieIcon.vue";
 import { useMovieStore } from "@/stores/movie.js";
 import { useUserStore } from "@/stores/user.js";
+import { useAllQuotesStore } from "@/stores/allQuotes.js";
+import { useProfileStore } from "@/stores/profile.js";
+import router from "@/router";
 const movie = useMovieStore();
 const user = useUserStore();
 const root = import.meta.env.VITE_APP_ROOT;
+const profile = useProfileStore();
 
 configure({
   validateOnBlur: true,
@@ -230,10 +235,9 @@ function onSubmit(values) {
     quote_ka: values.quote_ka,
     thumbnail: values.image,
   };
-  console.log(quote);
   const addQuote = async () => {
     try {
-      const response = axios.post(
+      const response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/quotes/create",
         quote,
         {
@@ -242,6 +246,8 @@ function onSubmit(values) {
           },
         }
       );
+      useAllQuotesStore().getNumberQuotes();
+      router.push({ name: "NewsFeed" });
       console.log(response);
     } catch (e) {
       console.log(e);

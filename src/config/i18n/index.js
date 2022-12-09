@@ -86,6 +86,11 @@ const i18n = createI18n({
       enterNewUsername: "Enter new username",
       addNewEmail: "Add new Email",
       newEmail: "New Email",
+      EmailIsNotVerified:
+        "Email is not verified, we have sent you verification link",
+      SecondaryEmailNotVerified: "Secondary email is not verified",
+      EmailBeenTaken: "Email has been taken",
+      search: "Search",
     },
     ka: {
       movieQuotes: "კინო ციტატები",
@@ -138,7 +143,7 @@ const i18n = createI18n({
       lotrQuote:
         "შენს თვალებში იგივე შიშს ვხედავ რომელიც ჩემს გულს წაიღებდა...",
       rightsReserved: "2022 კინო ციტატები. ყველა უფლება დაცულია.",
-      writeNewQuote: "დაწერე ახალი ციტატა",
+      writeNewQuote: "ახალი ციტატა",
       searchBy: "ძებნა",
       editYourProfile: "პროფილის რედაქტირება",
       editMovie: "ფილმის რედაქტირება",
@@ -168,6 +173,12 @@ const i18n = createI18n({
       enterNewUsername: "შეიყვანე ახალი უზერნეიმი",
       addNewEmail: "შეიყვანე ახალი ელ-ფოსტა",
       newEmail: "ახალი ელ-ფსტა",
+      EmailIsNotVerified:
+        "ელ ფოსტა არ არის დადასტურებული, დასტურის მეილი გამოგზავნილია ხელმეორედ",
+      SecondaryEmailNotVerified:
+        "მეორეხარისხოვანი ელ-ფოსტა არ არის დადასტურებული",
+      EmailBeenTaken: "ელ-ფოსტა დაკავებულია",
+      search: "ძებნა",
     },
   },
 });

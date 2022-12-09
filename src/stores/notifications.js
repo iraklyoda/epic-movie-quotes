@@ -17,7 +17,6 @@ export const useNotificationsStore = defineStore("notifications", () => {
           unread.value++;
         }
       });
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

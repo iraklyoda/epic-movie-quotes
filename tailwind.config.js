@@ -15,6 +15,9 @@ module.exports = {
       lg: "1280px",
     },
     extend: {
+      transitionProperty: {
+        width: "width",
+      },
       backdropBlur: {
         xs: "2px",
       },
@@ -37,9 +40,10 @@ module.exports = {
         fadeGrey: "rgba(239, 239, 239, 0.2)",
         fadePurple: "rgba(151, 71, 255, 0.4)",
         fadePink: "rgba(190, 9, 103, 0.01)",
-        darkGreen : "#0F5132",
+        darkGreen: "#0F5132",
         validGreen: "#198754",
         fadeGreen: "rgba(25, 135, 84, 0.2)",
+        searchBlue: "rgba(18, 16, 26, 0.98)",
         successGreen: "#BADBCC",
         BlueRibbon: "#0D6EFD",
         darkBlue: "#11101A",
@@ -74,7 +78,7 @@ module.exports = {
         150: "37.5rem",
         176: "44rem",
         200: "50rem",
-        225: '56.25rem',
+        225: "56.25rem",
         240: "60rem",
         245: "61.25rem",
       },

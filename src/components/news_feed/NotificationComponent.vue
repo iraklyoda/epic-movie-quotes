@@ -1,12 +1,12 @@
 <template>
   <div
-    class="flex items-center gap-3 rounded-md border-[1px] border-borderGrey px-4 py-4"
+    class="flex items-center gap-6 rounded-md border-[1px] border-borderGrey px-4 py-4"
   >
     <div>
       <img
-        :src="root + notification.sender.profile_picture"
+        :src="profilePicture"
         alt="profile picture"
-        class="w-auto w-15 h-15 rounded-full object-cover object-center"
+        class="h-14 w-14 rounded-full object-cover object-center"
       />
     </div>
     <div>
@@ -28,10 +28,9 @@
 </template>
 <script setup>
 import HeartIcon from "@/components/icons/HeartIcon.vue";
-import { computed } from "vue";
 import i18n from "@/config/i18n";
-const root = import.meta.env.VITE_APP_ROOT;
-
+import {computed, ref} from "vue";
+const root = ref(import.meta.env.VITE_APP_ROOT);
 
 function timeAgo(time) {
   switch (typeof time) {
@@ -47,7 +46,7 @@ function timeAgo(time) {
       time = +new Date();
   }
   let time_formats = [];
-  if(i18n.global.locale.value === 'en') {
+  if (i18n.global.locale.value === "en") {
     time_formats = [
       [60, "seconds", 1], // 60
       [120, "1 minute ago", "1 minute from now"], // 60*2
@@ -105,9 +104,17 @@ function timeAgo(time) {
 
 let aDay = 24 * 60 * 60 * 1000;
 
-defineProps({
+const props = defineProps({
   notification: {
     required: true,
   },
+});
+
+const profilePicture = computed(() => {
+  if (props.notification.sender.profile_picture.includes("https")) {
+    return props.notification.sender.profile_picture;
+  } else {
+    return root.value + props.notification.sender.profile_picture;
+  }
 });
 </script>

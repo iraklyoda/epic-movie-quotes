@@ -101,7 +101,7 @@ function switchVisibility() {
     passwordFieldType.value === "password" ? "text" : "password";
 }
 
-const loginError = ref("");
+const loginError = ref(null);
 const login = async (user) => {
   try {
     const response = await axiosInstance.post(
@@ -110,13 +110,18 @@ const login = async (user) => {
     );
     console.log(response);
     authStore.authenticated = true;
-    loginError.value = "";
+    loginError.value = null;
     router.push({ name: "NewsFeed" });
   } catch (error) {
     console.log(error);
-    // if (error.response.data.error === "Wrong email or password!") {
-    //   loginError.value = "wrongUser";
-    // }
+    const errorMessage = error.response.data.error;
+    if (errorMessage === "Wrong email or password!") {
+      loginError.value = "wrongUser";
+    } else if (errorMessage === "Email is not verified"){
+      loginError.value = "EmailIsNotVerified";
+    } else if (errorMessage === "Non primary email is not verified"){
+      loginError.value = "SecondaryEmailNotVerified";
+    }
   }
 };
 

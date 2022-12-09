@@ -10,6 +10,4 @@ input[type="file"] {
 
 <script setup>
 import { RouterView } from "vue-router";
-
-console.log(import.meta.env.VITE_APP_ROOT_API);
 </script>

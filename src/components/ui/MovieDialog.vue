@@ -3,7 +3,7 @@
     class="absolute top-0 left-0 w-full h-auto flex overflow-scroll  justify-center items-center"
   >
     <router-link
-      class="fixed w-full h-auto lg:h-screen top-0"
+      class="fixed top-0 h-auto w-full lg:h-screen"
       :to="{name: route, params: param}"
     >
     </router-link>

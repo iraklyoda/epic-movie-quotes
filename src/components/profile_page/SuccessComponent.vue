@@ -26,6 +26,7 @@ function closeAll() {
   profileStore.successPassword = false;
   profileStore.successChanges = false;
   profileStore.successAddEmail = false;
+  profileStore.successChangePrimaryEmail = false;
 }
 
 setTimeout(() => {
@@ -33,6 +34,7 @@ setTimeout(() => {
   profileStore.successPassword = false;
   profileStore.successChanges = false;
   profileStore.successAddEmail = false;
+  profileStore.successChangePrimaryEmail = false;
 }, 5000);
 
 defineProps(["msg"]);

@@ -1,14 +1,15 @@
 <template>
   <router-view />
   <div
+    class="lg:block"
     :class="{
       hidden:
         route.name === 'ChangeName' ||
         route.name === 'ChangePassword' ||
         route.name === 'ProfileEmails' ||
         route.name === 'AddEmail',
+      'lg:hidden': route.name === 'ProfileEmails',
     }"
-    class="lg:block"
   >
     <nav class="py-8 pl-9 lg:hidden">
       <router-link :to="{ name: 'NewsFeed' }">
@@ -33,10 +34,14 @@
       v-if="userStore.successAddEmail"
       msg="Please check email to verify new address"
     />
+    <SuccessComponent
+      v-if="userStore.successChangePrimaryEmail"
+      :msg="userStore.user.email + ' has been set an primary email'"
+    />
     <!--    Success Messages-->
     <Form @submit="onSubmit">
       <section
-        class="h-auto bg-headerBlue pb-12 lg:mt-32 lg:w-225 lg:rounded-xl lg:bg-cinder"
+        class="h-auto bg-headerBlue pb-12 lg:mt-16 lg:w-9/12 lg:rounded-xl lg:bg-cinder"
       >
         <!--        Profile Picture-->
         <div class="flex flex-col items-center">
@@ -133,25 +138,27 @@
             v-for="email in userStore.user.emails"
             v-bind:key="email.id"
           >
-            <p
-              class="text-lg lg:w-8/12 lg:rounded-md lg:py-2 lg:pl-4 lg:text-black"
-              :class="{
-                'lg:bg-lightGrey': email.is_email_verified === 1,
-                'lg:border lg:border-2 lg:border-carrotOrange lg:bg-carrotOrangeFade lg:text-white':
-                  email.is_email_verified === 0,
-              }"
-            >
+            <div class="relative text-lg lg:w-8/12">
+              <p
+                class="lg:rounded-md lg:py-2 lg:pl-4 lg:text-black"
+                :class="{
+                  'lg:bg-lightGrey': email.is_email_verified === 1,
+                  'lg:border lg:border-2 lg:border-carrotOrange lg:bg-carrotOrangeFade lg:text-white':
+                    email.is_email_verified === 0,
+                }"
+              >
+                {{ email.email }}
+              </p>
               <AlertIcon
+                class="absolute right-3 top-4"
                 v-if="email.is_email_verified === 0"
-                class="absolute right-[17rem] top-8"
               />
-              {{ email.email }}
-            </p>
+            </div>
             <button
               type="button"
               class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
               v-if="email.is_email_verified === 1"
-              @click="makePrimary(email.id)"
+              @click="userStore.makePrimary(email.id)"
             >
               Make this primary
             </button>
@@ -161,9 +168,9 @@
               >Not verified</span
             >
             <button
-                type="button"
+              type="button"
               class="whitespace-nowrap text-niceGrey lg:text-lightGrey"
-              @click="deleteEmail(email.id)"
+              @click="userStore.deleteEmail(email.id)"
             >
               Remove
             </button>
@@ -313,6 +320,7 @@
 <script setup>
 import { RouterView } from "vue-router";
 import { useProfileStore } from "@/stores/profile.js";
+import { usePageStore } from "@/stores/page.js";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { Form, Field, ErrorMessage, configure } from "vee-validate";
@@ -320,8 +328,11 @@ import ProfileInput from "@/components/profile_page/ProfileInput.vue";
 import axios from "@/config/axios/index.js";
 import AddIcon from "@/components/icons/AddIcon.vue";
 import RightArrow from "@/components/icons/RightArrow.vue";
+import AlertIcon from "@/components/icons/AlertIcon.vue";
 const route = useRoute();
 const userStore = useProfileStore();
+const pageStore = usePageStore();
+pageStore.menuOpen = false;
 const img = ref(null);
 
 configure({
@@ -350,36 +361,6 @@ const passwordFieldType = ref("password");
 function switchVisibility() {
   passwordFieldType.value =
     passwordFieldType.value === "password" ? "text" : "password";
-}
-
-function makePrimary(id) {
-  const primary = async (id) => {
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_APP_ROOT_API + "/profile/email/make-primary/" + id
-      );
-      userStore.getProfile();
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  primary(id);
-}
-
-function deleteEmail(id) {
-  const deleteMail = async (id) => {
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_APP_ROOT_API + "/profile/email/delete/" + id
-      );
-      userStore.getProfile();
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  deleteMail(id);
 }
 
 function onSubmit(values) {

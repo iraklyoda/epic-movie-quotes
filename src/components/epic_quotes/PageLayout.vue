@@ -16,7 +16,13 @@
           ></MenuIcon>
           <div class="flex gap-5">
             <SearchIcon
+              @click="page.changeFeedSearch()"
               v-if="route.name === 'NewsFeed'"
+              class="w-5 cursor-pointer lg:hidden"
+            ></SearchIcon>
+            <SearchIcon
+              @click="page.changeListSearch()"
+              v-if="route.name === 'MovieList'"
               class="w-5 lg:hidden"
             ></SearchIcon>
             <div @click="notificationState" class="relative cursor-pointer">
@@ -108,13 +114,11 @@ const profileStore = useProfileStore();
 const notifications = useNotificationsStore();
 
 const notificationOpen = ref(false);
-const unreadNotifications = ref([]);
 
 function notificationState() {
   notificationOpen.value = !notificationOpen.value;
 }
 setTimeout(() => {
-  console.log(profileStore.user.id);
   window.Echo.private("add-notification." + profileStore.user.id).listen(
     ".new-notification",
     () => {
@@ -140,9 +144,6 @@ function readMark() {
 }
 
 const route = useRoute();
-function getRoute() {
-  console.log(route.name);
-}
 
 onBeforeMount(() => {
   notifications.getNotifications();

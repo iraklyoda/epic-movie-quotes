@@ -172,28 +172,29 @@ import EditIcon from "@/components/icons/EditIcon.vue";
 import { useQuoteStore } from "@/stores/quote.js";
 import { useQuotesStore } from "@/stores/quotes.js";
 import { useMovieStore } from "@/stores/movie.js";
+import { useSingleStore } from "@/stores/single.js";
+const movie = useSingleStore();
 const route = useRoute();
 const router = useRouter();
 const quotesStore = useQuotesStore();
 const quote = useQuoteStore();
 const movies = useMovieStore();
 
-import { useSingleStore } from "@/stores/single.js";
-
-const movie = useSingleStore();
 console.log(movie.movie);
 
 const openQuoteId = ref("");
 
 function destroyQuote(id) {
-  quote.deleteQuote(id);
-  movie.getMovie(route.params.id);
+  const destroy = async () => {
+    await quote.deleteQuote(id);
+    movie.getMovie(route.params.id);
+  }
+  destroy();
 }
 
 function destroyMovie(id) {
   router.push({ name: "MovieList" });
   movie.deleteMovie(id);
-  movies.getMovies();
 }
 
 function toggleQuoteMenu(quoteId) {
