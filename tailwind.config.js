@@ -29,6 +29,7 @@ module.exports = {
       },
       fontSize: {
         xxs: "8px",
+        xs: "10px",
       },
       fontFamily: {
         helvetica: ["Helvetica Neue", "sans-serif"],
@@ -70,6 +71,7 @@ module.exports = {
         300: "75rem",
       },
       maxHeight: {
+        150: '37.5rem',
         176: "52rem",
       },
       width: {

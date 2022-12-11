@@ -1,11 +1,11 @@
 <template>
   <router-link
     :to="{ name: 'ProfilePage' }"
-    class="absolute top-0 left-0 z-10 hidden h-screen w-screen bg-black opacity-40 lg:block"
+    class="fixed top-0 left-0 z-10 hidden h-screen w-screen bg-black opacity-40 lg:block"
   >
   </router-link>
   <div
-    class="z-20 lg:absolute lg:top-1/4 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:transform lg:bg-cinder"
+    class="z-20 lg:fixed lg:top-1/2 lg:left-1/2 lg:w-150 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:bg-cinder"
   >
     <nav class="py-8 pl-9 lg:py-6">
       <div class="lg:hidden">
@@ -47,15 +47,16 @@
             </p>
           </div>
           <div
-              class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
+            class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
           >
             <router-link :to="{ name: 'ProfilePage' }">
-              <p>Cancel</p>
+              <p>{{ $t("cancel") }}</p>
             </router-link>
             <button
-                class="rounded-lg bg-red-500 px-2 py-2"
+              class="rounded-lg bg-niceRed px-2 py-2"
+              :class="{ 'animate-spin': profileStore.loading }"
             >
-              Add
+              {{ $t("add") }}
             </button>
           </div>
         </Form>
@@ -94,9 +95,10 @@
               <p>Cancel</p>
             </router-link>
             <button
-              class="rounded-lg bg-red-500 px-2 py-2"
+              class="rounded-lg bg-niceRed px-2 py-2"
+              :class="{ 'animate-spin': profileStore.loading }"
             >
-              Add
+              {{ $t("add") }}
             </button>
           </div>
         </Form>
@@ -123,6 +125,7 @@ function onSubmit(values) {
   console.log(values);
   submitted.value = true;
   const create = async () => {
+    profileStore.loading = true;
     try {
       const response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/profile/create-email",
@@ -130,12 +133,13 @@ function onSubmit(values) {
           email: email.value,
         }
       );
-      console.log(response);
+      profileStore.loading = false;
       profileStore.successAddEmail = true;
       profileStore.getProfile();
       router.push({ name: "ProfilePage" });
     } catch (e) {
       console.log(e);
+      profileStore.loading = false;
       if (e.response.data.message === "The email has already been taken.") {
         profileStore.addEmailErrors = "EmailBeenTaken";
         setTimeout(() => {
@@ -150,6 +154,7 @@ function onSubmit(values) {
 function onSubmitMobile(values) {
   console.log(values);
   const change = async () => {
+    profileStore.loading = true;
     try {
       const response = await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/profile/create-email",
@@ -157,11 +162,13 @@ function onSubmitMobile(values) {
           email: email.value,
         }
       );
+      profileStore.loading = false;
       console.log(response);
       profileStore.successAddEmail = true;
       profileStore.getProfile();
       router.push({ name: "ProfileEmails" });
     } catch (e) {
+      profileStore.loading = false;
       console.log(e);
       if (e.response.data.message === "The email has already been taken.") {
         profileStore.addEmailErrors = "EmailBeenTaken";

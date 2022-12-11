@@ -5,11 +5,9 @@
   >
     <div class="mt-7 flex items-center gap-4">
       <img
-        :src="
-          profile.profilePicture
-        "
+        :src="profile.profilePicture"
         alt="profile picture"
-        class="w-10 rounded-full w-16 h-16 object-cover object-center"
+        class="h-16 w-10 w-16 rounded-full object-cover object-center"
         :class="{
           'border-2 border-niceRed': route.matched.some((route) =>
             route.path.includes('/profile')
@@ -54,6 +52,13 @@
         <p>{{ $t("listOfMovies") }}</p>
       </div>
     </router-link>
+    <button
+      type="button"
+      @click="user.logout"
+      class="ml-3 mt-4 block rounded border-2 px-5 py-1 lg:hidden"
+    >
+      {{ $t("logOut") }}
+    </button>
   </div>
 </template>
 
@@ -62,6 +67,8 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { usePageStore } from "@/stores/page.js";
 import { useProfileStore } from "@/stores/profile.js";
+import { useUserStore } from "@/stores/user.js";
+const user = useUserStore();
 
 const profile = useProfileStore();
 const page = usePageStore();

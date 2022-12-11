@@ -1,5 +1,5 @@
 <template>
-  <div class="pr-16">
+  <div >
     <div class="mt-5 flex items-center gap-4">
       <img
         :src="profilePicture"

@@ -5,6 +5,7 @@ import axios from "@/config/axios/index.js";
 export const useNotificationsStore = defineStore("notifications", () => {
   const notifications = ref([]);
   const unread = ref(0);
+  const newNotification = ref(false);
   const getNotifications = async () => {
     try {
       const response = await axios.get(
@@ -15,11 +16,15 @@ export const useNotificationsStore = defineStore("notifications", () => {
       notifications.value.forEach((notification) => {
         if(notification.read === 0) {
           unread.value++;
+          newNotification.value = true;
+          setTimeout(() => {
+            newNotification.value = false;
+          }, 4000);
         }
       });
     } catch (e) {
       console.log(e);
     }
   };
-  return { notifications, getNotifications, unread };
+  return { notifications, getNotifications, newNotification, unread };
 });

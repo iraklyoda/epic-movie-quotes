@@ -2,16 +2,21 @@
   <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
-      <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
+      <h2 class="mt-20 text-2xl font-medium text-white lg:mt-16 lg:text-3xl">
         {{ $t("forgotPassword") }}?
       </h2>
-      <p class="mt-3 text-niceGrey w-96 mx-auto">
+      <p class="mx-auto mt-3 w-96 text-niceGrey">
         {{ $t("passwordResetInstructions") }}
       </p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
+    <Form
+      @submit="onSubmit"
+      class="mx-auto mt-8 w-4/5 lg:w-3/5"
+      v-slot="{ errors }"
+    >
       <input-component
         v-model="emailInput"
+        :errors="errors.emailInput"
         name="email"
         type="email"
         :label="$t('email')"
@@ -19,16 +24,17 @@
         :required="true"
         rules="required|email"
       />
-      <p class="text-red-300 text-xs lg:text-base -mt-2 mb-2">
+      <p class="-mt-2 mb-2 text-xs text-red-300 lg:text-base">
         {{ error ? $t(error) : "" }}
       </p>
-      <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
+      <button class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
+      :class="{'animate-spin': store.loading}">
         {{ $t("sendInstructions") }}
       </button>
       <button
         type="button"
         @click="router.push({ name: 'Login' })"
-        class="w-full flex justify-center items-center gap-2 my-8"
+        class="my-8 flex w-full items-center justify-center gap-2"
       >
         <left-arrow-icon></left-arrow-icon>
         <span class="text-niceGrey">{{ $t("backToLogIn") }}</span>
@@ -55,6 +61,7 @@ const error = computed(() => {
 });
 
 function onSubmit(values) {
+  store.loading = true;
   store.resetRequest(values);
   console.log(emailInput.value);
 }

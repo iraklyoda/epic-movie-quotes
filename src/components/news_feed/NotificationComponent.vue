@@ -1,35 +1,48 @@
 <template>
   <div
-    class="flex items-center gap-6 rounded-md border-[1px] border-borderGrey px-4 py-4"
+    class="flex items-center gap-4 rounded-md border-[1px] border-borderGrey px-4 py-4 lg:gap-6"
   >
     <div>
       <img
         :src="profilePicture"
         alt="profile picture"
-        class="h-14 w-14 rounded-full object-cover object-center"
+        class="h-10 w-10 rounded-full object-cover object-center lg:h-14 lg:w-14"
       />
     </div>
-    <div>
-      <p class="text-lg">{{ notification.sender.username }}</p>
-      <div
-        v-if="notification.type === 'comment'"
-        class="flex items-center gap-3"
-      >
-        <ChatIcon class="w-5" />
-        <p class="text-sm text-lightGrey">Commented to your quote...</p>
+    <div class="flex w-full justify-between">
+      <div>
+        <p class="text-lg">{{ notification.sender.username }}</p>
+        <div
+          v-if="notification.type === 'comment'"
+          class="flex items-center gap-3"
+        >
+          <ChatIcon class="w-5" />
+          <p class="text-xs text-lightGrey lg:text-sm">
+            {{ $t("commentedOnYourQuote") }}
+          </p>
+        </div>
+        <div v-else class="flex items-center gap-3">
+          <HeartIcon class="w-5" />
+          <p class="text-xs text-lightGrey lg:text-sm">
+            {{ $t("likedYourQuote") }}
+          </p>
+        </div>
       </div>
-      <div v-else class="flex items-center gap-3">
-        <HeartIcon class="w-5" />
-        <p class="text-sm text-lightGrey">Liked your quote...</p>
+      <div>
+        <p class="text-sm text-lightGrey">
+          {{ timeAgo(notification.created_at) }}
+        </p>
+        <p v-if="notification.read === 0" class="text-center text-validGreen">
+          {{ $t("new") }}
+        </p>
       </div>
-      <p class="text-lightGrey">{{ timeAgo(notification.created_at) }}</p>
     </div>
   </div>
 </template>
 <script setup>
 import HeartIcon from "@/components/icons/HeartIcon.vue";
 import i18n from "@/config/i18n";
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 const root = ref(import.meta.env.VITE_APP_ROOT);
 
 function timeAgo(time) {
@@ -80,7 +93,7 @@ function timeAgo(time) {
     ];
   }
   let seconds = (+new Date() - time) / 1000,
-    token = "ago",
+    token = i18n.global.locale.value === "en" ? "ago" : "წინ",
     list_choice = 1;
 
   if (seconds == 0) {

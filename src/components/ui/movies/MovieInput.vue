@@ -6,7 +6,7 @@
       :as="type"
       :rows="rows"
       :name="name"
-      class="w-full rounded border-1 bg-transparent px-2.5 py-1.5 placeholder-white outline-none lg:py-2"
+      class="w-full rounded border-1 bg-transparent px-2.5 pr-6 py-1.5 placeholder-white outline-none lg:py-2"
       :rules="rules"
       @blur="focused = true"
       :id="id"

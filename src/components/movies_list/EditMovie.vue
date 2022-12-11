@@ -1,11 +1,12 @@
 <template>
-  <movie-dialog
-    route="MoviePage"
-    :param="{ id: route.params.id }"
-    class="h-screen lg:mt-24"
+  <router-link
+    class="absolute top-0 z-30 h-auto w-full lg:h-screen"
+    :to="{ name: 'MoviePage' }"
   >
+  </router-link>
+  <div class="h-screen w-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
+      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pt-7 font-helvetica lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -21,12 +22,12 @@
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profile.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{ profile.user.username }}</p>
           </div>
         </div>
       </aside>
@@ -42,7 +43,7 @@
           :errors="errors.title_en"
           name="title_en"
           lang="Eng"
-          rules="required"
+          rules="required|min:3|eng_char"
           v-model:modelValue="movieTitleEn"
         />
         <MovieInput
@@ -50,7 +51,7 @@
           :errors="errors.title_ka"
           name="title_ka"
           lang="ქარ"
-          rules="required"
+          rules="required|min:3|geo_char"
           v-model:modelValue="movieTitleKa"
         />
         <Field
@@ -96,7 +97,7 @@
           :errors="errors.director_en"
           name="director_en"
           lang="Eng"
-          rules="required"
+          rules="required|min:3|eng_char"
           v-model:modelValue="movieDirectorEn"
         />
         <MovieInput
@@ -104,7 +105,7 @@
           :errors="errors.director_ka"
           name="director_ka"
           lang="ქარ"
-          rules="required"
+          rules="required|min:3|geo_char"
           v-model:modelValue="movieDirectorKa"
         />
         <MovieInput
@@ -114,7 +115,7 @@
           :errors="errors.description_en"
           name="description_en"
           lang="Eng"
-          rules="required"
+          rules="required|min:3|eng_char"
           v-model:modelValue="movieDescriptionEn"
         />
         <MovieInput
@@ -124,7 +125,7 @@
           :errors="errors.description_ka"
           name="description_ka"
           lang="ქარ"
-          rules="required"
+          rules="required|min:3|geo_char"
           v-model:modelValue="movieDescriptionKa"
         />
         <Field
@@ -192,27 +193,29 @@
         <button
           class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
         >
-          {{ $t("getStarted") }}
+          {{ $t("saveChanges") }}
         </button>
       </Form>
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { Form, Field, configure } from "vee-validate";
+import { Form, Field } from "vee-validate";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axiosInstance from "@/config/axios/index.js";
 import axios from "@/config/axios/jwtAxios.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useSingleStore } from "@/stores/single.js";
+import { useProfileStore } from "@/stores/profile.js";
 import CameraIcon from "@/components/icons/CameraIcon.vue";
 import MovieInput from "@/components/ui/movies/MovieInput.vue";
 const root = import.meta.env.VITE_APP_ROOT;
 const route = useRoute();
+const router = useRouter();
 const currentMovie = ref([]);
+const profile = useProfileStore();
 
 const movieTitleEn = ref("");
 const movieTitleKa = ref("");
@@ -225,13 +228,6 @@ const movieDescriptionKa = ref("");
 const movieImageSrc = ref("");
 
 const singleMovie = useSingleStore();
-
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
 
 onBeforeMount(() => {
   const getMovie = async () => {
@@ -252,8 +248,8 @@ onBeforeMount(() => {
       movieTitleKa.value = movie.title.ka;
       movieDirectorEn.value = movie.director.en;
       movieDirectorKa.value = movie.director.ka;
-      (categoryTags.value = movie.genres),
-        (movieDescriptionEn.value = movie.description.en);
+      categoryTags.value = movie.genres;
+      movieDescriptionEn.value = movie.description.en;
       movieDescriptionKa.value = movie.description.ka;
       movieImageSrc.value = movie.image;
     } catch (e) {
@@ -289,6 +285,7 @@ function onSubmit(values) {
         }
       );
       singleMovie.getMovie(route.params.id);
+      router.push({name: "MoviePage"});
       console.log(response);
     } catch (e) {
       console.log(e);

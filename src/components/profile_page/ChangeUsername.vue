@@ -11,7 +11,7 @@
         </router-link>
       </div>
       <div class="hidden lg:block">
-        <p class="text-xl">Update username</p>
+        <p class="text-xl">{{ $t("updateUsername") }}</p>
       </div>
     </nav>
     <div class="hidden border-b-2 border-fadeGrey lg:block"></div>
@@ -31,17 +31,26 @@
               rules="required|min:3|max:15|alpha_num|lowercase"
             />
           </div>
-          <ErrorMessage name="username" class="mt-2" />
+          <ErrorMessage
+            name="username"
+            class="text-md mt-3 text-red-300 lg:text-base"
+          />
+          <p
+            v-if="profileStore.changeUsernameErrors"
+            class="text-md mt-3 text-red-300 lg:text-base"
+          >
+            {{ $t(profileStore.changeUsernameErrors) }}
+          </p>
         </Form>
       </section>
       <div
         class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
       >
         <router-link :to="{ name: 'ProfilePage' }">
-          <p>Cancel</p>
+          <p>{{$t("cancel")}}</p>
         </router-link>
         <button @click="onSubmit" class="rounded-lg bg-red-500 px-2 py-2">
-          Add
+          {{$t("add")}}
         </button>
       </div>
     </main>
@@ -49,12 +58,12 @@
       v-else
       class="mx-9 rounded-lg bg-headerBlue py-8 lg:bg-transparent"
     >
-      <p class="pt-8 text-center">Are you sure to make changes?</p>
+      <p class="pt-8 text-center">{{$t("areYouSureToMakeChanges")}}</p>
       <div class="mt-8 border-b-2 border-fadeGrey"></div>
       <div class="mt-4 flex items-center justify-between px-9">
-        <p @click="submitted = false" class="cursor-pointer">Cancel</p>
+        <p @click="submitted = false" class="cursor-pointer">{{$t("cancel")}}</p>
         <button class="rounded-lg bg-red-500 px-2 py-2" @click="changeName">
-          Confirm
+          {{$t("confirm")}}
         </button>
       </div>
     </section>
@@ -93,7 +102,13 @@ function changeName() {
       profileStore.successUsername = true;
       router.push({ name: "ProfilePage" });
     } catch (e) {
-      console.log(e);
+      submitted.value = false;
+      if (e.response.data.message === "The username has already been taken.") {
+        profileStore.changeUsernameErrors = "UsernameBeenTaken";
+        setTimeout(() => {
+          profileStore.changeUsernameErrors = null;
+        }, 3000);
+      }
     }
   };
   change();

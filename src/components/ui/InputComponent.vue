@@ -87,7 +87,11 @@ const props = defineProps({
 });
 
 const isPassword = computed(() => {
-  if (props.name === "password" || props.name === "confirmation") {
+  if (
+    props.name === "password" ||
+    props.name === "confirmation" ||
+    props.name === "password_confirmation"
+  ) {
     return true;
   } else {
     return false;

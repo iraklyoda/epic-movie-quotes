@@ -1,7 +1,11 @@
 <template>
   <SuccessComponent
     v-if="userStore.successAddEmail"
-    msg="Please check email to verify new address"
+    :msg="$t('pleaseCheckEmailToVerify')"
+  />
+  <SuccessComponent
+    v-if="userStore.successChangePrimaryEmail"
+    :msg="userStore.user.email + ' ' + $t('hasBeenSetAsPrimary')"
   />
   <div>
     <nav class="py-8 pl-9">
@@ -12,7 +16,7 @@
     <main class="bg-headerBlue pb-8">
       <!--        Email-->
       <div class="block px-9 pt-12" v-if="!userStore.user.google_id">
-        <p>Primary Email</p>
+        <p>{{ $t("primaryMail") }}</p>
         <!--          Primary -->
         <div class="relative flex items-center gap-8">
           <p
@@ -46,14 +50,14 @@
               v-if="email.is_email_verified === 1"
               @click="userStore.makePrimary(email.id)"
             >
-              <span>Make this primary</span>
+              <span> {{ $t("makeThisPrimary") }}</span>
             </button>
             <button
               type="button"
               @click="userStore.deleteEmail(email.id)"
               class="cursor-pointer whitespace-nowrap text-lg text-niceGrey lg:text-lightGrey"
             >
-              Remove
+              {{ $t("remove") }}
             </button>
           </div>
           <div
@@ -68,7 +72,7 @@
               <span
                 class="whitespace-nowrap text-lg italic text-carrotOrange lg:text-lightGrey"
               >
-                Not verified</span
+                {{ $t("notVerified") }}</span
               >
             </div>
             <button
@@ -76,7 +80,7 @@
               @click="userStore.deleteEmail(email.id)"
               class="cursor-pointer whitespace-nowrap text-lg text-niceGrey lg:text-lightGrey"
             >
-              Remove
+              {{ $t("remove") }}
             </button>
           </div>
           <div class="mt-4 border-b-2 border-fadeGrey"></div>
@@ -86,7 +90,7 @@
           class="mt-12 flex w-fit items-center gap-2 rounded-md border-2 border-white bg-transparent px-7 px-2 py-1.5 text-lg"
         >
           <AddIcon />
-          <p>Add Email</p>
+          <p>{{ $t("addEmail") }}</p>
         </router-link>
       </div>
     </main>

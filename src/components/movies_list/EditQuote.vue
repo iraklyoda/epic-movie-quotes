@@ -1,17 +1,22 @@
 <template>
-  <movie-dialog route="MoviePage" class="h-screen lg:mt-24">
+  <router-link
+    class="absolute top-0 z-30 h-auto w-full lg:h-screen"
+    :to="{ name: 'MoviePage' }"
+  >
+  </router-link>
+  <div class="h-screen w-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
+      class="absolute top-0 left-0 z-40 h-screen w-screen bg-darkBlue pt-7 font-helvetica lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
-        <div class="flex justify-center gap-3 rounded-lg py-3">
-          <router-link to="">
-            <EditIcon class="w-4" />
-          </router-link>
-          <div class="h-4 border-l-2 text-xs"></div>
+        <button
+          class="flex justify-center gap-3 rounded-lg py-3"
+          @click="destroyQuote(route.params.quoteId)"
+        >
           <DeleteIcon class="w-4" />
-        </div>
+          <p>{{ $t("delete") }}</p>
+        </button>
         <p class="mx-auto hidden text-xl lg:block">{{ $t("editQuote") }}</p>
         <router-link
           :to="{ name: 'MoviePage', params: { id: route.params.id } }"
@@ -23,17 +28,17 @@
       <aside class="pl-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profile.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{ profile.user.username }}</p>
           </div>
         </div>
       </aside>
       <section
-        class="px-9 pt-10 italic lg:pt-0 lg:text-xl"
+        class="px-2 pt-10 italic lg:px-9 lg:pt-0 lg:text-xl"
         v-for="quote in quoteStore.quote"
         v-bind:key="quote.quote"
       >
@@ -50,7 +55,7 @@
             :value="quote.quote.en"
             name="quote_en"
             lang="Eng"
-            rules="required"
+            rules="required|min:3|eng_char"
           />
           <MovieInput
             type="textarea"
@@ -59,7 +64,7 @@
             :value="quote.quote.ka"
             name="quote_ka"
             lang="ქარ"
-            rules="required"
+            rules="required|min:3|geo_char"
           />
           <Field
             name="thumbnail"
@@ -83,7 +88,7 @@
                   <img
                     :src="root + quote.thumbnail"
                     alt="current image"
-                    class="opacity-95 blur-xs"
+                    class="h-48 w-full object-cover lg:h-auto opacity-95 blur-xs"
                   />
                   <label
                     for="quoteImage"
@@ -126,14 +131,13 @@
           <button
             class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
           >
-            {{ $t("getStarted") }}
+            {{ $t("saveChanges") }}
           </button>
         </Form>
       </section>
       <!--      Comments -->
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -142,18 +146,13 @@ import { onBeforeMount, ref } from "vue";
 import { useQuoteStore } from "@/stores/quote.js";
 import { useQuotesStore } from "@/stores/quotes.js";
 import { useSingleStore } from "@/stores/single.js";
-import { configure, Field, Form } from "vee-validate";
+import { useProfileStore } from "@/stores/profile.js";
+import { Field, Form } from "vee-validate";
 import axiosInstance from "@/config/axios/index.js";
 import router from "@/router";
 const quoteStore = useQuoteStore();
+const profile = useProfileStore();
 const movie = useSingleStore();
-
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
 
 const route = useRoute();
 
@@ -192,9 +191,9 @@ function onSubmit(values) {
     quote_ka: values.quote_ka,
   };
   if (img.value) {
-    quote.image = values.thumbnail;
+    quote.thumbnail = values.thumbnail;
   }
-  console.log(values);
+  console.log(quote);
 
   const editQuote = async () => {
     try {
@@ -220,6 +219,15 @@ function onSubmit(values) {
     }
   };
   editQuote();
+}
+
+function destroyQuote(id) {
+  const destroy = async () => {
+    await quoteStore.deleteQuote(id);
+    movie.getMovie(route.params.id);
+    router.push({ name: "MoviePage" });
+  };
+  destroy();
 }
 
 onBeforeMount(() => {

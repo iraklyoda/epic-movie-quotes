@@ -9,9 +9,9 @@
     <!--          Dialog  -->
     <RouterView />
     <!--            Dialog-->
-    <div class="h-screen snap-y snap-mandatory overflow-scroll">
+    <div class="h-screen lg:snap-y lg:snap-mandatory overflow-scroll">
       <section
-        class="h-110 snap-start bg-darkBlue font-helvetica text-white lg:h-screen"
+        class="h-110 lg:snap-start bg-darkBlue font-helvetica text-white lg:h-screen"
       >
         <header class="mx-8 flex items-center justify-between">
           <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
@@ -48,7 +48,7 @@
       </section>
       <section class="font-helvetica text-white">
         <movie-component
-          class="snap-center"
+          class="lg:snap-center"
           v-for="movie in movies"
           :key="movie.name_year"
           :quote="movie.quote"
@@ -100,3 +100,16 @@ const movies = {
   },
 };
 </script>
+
+<style scoped>
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+</style>

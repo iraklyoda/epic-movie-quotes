@@ -1,7 +1,12 @@
 <template>
-  <movie-dialog route="MoviePage" class="h-screen lg:mt-24">
+  <router-link
+    class="absolute top-0 z-30 h-auto w-full lg:h-screen"
+    :to="{ name: 'MoviePage' }"
+  >
+  </router-link>
+  <div class="h-screen w-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
+      class="absolute overflow-scroll top-0 left-0 z-40 h-screen w-screen bg-darkBlue pt-7 font-helvetica lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -15,7 +20,7 @@
             <EditIcon class="w-4" />
           </router-link>
           <div class="h-4 border-l-2 text-xs"></div>
-          <DeleteIcon class="w-4" />
+          <DeleteIcon class="w-4 cursor-pointer" @click="destroyQuote(route.params.quoteId)"/>
         </div>
         <p class="mx-auto hidden text-xl lg:block">{{ $t("viewQuote") }}</p>
         <router-link
@@ -28,12 +33,12 @@
       <aside class="pl-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profile.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{ profile.user.username }}</p>
           </div>
         </div>
       </aside>
@@ -71,22 +76,36 @@
         </section>
       </section>
       <!--      Comments -->
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
 import { onBeforeMount } from "vue";
 import { useQuoteStore } from "@/stores/quote.js";
+import { useProfileStore } from "@/stores/profile.js";
+import { useSingleStore } from "@/stores/single.js";
 import CommentComponent from "@/components/news_feed/CommentComponent.vue";
+import router from "@/router";
 const quoteStore = useQuoteStore();
+const profile = useProfileStore();
+const movie = useSingleStore();
 console.log(quoteStore.quote.comments);
 const route = useRoute();
 onBeforeMount(() => {
   quoteStore.getQuote(route.params.quoteId);
 });
+
+function destroyQuote(id) {
+  const destroy = async () => {
+    await quoteStore.deleteQuote(id);
+    movie.getMovie(route.params.id);
+    router.push({ name: "MoviePage" });
+  };
+  destroy();
+}
+
 
 const root = import.meta.env.VITE_APP_ROOT;
 </script>

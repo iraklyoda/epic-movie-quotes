@@ -1,4 +1,5 @@
 <template>
+  <RouterView/>
   <!--  Search Mobile  -->
   <aside
     v-if="pageStore.searchFeedOpen"
@@ -19,15 +20,14 @@
     </nav>
     <div class="mt-3 w-full border-b-2 border-fadeGrey"></div>
     <div class="ml-16 mt-2 text-niceGrey">
-      <p>Enter @ to search movies</p>
-      <p class="mt-4">Enter # to search quotes</p>
+      <p>{{ $t("enterToSearchMovies") }}</p>
+      <p class="mt-4">{{$t("enterToSearchQuotes")}}</p>
     </div>
   </aside>
   <main>
     <!--        Posts        -->
     <div class="relative lg:ml-12 lg:pl-[15%]">
       <div class="items-center justify-center lg:flex">
-        <RouterView class="z-20 lg:top-24" />
         <div class="flex gap-2 lg:w-[64rem]">
           <section
             class="relative flex flex-none gap-3 bg-footerBlue py-5 lg:mt-6 lg:-mb-2 lg:rounded-lg lg:bg-headerBlue lg:py-2"
@@ -56,7 +56,7 @@
               <Field
                 v-model="searchValue"
                 name="search"
-                placeholder="Enter @ to search movies, Enter # to search quotes"
+                :placeholder="$t('enterToSearchMovies') + ', ' + $t('enterToSearchQuotes') "
                 class="w-full bg-transparent py-1 pl-2"
               />
             </Form>
@@ -109,7 +109,6 @@ function scroll() {
       ) === Math.floor(document.documentElement.offsetHeight);
     if (bottomOfWindow) {
       hitBottom.value = true;
-      console.log("hit");
     }
   };
 }
@@ -119,15 +118,21 @@ function mobileFeedSubmit() {
   pageStore.changeFeedSearch();
 }
 
+const first = ref(false);
+
 let timeOut = setTimeout(() => {
-  console.log(searchValue.value);
-  quotesStore.searchedQuotes = [];
-  quotesStore.searchQuotes({
-    search: searchValue.value,
-  });
+  if (first.value) {
+    console.log(searchValue.value);
+    quotesStore.searchedQuotes = [];
+    quotesStore.currentPage = 1;
+    quotesStore.searchQuotes({
+      search: searchValue.value,
+    });
+  }
 }, 500);
 
 watch(searchValue, () => {
+  first.value = true;
   if (searchValue.value !== "") {
     if (timeOut) {
       clearTimeout(timeOut);
@@ -135,6 +140,7 @@ watch(searchValue, () => {
     }
     timeOut = setTimeout(() => {
       quotesStore.searchedQuotes = [];
+      quotesStore.currentPage = 1;
       quotesStore.searchQuotes({
         search: searchValue.value,
       });
@@ -172,16 +178,23 @@ function onSubmit(values) {
 }
 
 window.Echo.channel("add-like").listen(".new-like", () => {
-  quotesStore.getNumberQuotes();
+  if (searchValue.value !== "") {
+    quotesStore.getNumberQuotes(searchValue.value);
+  } else {
+    quotesStore.getNumberQuotes();
+  }
 });
 
 window.Echo.channel("add-comment").listen(".new-comment", () => {
-  quotesStore.getNumberQuotes();
+  if (searchValue.value !== "") {
+    quotesStore.getNumberQuotes(searchValue.value);
+  } else {
+    quotesStore.getNumberQuotes();
+  }
 });
 
-
 onMounted(() => {
-  if(quotesStore.quotes.length){
+  if (quotesStore.quotes.length) {
     quotesStore.getNumberQuotes(quotesStore.quotes.length);
   } else {
     quotesStore.getQuotes();

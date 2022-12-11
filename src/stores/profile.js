@@ -13,7 +13,9 @@ export const useProfileStore = defineStore("profile", () => {
   const successChangePrimaryEmail = ref(false);
 
   const addEmailErrors = ref(false);
+  const changeUsernameErrors = ref(false);
 
+  const loading = ref(false);
   const root = import.meta.env.VITE_APP_ROOT;
 
   const getProfile = async () => {
@@ -73,6 +75,7 @@ export const useProfileStore = defineStore("profile", () => {
     getProfile,
     makePrimary,
     deleteEmail,
+    loading,
     successUsername,
     successPassword,
     successChanges,
@@ -80,5 +83,7 @@ export const useProfileStore = defineStore("profile", () => {
     usernameEditOpen,
     profilePicture,
     successAddEmail,
+    addEmailErrors,
+    changeUsernameErrors,
   };
 });

@@ -1,5 +1,6 @@
 <template>
   <!--  Mobile Search -->
+  <router-view class="z-20"></router-view>
   <aside
     v-if="pageStore.searchListOpen"
     class="absolute top-0 left-0 z-40 h-2/5 w-screen bg-searchBlue"
@@ -23,7 +24,6 @@
   <div
     class="mx-6 ml-9 justify-between pt-8 pr-4 lg:relative lg:w-[80%] lg:pl-2"
   >
-    <router-view class="z-20"></router-view>
     <div class="flex w-full items-start justify-between">
       <div>
         <h3 class="text-sm sm:text-lg lg:text-2xl">

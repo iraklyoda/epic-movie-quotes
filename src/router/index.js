@@ -6,7 +6,10 @@ import ForgotPassword from "@/components/landing_page/ForgotPassword.vue";
 import CheckComponent from "@/components/landing_page/CheckComponent.vue";
 import CheckPassword from "@/components/landing_page/CheckPassword.vue";
 import CreateComponent from "@/components/landing_page/CreateComponent.vue";
-import SentComponent from "@/components/landing_page/SentComponent.vue";
+import VerifiedComponent from "@/components/landing_page/VerifiedComponent.vue";
+
+import NotFound from "@/views/NotFound.vue";
+import NotAllowed from "@/views/NotAllowed.vue";
 
 import LandingPage from "@/views/LandingPage.vue";
 import NewsFeed from "@/views/NewsFeed.vue";
@@ -62,7 +65,7 @@ const router = createRouter({
         },
         {
           path: "emailactivated",
-          component: SentComponent,
+          component: VerifiedComponent,
           name: "EmailActivated",
         },
       ],
@@ -160,6 +163,8 @@ const router = createRouter({
       ],
       beforeEnter: [isAuthenticated],
     },
+    { path: "/:catchAll(.*)", component: NotFound, name: "NotFound" },
+    { path: "/notAllowed", component: NotAllowed, name: NotAllowed },
   ],
 });
 

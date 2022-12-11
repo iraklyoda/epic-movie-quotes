@@ -7,9 +7,10 @@
       </h2>
       <p class="mt-3 text-niceGrey">{{ $t("startJourney") }}</p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5">
+    <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5" v-slot="{ errors }">
       <input-component
         name="username"
+        :errors="errors.username"
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
@@ -17,6 +18,7 @@
       />
       <input-component
         name="email"
+        :errors="errors.email"
         type="email"
         :label="$t('email')"
         :placeholder="$t('enterEmail')"
@@ -25,6 +27,7 @@
       />
       <input-component
         name="password"
+        :errors="errors.password"
         :label="$t('password')"
         :placeholder="$t('password')"
         :type="passwordFieldType"
@@ -42,6 +45,7 @@
       </input-component>
       <input-component
         name="password_confirmation"
+        :errors="errors.password_confirmation"
         :label="$t('confirmPassword')"
         :placeholder="$t('confirmYourPassword')"
         :type="passwordFieldType"
@@ -62,7 +66,10 @@
       >
         {{ $t(store.registerError) }}
       </p>
-      <button class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2">
+      <button
+        class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
+        :class="{ 'animate-spin': store.loading }"
+      >
         {{ $t("getStarted") }}
       </button>
       <form :action="googleLogin">
@@ -105,7 +112,6 @@ function switchVisibility() {
 
 function onSubmit(values) {
   store.register(values);
-  router.push({ name: "CheckEmail" });
 }
 
 defineEmits(["login"]);

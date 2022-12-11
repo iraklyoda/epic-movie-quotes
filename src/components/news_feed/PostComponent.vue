@@ -16,8 +16,8 @@
       <figure class="mt-3.5">
         <div class="flex items-center">
           <figcaption class="pr-4 text-sm sm:text-base">
-            "{{ i18n.global.locale.value === "ka" ? quote.ka : quote.en }}" -  {{ i18n.global.locale.value === "ka" ? movie.ka : movie.en }}
-
+            "{{ i18n.global.locale.value === "ka" ? quote.ka : quote.en }}" -
+            {{ i18n.global.locale.value === "ka" ? movie.ka : movie.en }}
           </figcaption>
         </div>
         <img :src="root + image" alt="movie" class="mt-4 w-11/12 max-w-3xl" />
@@ -33,11 +33,14 @@
         />
       </section>
       <div class="mt-4 w-11/12 max-w-3xl border-b-2 border-fadeGrey"></div>
-      <CommentComponent
-        v-for="(comment, index) in props.comments"
-        v-bind:key="index"
-        :comment="comment"
-      />
+      <div class="max-h-72 overflow-scroll">
+        <CommentComponent
+          v-for="(comment, index) in props.comments"
+          v-bind:key="index"
+          :comment="comment"
+          class="pr-6 lg:pr-14"
+        />
+      </div>
       <section class="mt-4 mb-4 flex w-11/12 max-w-3xl lg:pb-6">
         <img
           :src="profile.profilePicture"
@@ -47,7 +50,7 @@
         <PostComment
           :quoteId="props.quoteId"
           :quote-author="quoteAuthor"
-          class="h-full w-full"
+          class="pr-6 h-full w-full"
         />
       </section>
     </div>

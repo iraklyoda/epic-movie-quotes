@@ -6,7 +6,7 @@
       :value="modelValue ? modelValue : value"
       :type="type"
       :name="name"
-      class="text-lg lg:mt-2 lg:w-full lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+      class="text-lg lg:mt-2 lg:w-full lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black lg:mb-2"
       :rules="rules"
       @blur="focused = true"
       :id="id"

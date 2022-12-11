@@ -1,7 +1,12 @@
 <template>
-  <movie-dialog route="MovieList">
+  <router-link
+    class="absolute left-0 top-0 z-30 h-screen w-screen lg:h-screen"
+    :to="{ name: 'MovieList' }"
+  >
+  </router-link>
+  <div class="absolute top-0 h-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:-ml-64 lg:h-auto lg:w-240 lg:rounded-xl"
+      class="absolute z-50 h-screen w-screen overflow-hidden overflow-scroll bg-darkBlue pt-7 pb-12 font-helvetica lg:top-24 lg:left-[34rem] lg:h-4/5 lg:w-200 lg:rounded-xl"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -17,10 +22,12 @@
           <img
             :src="profileStore.profilePicture"
             alt="profile picture"
-            class="w-10 h-10 object-center object-cover rounded-full"
+            class="h-10 w-10 rounded-full object-cover object-center"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">{{profileStore.user.username}}</p>
+            <p class="whitespace-nowrap text-xl">
+              {{ profileStore.user.username }}
+            </p>
           </div>
         </div>
       </aside>
@@ -33,7 +40,7 @@
           id="titleEn"
           name="title_en"
           :errors="errors.title_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           lang="Eng"
           placeholder="Movie Name"
         />
@@ -41,7 +48,7 @@
           id="titleKa"
           name="title_ka"
           :errors="errors.title_ka"
-          rules="required|geo_num"
+          rules="required|min:3|geo_char"
           lang="ქარ"
           placeholder="ფილმის სახელი"
         />
@@ -88,7 +95,7 @@
         <MovieInput
           id="directorEn"
           name="director_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           :errors="errors.director_en"
           placeholder="Director"
           lang="Eng"
@@ -96,7 +103,7 @@
         <MovieInput
           id="directorKa"
           name="director_ka"
-          rules="required"
+          rules="required|min:3|geo_char"
           :errors="errors.director_ka"
           placeholder="რეჟისორი"
           lang="ქარ"
@@ -106,7 +113,7 @@
           rows="3"
           id="descriptionEn"
           name="description_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           :errors="errors.description_en"
           placeholder="Movie Description"
           lang="Eng"
@@ -116,8 +123,8 @@
           rows="3"
           id="descriptionKa"
           name="description_ka"
-          rules="required"
-          :errors="errors.description_en"
+          rules="required|min:3|geo_char"
+          :errors="errors.description_ka"
           placeholder="ფილმის აღწერა"
           lang="Geo"
         />
@@ -169,14 +176,13 @@
           {{ $t("getStarted") }}
         </button>
       </Form>
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { Form, Field, configure } from "vee-validate";
+import { Form, Field } from "vee-validate";
 import { useRouter } from "vue-router";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axios from "@/config/axios/index.js";
@@ -186,13 +192,6 @@ import MovieInput from "@/components/ui/movies/MovieInput.vue";
 const movieList = useMovieStore();
 const router = useRouter();
 const profileStore = useProfileStore();
-
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
 
 function onSubmit(values) {
   console.log(values);

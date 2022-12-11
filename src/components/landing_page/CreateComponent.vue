@@ -9,9 +9,10 @@
         {{ $t("newPasswordMustBe") }}
       </p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
+    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5" v-slot="{ errors }">
       <input-component
         name="password"
+        :errors="errors.password"
         :label="$t('password')"
         :placeholder="$t('password')"
         :type="passwordFieldType"
@@ -29,6 +30,7 @@
       </input-component>
       <input-component
         name="confirmation"
+        :errors="errors.confirmation"
         :label="$t('confirmPassword')"
         :placeholder="$t('confirmYourPassword')"
         :type="passwordFieldType"
