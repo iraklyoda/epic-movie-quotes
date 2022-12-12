@@ -2,32 +2,44 @@
   <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
-      <h2 class="mt-16 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
+      <h2 class="mt-16 text-2xl font-medium text-white lg:mt-16 lg:text-3xl">
         {{ $t("createAccount") }}
       </h2>
       <p class="mt-3 text-niceGrey">{{ $t("startJourney") }}</p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5">
+    <Form @submit="onSubmit" class="mx-auto w-4/5 lg:w-3/5" v-slot="{ errors }">
       <input-component
-        v-model="nameInput"
         name="username"
+        :errors="errors.username"
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
         rules="required|min:3|max:15|alpha_num|lowercase"
       />
+      <p
+        class="mb-3 text-sm text-red-300 lg:text-base"
+        v-if="store.usernameExists"
+      >
+        {{ $t(store.usernameExists) }}
+      </p>
       <input-component
-        v-model="emailInput"
         name="email"
+        :errors="errors.email"
         type="email"
         :label="$t('email')"
         :placeholder="$t('enterEmail')"
         :required="true"
         rules="required|email"
       />
+      <p
+        class="mb-3 text-sm text-red-300 lg:text-base"
+        v-if="store.emailExists"
+      >
+        {{ $t(store.emailExists) }}
+      </p>
       <input-component
-        v-model="passwordInput"
         name="password"
+        :errors="errors.password"
         :label="$t('password')"
         :placeholder="$t('password')"
         :type="passwordFieldType"
@@ -44,7 +56,8 @@
         </button>
       </input-component>
       <input-component
-        name="confirmation"
+        name="password_confirmation"
+        :errors="errors.password_confirmation"
         :label="$t('confirmPassword')"
         :placeholder="$t('confirmYourPassword')"
         :type="passwordFieldType"
@@ -60,23 +73,26 @@
         </button>
       </input-component>
       <p
-        class="text-red-300 text-xs mb-3 lg:text-base"
+        class="mb-3 text-xs text-red-300 lg:text-base"
         v-if="store.registerError"
       >
         {{ $t(store.registerError) }}
       </p>
-      <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
+      <button
+        class="mt-1 w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
+        :class="{ 'animate-spin': store.loading }"
+      >
         {{ $t("getStarted") }}
       </button>
       <form :action="googleLogin">
         <button
-          class="py-1 border w-full rounded-md text-white mt-4 flex items-center justify-center gap-1.5 lg:p-2"
+          class="mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border py-1 text-white lg:p-2"
         >
           <google-icon class="mb-1" />
           <p>{{ $t("signUpGoogle") }}</p>
         </button>
       </form>
-      <p class="text-center mt-3 text-niceGrey lg:mt-9">
+      <p class="mt-3 text-center text-niceGrey lg:mt-9">
         {{ $t("alreadyHaveAnAccount") }}
         <button
           type="button"
@@ -93,16 +109,12 @@
 <script setup>
 import { ref } from "vue";
 import { Form } from "vee-validate";
-const nameInput = ref("");
-const emailInput = ref("");
-const passwordInput = ref("");
 const googleLogin = ref(import.meta.env.VITE_APP_ROOT_API + "/google/login");
 import { useUserStore } from "@/stores/user.js";
 import DialogComponent from "@/components/ui/DialogComponent.vue";
 import router from "@/router";
 
 const store = useUserStore();
-
 
 const passwordFieldType = ref("password");
 function switchVisibility() {
@@ -111,15 +123,8 @@ function switchVisibility() {
 }
 
 function onSubmit(values) {
-  const user = {
-    username: values.username,
-    email: values.email,
-    password: values.password,
-  };
-  store.register(user);
-  router.push({name: "CheckEmail"});
+  store.register(values);
 }
-
 
 defineEmits(["login"]);
 </script>

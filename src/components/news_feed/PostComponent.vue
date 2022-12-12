@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl pl-9 lg:rounded-xl lg:bg-cinder lg:pb-4">
+  <div class="max-w-5xl pl-9 lg:rounded-xl lg:bg-cinder lg:pb-4">
     <div class="lg:ml-6">
       <div class="mt-7 flex items-center gap-4 lg:pt-6">
         <img
@@ -14,9 +14,12 @@
         <p>{{ props.user.username }}</p>
       </div>
       <figure class="mt-3.5">
-        <figcaption class="text-sm sm:text-base">
-          {{ i18n.global.locale.value === "ka" ? quote.ka : quote.en }}
-        </figcaption>
+        <div class="flex items-center">
+          <figcaption class="pr-4 text-sm sm:text-base">
+            "{{ i18n.global.locale.value === "ka" ? quote.ka : quote.en }}" -
+            {{ i18n.global.locale.value === "ka" ? movie.ka : movie.en }}
+          </figcaption>
+        </div>
         <img :src="root + image" alt="movie" class="mt-4 w-11/12 max-w-3xl" />
       </figure>
       <section class="mt-5 flex items-center text-xl">
@@ -30,11 +33,14 @@
         />
       </section>
       <div class="mt-4 w-11/12 max-w-3xl border-b-2 border-fadeGrey"></div>
-      <CommentComponent
-        v-for="(comment, index) in props.comments"
-        v-bind:key="index"
-        :comment="comment"
-      />
+      <div class="max-h-72 overflow-scroll">
+        <CommentComponent
+          v-for="(comment, index) in props.comments"
+          v-bind:key="index"
+          :comment="comment"
+          class="pr-6 lg:pr-14"
+        />
+      </div>
       <section class="mt-4 mb-4 flex w-11/12 max-w-3xl lg:pb-6">
         <img
           :src="profile.profilePicture"
@@ -44,7 +50,7 @@
         <PostComment
           :quoteId="props.quoteId"
           :quote-author="quoteAuthor"
-          class="h-full w-full"
+          class="h-full w-full pr-6"
         />
       </section>
     </div>
@@ -110,6 +116,7 @@ const props = defineProps({
   quoteAuthor: {
     required: true,
   },
+  movie: {},
   comments: {},
   likes: {},
   user: {},

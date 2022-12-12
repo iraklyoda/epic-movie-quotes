@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="lg:top-18 absolute z-20 w-full px-3 lg:right-20 lg:w-auto">
+    <section class="lg:top-18 fixed z-20 w-full px-3 lg:right-20 lg:w-auto animate-pulse">
       <div
         class="flex items-center justify-between gap-2 rounded-md bg-successGreen py-4 px-4"
       >
@@ -26,6 +26,7 @@ function closeAll() {
   profileStore.successPassword = false;
   profileStore.successChanges = false;
   profileStore.successAddEmail = false;
+  profileStore.successChangePrimaryEmail = false;
 }
 
 setTimeout(() => {
@@ -33,6 +34,7 @@ setTimeout(() => {
   profileStore.successPassword = false;
   profileStore.successChanges = false;
   profileStore.successAddEmail = false;
+  profileStore.successChangePrimaryEmail = false;
 }, 5000);
 
 defineProps(["msg"]);

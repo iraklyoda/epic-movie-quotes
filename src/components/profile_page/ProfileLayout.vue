@@ -1,5 +1,5 @@
 <template>
-  <main class="lg:pl-64">
+  <main class="w-full lg:ml-36">
     <RouterView />
   </main>
 </template>

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { reactive } from "vue";
 import axios from "@/config/axios/jwtAxios.js";
 import axiosInstance from "@/config/axios/index.js";
+import { useSingleStore } from "@/stores/single.js";
 
 export const useQuoteStore = defineStore("singleQuote", () => {
   const quote = reactive([]);

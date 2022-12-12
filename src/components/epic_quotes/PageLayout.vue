@@ -1,5 +1,23 @@
 <template>
-  <div class="h-auto min-h-screen bg-riverStyx text-white lg:bg-mirage">
+  <div
+    class="bg-riverStyx text-white lg:bg-mirage"
+    :class="{
+      'h-auto min-h-screen':
+        route.name !== 'AddMovie' &&
+        route.name !== 'EditQuote' &&
+        route.name !== 'ViewQuote' &&
+        route.name !== 'EditMovie' &&
+        route.name !== 'MovieQuote' &&
+        route.name !== 'AddMovie',
+      'h-screen overflow-hidden lg:h-auto lg:min-h-screen':
+        route.name === 'AddMovie' ||
+        route.name === 'EditQuote' ||
+        route.name === 'ViewQuote' ||
+        route.name === 'EditMovie' ||
+        route.name === 'MovieQuote' ||
+        route.name !== 'AddMovie',
+    }"
+  >
     <!--    Dialog    -->
     <header>
       <div
@@ -16,7 +34,13 @@
           ></MenuIcon>
           <div class="flex gap-5">
             <SearchIcon
+              @click="page.changeFeedSearch()"
               v-if="route.name === 'NewsFeed'"
+              class="w-5 cursor-pointer lg:hidden"
+            ></SearchIcon>
+            <SearchIcon
+              @click="page.changeListSearch()"
+              v-if="route.name === 'MovieList'"
               class="w-5 lg:hidden"
             ></SearchIcon>
             <div @click="notificationState" class="relative cursor-pointer">
@@ -24,6 +48,7 @@
               <div
                 v-if="notifications.unread > 0"
                 class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-vermilion"
+                :class="{ 'animate-bounce': notifications.newNotification }"
               >
                 <span class="text-sm font-bold">{{
                   notifications.unread
@@ -38,16 +63,19 @@
             ></div>
             <div
               v-if="notificationOpen"
-              class="lg:over absolute left-0 right-2 top-16 z-20 mb-12 h-fit w-full bg-black lg:left-auto lg:right-60 lg:w-2/5 lg:rounded-lg"
+              class="lg:over absolute left-0 right-2 top-16 z-20 mb-12 h-fit w-full rounded-lg bg-black lg:left-auto lg:right-[16rem] lg:w-2/5"
             >
               <TriangleIcon
                 class="lg:-top-30 absolute right-7 -top-3 -z-10 lg:-top-2"
               />
-              <div class="overflow-scroll lg:h-176">
-                <div class="px-8 pt-4">
+              <div class="max-h-150 overflow-scroll">
+                <div class="px-6 pt-4 lg:px-8">
                   <div class="flex items-center justify-between">
-                    <p class="text-md">{{ $t("notifications") }}</p>
-                    <p class="cursor-pointer text-sm" @click="readMark">
+                    <p class="lg:text-md text-sm">{{ $t("notifications") }}</p>
+                    <p
+                      class="cursor-pointer text-xs underline lg:text-sm"
+                      @click="readMark"
+                    >
                       {{ $t("markAsAllRead") }}
                     </p>
                   </div>
@@ -77,7 +105,14 @@
       ></div>
       <div
         class="z-10 h-full w-full overflow-auto rounded-md bg-fadePink backdrop-blur-xs"
-        :class="{ absolute: route.name === 'AddQuote' }"
+        :class="{
+          'lg:absolute':
+            route.name === 'AddQuote' ||
+            route.name === 'EditQuote' ||
+            route.name === 'ViewQuote' ||
+            route.name === 'MovieQuote' ||
+            route.name === 'EditMovie',
+        }"
       ></div>
     </header>
     <main class="text-white">
@@ -106,15 +141,12 @@ import axiosInstance from "@/config/axios/jwtAxios";
 const page = usePageStore();
 const profileStore = useProfileStore();
 const notifications = useNotificationsStore();
-
 const notificationOpen = ref(false);
-const unreadNotifications = ref([]);
 
 function notificationState() {
   notificationOpen.value = !notificationOpen.value;
 }
 setTimeout(() => {
-  console.log(profileStore.user.id);
   window.Echo.private("add-notification." + profileStore.user.id).listen(
     ".new-notification",
     () => {
@@ -129,7 +161,6 @@ const markAsRead = async () => {
       import.meta.env.VITE_APP_ROOT_API + "/notifications/mark-read"
     );
     notifications.getNotifications();
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
@@ -140,9 +171,6 @@ function readMark() {
 }
 
 const route = useRoute();
-function getRoute() {
-  console.log(route.name);
-}
 
 onBeforeMount(() => {
   notifications.getNotifications();

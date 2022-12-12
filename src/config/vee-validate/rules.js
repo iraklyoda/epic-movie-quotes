@@ -22,10 +22,16 @@ defineRule("lowercase", (value) => {
   }
 });
 
-defineRule("geo_num", (value) => {
-  const regexGeorgia = /[\u10A0-\u10FF]/;
-  if (!regexGeorgia.test(value)) {
-    return "გთხოვთ დარეგისტრირდეთ Redberry-ს მეილით (youremail@redberry.ge)";
+defineRule("geo_char", (value) => {
+  if (!/^[ა-ჰა-ჰ0-M{0,4(IX|IV|V?I{0,3})9$@$!%*?&#^-_., +()/\n']+$/.test(value)){
+    return false;
+  }
+  return true;
+});
+
+defineRule("eng_char", (value) => {
+  if (!/^[a-zA-Z0-9$@$!%*?&#^-_., +ō—()'/\nIXV]+$/.test(value)){
+    return false;
   }
   return true;
 });

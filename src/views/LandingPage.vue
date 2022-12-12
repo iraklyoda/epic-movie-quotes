@@ -9,10 +9,8 @@
     <!--          Dialog  -->
     <RouterView />
     <!--            Dialog-->
-    <div class="h-screen snap-y snap-mandatory overflow-scroll">
-      <section
-        class="h-110 snap-start bg-darkBlue font-helvetica text-white lg:h-screen"
-      >
+    <div class="h-screen overflow-scroll lg:snap-y lg:snap-mandatory">
+      <section class="h-110 bg-darkBlue text-white lg:h-screen lg:snap-start">
         <header class="mx-8 flex items-center justify-between">
           <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
           <nav class="flex lg:gap-4">
@@ -46,9 +44,9 @@
         </button>
         <h3></h3>
       </section>
-      <section class="font-helvetica text-white">
+      <section class="text-white">
         <movie-component
-          class="snap-center"
+          class="lg:snap-center"
           v-for="movie in movies"
           :key="movie.name_year"
           :quote="movie.quote"
@@ -58,7 +56,7 @@
       </section>
     </div>
     <footer class="bg-footerBlue py-3 lg:p-4">
-      <p class="ml-8 font-helvetica text-xxs font-medium text-white lg:text-xs">
+      <p class="ml-8 text-xxs font-medium text-white lg:text-xs">
         &#169; {{ $t("rightsReserved") }}
       </p>
     </footer>
@@ -100,3 +98,16 @@ const movies = {
   },
 };
 </script>
+
+<style scoped>
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>

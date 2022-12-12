@@ -11,6 +11,14 @@ import Pusher from "pusher-js";
 import "@/config/vee-validate/rules.js";
 import "@/config/vee-validate/messages.js";
 import "@/style.css";
+import { configure } from "vee-validate";
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
+
 
 import MovieInput from "@/components/ui/movies/MovieInput.vue";
 import DownArrow from "@/components/icons/ArrowDownIcon.vue";

@@ -1,7 +1,12 @@
 <template>
-  <movie-dialog route="MovieList">
+  <router-link
+    class="absolute left-0 top-0 z-30 h-screen w-screen lg:h-screen"
+    :to="{ name: 'MovieList' }"
+  >
+  </router-link>
+  <div class="absolute top-0 h-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-240 lg:rounded-xl"
+      class="absolute z-50 h-screen w-screen overflow-hidden overflow-scroll bg-darkBlue pt-7 pb-12 lg:top-24 lg:left-[34rem] lg:h-4/5 lg:w-200 lg:rounded-xl"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -15,12 +20,14 @@
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profileStore.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover object-center"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">
+              {{ profileStore.user.username }}
+            </p>
           </div>
         </div>
       </aside>
@@ -33,7 +40,7 @@
           id="titleEn"
           name="title_en"
           :errors="errors.title_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           lang="Eng"
           placeholder="Movie Name"
         />
@@ -41,7 +48,7 @@
           id="titleKa"
           name="title_ka"
           :errors="errors.title_ka"
-          rules="required|geo_num"
+          rules="required|min:3|geo_char"
           lang="ქარ"
           placeholder="ფილმის სახელი"
         />
@@ -52,8 +59,9 @@
           rules="required"
         >
           <div
-            class="relative mt-4 h-auto w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-2 placeholder-white outline-none"
+            class="relative mt-4 h-auto w-full rounded border-1 bg-transparent px-2.5 py-2 placeholder-white outline-none"
             :class="{
+              'border-niceGrey': !meta.touched,
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
             }"
@@ -73,8 +81,9 @@
                 @keyup.,="addTag"
                 @keydown.enter.prevent="addTag"
                 :placeholder="$t('category') + '...'"
-                class="bg-transparent placeholder-white focus:outline-none"
+                class="placeholder-white focus:outline-none"
                 :class="{
+                  'bg-transparent': true,
                   'pl-2': categoryTags.length > 0,
                   'border-niceRed': !meta.valid && meta.touched,
                   'border-validGreen': meta.valid && meta.touched,
@@ -86,7 +95,7 @@
         <MovieInput
           id="directorEn"
           name="director_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           :errors="errors.director_en"
           placeholder="Director"
           lang="Eng"
@@ -94,7 +103,7 @@
         <MovieInput
           id="directorKa"
           name="director_ka"
-          rules="required"
+          rules="required|min:3|geo_char"
           :errors="errors.director_ka"
           placeholder="რეჟისორი"
           lang="ქარ"
@@ -104,7 +113,7 @@
           rows="3"
           id="descriptionEn"
           name="description_en"
-          rules="required"
+          rules="required|min:3|eng_char"
           :errors="errors.description_en"
           placeholder="Movie Description"
           lang="Eng"
@@ -114,8 +123,8 @@
           rows="3"
           id="descriptionKa"
           name="description_ka"
-          rules="required"
-          :errors="errors.description_en"
+          rules="required|min:3|geo_char"
+          :errors="errors.description_ka"
           placeholder="ფილმის აღწერა"
           lang="Geo"
         />
@@ -130,7 +139,7 @@
             @dragleave="onDragLeave"
             @dragover.prevent
             @drop="onDrop"
-            class="relative mt-4 w-full rounded border-1 border-niceGrey bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
+            class="border-niceGray relative mt-4 w-full rounded border-1 bg-transparent px-2.5 py-4 placeholder-white outline-none lg:py-2"
             :class="{
               'border-niceRed': !meta.valid && meta.touched,
               'border-validGreen': meta.valid && meta.touched,
@@ -167,28 +176,22 @@
           {{ $t("getStarted") }}
         </button>
       </Form>
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { Form, Field, configure } from "vee-validate";
+import { Form, Field } from "vee-validate";
 import { useRouter } from "vue-router";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import axios from "@/config/axios/index.js";
 import { useMovieStore } from "@/stores/movie.js";
+import { useProfileStore } from "@/stores/profile.js";
 import MovieInput from "@/components/ui/movies/MovieInput.vue";
 const movieList = useMovieStore();
 const router = useRouter();
-
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
+const profileStore = useProfileStore();
 
 function onSubmit(values) {
   console.log(values);

@@ -1,37 +1,49 @@
 <template>
   <div
-    class="flex items-center gap-3 rounded-md border-[1px] border-borderGrey px-4 py-4"
+    class="flex items-center gap-4 rounded-md border-[1px] border-borderGrey px-4 py-4 lg:gap-6"
   >
     <div>
       <img
-        :src="root + notification.sender.profile_picture"
+        :src="profilePicture"
         alt="profile picture"
-        class="w-auto w-15 h-15 rounded-full object-cover object-center"
+        class="h-10 w-10 rounded-full object-cover object-center lg:h-14 lg:w-14"
       />
     </div>
-    <div>
-      <p class="text-lg">{{ notification.sender.username }}</p>
-      <div
-        v-if="notification.type === 'comment'"
-        class="flex items-center gap-3"
-      >
-        <ChatIcon class="w-5" />
-        <p class="text-sm text-lightGrey">Commented to your quote...</p>
+    <div class="flex w-full justify-between">
+      <div>
+        <p class="text-lg">{{ notification.sender.username }}</p>
+        <div
+          v-if="notification.type === 'comment'"
+          class="flex items-center gap-3"
+        >
+          <ChatIcon class="w-5" />
+          <p class="text-xs text-lightGrey lg:text-sm">
+            {{ $t("commentedOnYourQuote") }}
+          </p>
+        </div>
+        <div v-else class="flex items-center gap-3">
+          <HeartIcon class="w-5" />
+          <p class="text-xs text-lightGrey lg:text-sm">
+            {{ $t("likedYourQuote") }}
+          </p>
+        </div>
       </div>
-      <div v-else class="flex items-center gap-3">
-        <HeartIcon class="w-5" />
-        <p class="text-sm text-lightGrey">Liked your quote...</p>
+      <div>
+        <p class="text-sm text-lightGrey">
+          {{ timeAgo(notification.created_at) }}
+        </p>
+        <p v-if="notification.read === 0" class="text-center text-validGreen">
+          {{ $t("new") }}
+        </p>
       </div>
-      <p class="text-lightGrey">{{ timeAgo(notification.created_at) }}</p>
     </div>
   </div>
 </template>
 <script setup>
 import HeartIcon from "@/components/icons/HeartIcon.vue";
-import { computed } from "vue";
 import i18n from "@/config/i18n";
-const root = import.meta.env.VITE_APP_ROOT;
-
+import { computed, ref } from "vue";
+const root = ref(import.meta.env.VITE_APP_ROOT);
 
 function timeAgo(time) {
   switch (typeof time) {
@@ -47,7 +59,7 @@ function timeAgo(time) {
       time = +new Date();
   }
   let time_formats = [];
-  if(i18n.global.locale.value === 'en') {
+  if (i18n.global.locale.value === "en") {
     time_formats = [
       [60, "seconds", 1], // 60
       [120, "1 minute ago", "1 minute from now"], // 60*2
@@ -81,7 +93,7 @@ function timeAgo(time) {
     ];
   }
   let seconds = (+new Date() - time) / 1000,
-    token = "ago",
+    token = i18n.global.locale.value === "en" ? "ago" : "წინ",
     list_choice = 1;
 
   if (seconds == 0) {
@@ -105,9 +117,17 @@ function timeAgo(time) {
 
 let aDay = 24 * 60 * 60 * 1000;
 
-defineProps({
+const props = defineProps({
   notification: {
     required: true,
   },
+});
+
+const profilePicture = computed(() => {
+  if (props.notification.sender.profile_picture.includes("https")) {
+    return props.notification.sender.profile_picture;
+  } else {
+    return root.value + props.notification.sender.profile_picture;
+  }
 });
 </script>

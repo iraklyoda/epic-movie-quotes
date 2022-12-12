@@ -1,11 +1,12 @@
 <template>
-  <movie-dialog
-    route="MoviePage"
-    :param="{ id: route.params.id }"
-    class="lg:mt-24"
+  <router-link
+      class="absolute top-0 z-30 h-auto w-full lg:h-screen"
+      :to="{ name: 'MoviePage' }"
   >
+  </router-link>
+  <div class="h-screen w-screen">
     <div
-      class="h-auto w-screen bg-darkBlue pt-7 font-helvetica lg:h-auto lg:w-200 lg:overflow-auto lg:overflow-x-hidden lg:rounded-xl"
+      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pb-4 pt-7  lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -21,12 +22,12 @@
       <aside class="ml-9">
         <div class="mt-7 flex items-center gap-4">
           <img
-            src="@/assets/images/user/profile_picture.png"
+            :src="profile.profilePicture"
             alt="profile picture"
-            class="w-10"
+            class="h-10 w-10 rounded-full object-cover"
           />
           <div>
-            <p class="whitespace-nowrap text-xl">Nino Tabagari</p>
+            <p class="whitespace-nowrap text-xl">{{ profile.user.username }}</p>
           </div>
         </div>
       </aside>
@@ -54,7 +55,7 @@
                 <img
                   :src="root + movie.image"
                   alt="movie"
-                  class="w-4/12 rounded-lg xs:max-h-20 sm:max-h-52"
+                  class="w-4/12 rounded-lg object-cover xs:max-h-20 sm:max-h-52"
                 />
                 <div>
                   <p>
@@ -93,7 +94,7 @@
           rows="3"
           type="textarea"
           isQuote="true"
-          rules="required"
+          rules="required|min:3|geo_char"
         />
         <MovieInput
           id="quoteEn"
@@ -103,7 +104,7 @@
           rows="3"
           type="textarea"
           isQuote="true"
-          rules="required"
+          rules="required|min:3|eng_char"
         />
         <Field
           name="image"
@@ -155,20 +156,20 @@
           {{ $t("addQuote") }}
         </button>
       </Form>
-      <div class="h-screen lg:h-12"></div>
     </div>
-  </movie-dialog>
+  </div>
 </template>
 
 <script setup>
 import { onBeforeMount, ref, watch } from "vue";
-import { Form, Field, configure } from "vee-validate";
+import { Form, Field } from "vee-validate";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/config/axios/jwtAxios.js";
 import axiosInstance from "@/config/axios/index.js";
 import { useSingleStore } from "@/stores/single";
 import { useUserStore } from "@/stores/user.js";
+import { useProfileStore } from "@/stores/profile.js";
 import { useMovieStore } from "@/stores/movie.js";
 import { useAllQuotesStore } from "@/stores/allQuotes.js";
 import MovieInput from "@/components/ui/movies/MovieInput.vue";
@@ -179,14 +180,8 @@ const movie = useSingleStore();
 const root = import.meta.env.VITE_APP_ROOT;
 const route = useRoute();
 const router = useRouter();
+const profile = useProfileStore();
 const currentMovie = ref([]);
-
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
 
 onBeforeMount(() => {
   const getMovie = async () => {
@@ -229,6 +224,8 @@ function onSubmit(values) {
         }
       );
       movieList.getMovies();
+      useAllQuotesStore().currentPage = 1;
+      useAllQuotesStore().Quotes = [];
       useAllQuotesStore().getQuotes();
       movie.getMovie(route.params.id);
       router.push({ name: "MoviePage", params: { id: route.params.id } });

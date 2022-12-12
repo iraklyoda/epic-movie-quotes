@@ -1,13 +1,13 @@
 <template>
   <div
-    class="absolute top-0 left-0 w-full h-auto flex overflow-scroll  justify-center items-center"
+    class="absolute top-0 left-0 flex h-auto w-full items-center justify-center overflow-hidden lg:h-screen"
   >
     <router-link
-      class="fixed w-full h-auto lg:h-screen top-0"
-      :to="{name: route, params: param}"
+      class="fixed top-0 h-auto w-full lg:h-screen"
+      :to="{ name: route, params: param }"
     >
     </router-link>
-    <div class="relative max-h-176">
+    <div class="lg:overflow-hidden">
       <slot></slot>
     </div>
   </div>

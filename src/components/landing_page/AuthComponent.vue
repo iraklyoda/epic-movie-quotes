@@ -2,14 +2,15 @@
   <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
-      <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
+      <h2 class="mt-20 text-2xl font-medium text-white lg:mt-16 lg:text-3xl">
         {{ $t("logInToYourAccount") }}
       </h2>
       <p class="mt-3 text-niceGrey">{{ $t("welcomeBack") }}</p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5">
+    <Form @submit="onSubmit" class="mx-auto mt-8 w-4/5 lg:w-3/5" v-slot="{ errors }">
       <input-component
         name="username"
+        :errors="errors.username"
         :label="$t('name')"
         :placeholder="$t('enterName')"
         :required="true"
@@ -17,6 +18,7 @@
       />
       <input-component
         name="password"
+        :errors="errors.password"
         :label="$t('password')"
         :placeholder="$t('password')"
         :type="passwordFieldType"
@@ -32,10 +34,10 @@
           <visibility-icon />
         </button>
       </input-component>
-      <p class="text-red-300 text-xs mt-1 lg:text-base" v-if="loginError">
+      <p class="mt-1 text-xs text-red-300 lg:text-base" v-if="loginError">
         {{ $t(loginError) }}
       </p>
-      <div class="flex justify-between my-3 text-white">
+      <div class="my-3 flex justify-between text-white">
         <div class="flex gap-2">
           <input
             @click="setRememberToken"
@@ -58,18 +60,18 @@
           </button>
         </div>
       </div>
-      <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
+      <button class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2">
         {{ $t("getStarted") }}
       </button>
       <form :action="googleLogin">
         <button
-          class="py-1 border w-full rounded-md text-white mt-4 flex items-center justify-center gap-1.5 lg:p-2"
+          class="mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border py-1 text-white lg:p-2"
         >
           <google-icon class="mb-1" />
           <p>{{ $t("signUpGoogle") }}</p>
         </button>
       </form>
-      <p class="text-center mt-3 text-niceGrey lg:mt-9">
+      <p class="mt-3 text-center text-niceGrey lg:mt-9">
         {{ $t("dontHaveAnAccount") }}
         <button
           type="button"
@@ -101,22 +103,26 @@ function switchVisibility() {
     passwordFieldType.value === "password" ? "text" : "password";
 }
 
-const loginError = ref("");
+const loginError = ref(null);
 const login = async (user) => {
   try {
     const response = await axiosInstance.post(
       import.meta.env.VITE_APP_ROOT_API + "/login",
       user
     );
-    console.log(response);
     authStore.authenticated = true;
-    loginError.value = "";
+    loginError.value = null;
     router.push({ name: "NewsFeed" });
   } catch (error) {
     console.log(error);
-    // if (error.response.data.error === "Wrong email or password!") {
-    //   loginError.value = "wrongUser";
-    // }
+    const errorMessage = error.response.data.error;
+    if (errorMessage === "Wrong email or password!") {
+      loginError.value = "wrongUser";
+    } else if (errorMessage === "Email is not verified") {
+      loginError.value = "EmailIsNotVerified";
+    } else if (errorMessage === "Non primary email is not verified") {
+      loginError.value = "SecondaryEmailNotVerified";
+    }
   }
 };
 

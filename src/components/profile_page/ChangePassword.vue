@@ -19,7 +19,7 @@
       <section class="bg-headerBlue py-10 px-9 lg:bg-transparent lg:pt-16">
         <Form @submit="onSubmit">
           <div class="w-full rounded-md bg-cinder px-6 py-2 lg:bg-black">
-            <p>Passwords should contain:</p>
+            <p>{{ $t("passwordsShouldContain") }}</p>
             <div class="mt-4 flex items-center gap-2">
               <div
                 class="h-1.5 w-1.5 rounded-full"
@@ -35,7 +35,7 @@
                   'text-white': passwordInput.length >= 8,
                 }"
               >
-                8 or more characters
+                8 {{ $t("orMoreCharacters") }}
               </p>
             </div>
             <div class="flex items-center gap-2">
@@ -57,14 +57,14 @@
                     passwordInput.length >= 8 && passwordInput.length <= 15,
                 }"
               >
-                max 15 characters
+                {{ $t("max") }} 15 {{ $t("characters") }}
               </p>
             </div>
           </div>
           <!--          Password-->
           <div class="mt-8">
             <div class="flex flex-col">
-              <label for="password" class="pb-2">{{ $t("password") }}</label>
+              <label for="password" class="pb-2">{{ $t("newPassword") }}</label>
               <Field
                 v-model="passwordInput"
                 type="password"
@@ -74,12 +74,15 @@
                 rules="required|min:8|max:15|alpha_num|lowercase"
               />
             </div>
-            <ErrorMessage name="new_password" class="mt-2" />
+            <ErrorMessage
+              name="new_password"
+              class="text-md mt-3 text-red-300 lg:text-base"
+            />
           </div>
           <div class="mt-4">
             <div class="flex flex-col">
               <label for="confirmation" class="pb-2">{{
-                $t("password")
+                $t("confirmNewPassword")
               }}</label>
               <Field
                 type="password"
@@ -89,13 +92,16 @@
                 rules="required|confirmed:@new_password"
               />
             </div>
-            <ErrorMessage name="new_password_confirmation" class="mt-2" />
+            <ErrorMessage
+              name="new_password_confirmation"
+              class="text-md mt-3 text-red-300 lg:text-base"
+            />
           </div>
           <div
             class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
           >
             <router-link :to="{ name: 'ProfilePage' }">
-              <p>Cancel</p>
+              <p>{{$t("cancel")}}</p>
             </router-link>
             <button class="rounded-lg bg-red-500 px-2 py-2">Add</button>
           </div>
@@ -106,12 +112,12 @@
       v-else
       class="mx-9 rounded-lg bg-headerBlue py-8 lg:bg-transparent"
     >
-      <p class="pt-8 text-center">Are you sure to make changes?</p>
+      <p class="pt-8 text-center">{{$t('areYouSureToMakeChanges')}}</p>
       <div class="mt-8 border-b-2 border-fadeGrey"></div>
       <div class="mt-4 flex items-center justify-between px-9">
-        <p @click="submitted = false" class="cursor-pointer">Cancel</p>
+        <p @click="submitted = false" class="cursor-pointer">{{$t("cancel")}}</p>
         <button class="rounded-lg bg-red-500 px-2 py-2" @click="changePassword">
-          Confirm
+          {{$t("confirm")}}
         </button>
       </div>
     </section>
@@ -140,7 +146,6 @@ const submitted = ref(false);
 const passwordValues = ref({});
 
 function onSubmit(values) {
-  console.log(values);
   submitted.value = true;
   passwordValues.value = values;
 
@@ -150,11 +155,10 @@ function onSubmit(values) {
 function changePassword() {
   const change = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/profile/update-user",
         passwordValues.value
       );
-      console.log(response);
       profileStore.getProfile();
       profileStore.successPassword = true;
       router.push({ name: "ProfilePage" });

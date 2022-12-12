@@ -6,7 +6,7 @@
       v-model="bodyInput"
       name="body"
       :placeholder="$t('writeAComment')"
-      class="ml-3 block w-full rounded-md bg-footerBlue py-2 pl-4"
+      class="ml-3 block w-full rounded-md bg-footerBlue py-2 pl-4 focus:outline-none"
       @keypress.enter.prevent="handleSubmit($event, onSubmit)"
     />
   </Form>

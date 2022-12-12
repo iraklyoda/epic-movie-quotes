@@ -1,5 +1,7 @@
 <template>
-  <RouterView></RouterView>
+  <div :class="{ 'font-helvetica_eng': lang === 'en', 'font-helvetica_geo': lang === 'ka' }">
+    <RouterView></RouterView>
+  </div>
 </template>
 
 <style>
@@ -9,7 +11,10 @@ input[type="file"] {
 </style>
 
 <script setup>
+import { ref, computed } from "vue";
 import { RouterView } from "vue-router";
-
-console.log(import.meta.env.VITE_APP_ROOT_API);
+import i18n from "@/config/i18n";
+const lang = computed(() => {
+  return i18n.global.locale.value;
+});
 </script>

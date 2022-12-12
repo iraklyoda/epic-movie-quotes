@@ -6,18 +6,19 @@
       :as="type"
       :rows="rows"
       :name="name"
-      class="bg-transparent border-1 border-niceGrey placeholder-white w-full px-2.5 py-1.5 rounded lg:py-2 outline-none"
+      class="w-full rounded border-1 bg-transparent px-2.5 pr-6 py-1.5 placeholder-white outline-none lg:py-2"
       :rules="rules"
       @blur="focused = true"
       :id="id"
       :placeholder="placeholder"
       :class="{
+        'border-niceGrey': !errors,
         'placeholder-lightGrey placeholder:italic': isQuote,
         'border-niceRed': errors,
         'border-green-500': !errors && focused,
       }"
     />
-    <span class="text-niceGrey absolute right-3 top-2" v-if="lang">
+    <span class="absolute right-3 top-2 text-niceGrey" v-if="lang">
       {{ lang }}</span
     >
   </div>

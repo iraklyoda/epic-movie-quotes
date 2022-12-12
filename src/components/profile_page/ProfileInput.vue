@@ -1,12 +1,12 @@
 <template>
   <div class="relative mt-4">
-    <label :for="name">{{label}}</label>
+    <label :for="name">{{ label }}</label>
     <Field
       @input="$emit('update:modelValue', $event.target.value)"
       :value="modelValue ? modelValue : value"
       :type="type"
       :name="name"
-      class="text-lg lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black lg:w-full lg:mt-2"
+      class="text-lg lg:mt-2 lg:w-full lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black lg:mb-2"
       :rules="rules"
       @blur="focused = true"
       :id="id"
@@ -16,10 +16,9 @@
 </template>
 
 <script setup>
-import { ref} from "vue";
+import { ref } from "vue";
 import { Field } from "vee-validate";
 const focused = ref(false);
-
 
 const props = defineProps({
   name: {
@@ -61,7 +60,7 @@ const props = defineProps({
   label: {
     required: false,
     default: "",
-  }
+  },
 });
 
 defineEmits(["update:modelValue"]);

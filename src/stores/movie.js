@@ -15,8 +15,25 @@ export const useMovieStore = defineStore("movie", () => {
       console.log(e);
     }
   };
+
+  const searchMovies = async (search) => {
+    if (search !== "") {
+      try {
+        await axios.post(
+          import.meta.env.VITE_APP_ROOT_API + "/movies/search",
+          search
+        );
+        movies.value = response.data;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      getMovies();
+    }
+  };
+
   onMounted(() => {
     getMovies();
   });
-  return { movies, getMovies };
+  return { movies, getMovies, searchMovies };
 });

@@ -2,32 +2,42 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "@/config/axios/index.js";
 import axiosInstance from "@/config/axios/jwtAxios.js";
-import { useRouter } from "vue-router";
 import i18n from "@/config/i18n";
 import { setLocale } from "@vee-validate/i18n";
-
-import { useAuthStore } from "@/stores/auth";
 import router from "@/router";
 
+import { useAuthStore } from "@/stores/auth";
 export const useUserStore = defineStore("user", () => {
   const authStore = useAuthStore();
   const token = ref(false);
   const hello = ref("hello");
-  const router = useRouter();
 
-  const registerError = ref("");
+  const usernameExists = ref("");
+  const emailExists = ref("");
+
+  const loading = ref(false);
   const register = async (user) => {
-    console.log(user);
+    loading.value = true;
     try {
-      let response = await axios.post(
-        import.meta.env.VITE_APP_ROOT_API + "/register",
-        user
-      );
-      registerError.value = "";
-      console.log(response.status);
+      await axios.post(import.meta.env.VITE_APP_ROOT_API + "/register", user);
+      loading.value = false;
+      router.push({ name: "CheckEmail" });
     } catch (error) {
+      const errors = error.response.data.errors;
+      for (const key in errors) {
+        if (key === "username") {
+          usernameExists.value = "usernameTaken";
+        }
+        if (key === "email") {
+          emailExists.value = "emailTaken";
+        }
+      }
+      setTimeout(() => {
+        usernameExists.value = "";
+        emailExists.value = "";
+      }, 3000);
+      loading.value = false;
       console.log(error);
-      registerError.value = "emailBusy";
     }
   };
 
@@ -38,23 +48,26 @@ export const useUserStore = defineStore("user", () => {
     } catch (err) {
       console.log(err);
     } finally {
-      router.push({ name: "Landing" });
+      router.push({ name: "Login" });
     }
   };
 
   const resetErrors = ref(null);
 
   const resetRequest = async (email) => {
+    loading.value = true;
     try {
       await axios.post(
         import.meta.env.VITE_APP_ROOT_API + "/forgot-password",
         email
       );
+      loading.value = false;
       resetErrors.value = null;
       router.push({ name: "CheckPassword" });
     } catch (e) {
       console.log(e);
       resetErrors.value = e.response.data.msg;
+      loading.value = false;
       setTimeout(() => {
         resetErrors.value = null;
       }, 3500);
@@ -67,7 +80,7 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
-      router.push({ name: "LandingPage" });
+      router.push({ name: "Landing" });
     } catch (e) {
       console.log(e);
     }
@@ -81,7 +94,6 @@ export const useUserStore = defineStore("user", () => {
 
   function langDropDown() {
     langOpen.value = !langOpen.value;
-    console.log(langOpen.value);
   }
 
   function langDown() {
@@ -121,12 +133,14 @@ export const useUserStore = defineStore("user", () => {
     resetErrors,
     logout,
     register,
+    loading,
     token,
     resetRequest,
     updatePassword,
     hello,
     appLanguage,
     setAppLanguage,
-    registerError,
+    usernameExists,
+    emailExists,
   };
 });
