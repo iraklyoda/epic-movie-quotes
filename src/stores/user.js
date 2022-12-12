@@ -12,24 +12,32 @@ export const useUserStore = defineStore("user", () => {
   const token = ref(false);
   const hello = ref("hello");
 
-  const registerError = ref("");
-
+  const usernameExists = ref("");
+  const emailExists = ref("");
 
   const loading = ref(false);
   const register = async (user) => {
     loading.value = true;
     try {
-     await axios.post(
-        import.meta.env.VITE_APP_ROOT_API + "/register",
-        user
-      );
-      registerError.value = "";
+      await axios.post(import.meta.env.VITE_APP_ROOT_API + "/register", user);
       loading.value = false;
       router.push({ name: "CheckEmail" });
     } catch (error) {
+      const errors = error.response.data.errors;
+      for (const key in errors) {
+        if (key === "username") {
+          usernameExists.value = "usernameTaken";
+        }
+        if (key === "email") {
+          emailExists.value = "emailTaken";
+        }
+      }
+      setTimeout(() => {
+        usernameExists.value = "";
+        emailExists.value = "";
+      }, 3000);
       loading.value = false;
       console.log(error);
-      registerError.value = "emailBusy";
     }
   };
 
@@ -132,6 +140,7 @@ export const useUserStore = defineStore("user", () => {
     hello,
     appLanguage,
     setAppLanguage,
-    registerError,
+    usernameExists,
+    emailExists,
   };
 });

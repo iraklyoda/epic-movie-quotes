@@ -24,7 +24,6 @@ configure({
         password: "პაროლი",
         new_password: "ახალი პაროლი",
         username: "უზერნეიმი",
-
       },
       messages: {
         _default: "{field}ს ველი არ არის ვალიდური",

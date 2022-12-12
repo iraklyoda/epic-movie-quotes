@@ -16,6 +16,12 @@
         :required="true"
         rules="required|min:3|max:15|alpha_num|lowercase"
       />
+      <p
+        class="mb-3 text-sm text-red-300 lg:text-base"
+        v-if="store.usernameExists"
+      >
+        {{ $t(store.usernameExists) }}
+      </p>
       <input-component
         name="email"
         :errors="errors.email"
@@ -25,6 +31,12 @@
         :required="true"
         rules="required|email"
       />
+      <p
+        class="mb-3 text-sm text-red-300 lg:text-base"
+        v-if="store.emailExists"
+      >
+        {{ $t(store.emailExists) }}
+      </p>
       <input-component
         name="password"
         :errors="errors.password"
@@ -67,7 +79,7 @@
         {{ $t(store.registerError) }}
       </p>
       <button
-        class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
+        class="mt-1 w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
         :class="{ 'animate-spin': store.loading }"
       >
         {{ $t("getStarted") }}

@@ -120,6 +120,8 @@ export default {
     commentedOnYourQuote: "Commented to your quote...",
     likedYourQuote: "Liked your quote...",
     new: "New",
+    usernameTaken: "Username has already been taken",
+    emailTaken: "Email has already been taken",
 
   },
 };

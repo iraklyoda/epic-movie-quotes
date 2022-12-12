@@ -92,7 +92,7 @@
             class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
           >
             <router-link :to="{ name: 'ProfilePage' }">
-              <p>Cancel</p>
+              <p>{{$t("cancel")}}</p>
             </router-link>
             <button
               class="rounded-lg bg-niceRed px-2 py-2"

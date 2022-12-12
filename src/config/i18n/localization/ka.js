@@ -119,5 +119,7 @@ export default {
     commentedOnYourQuote: "დააკომენტარა თქვენს ციტატაზე...",
     likedYourQuote: "მოიწონა თქვენი ციტატა...",
     new: "ახალი",
+    usernameTaken: "იუზერნეიმი დაკავებულია",
+    emailTaken: "ელ-ფოსტა დაკავებულია",
   },
 };

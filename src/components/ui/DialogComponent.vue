@@ -5,7 +5,7 @@
       class="absolute top-0 left-0 bg-fadeBlack w-full h-screen flex justify-center items-center"
     >
       <div
-        class="w-screen h-screen bg-footerBlue font-helvetica lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl z-20"
+        class="w-screen h-screen bg-footerBlue lg:bg-SteelGray lg:w-150 lg:h-auto lg:pb-4 lg:-mt-8 lg:rounded-xl z-20"
       >
         <slot></slot>
       </div>

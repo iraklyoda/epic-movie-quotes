@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
-import {onBeforeMount, ref} from "vue";
+import { ref } from "vue";
 import axios from "@/config/axios/jwtAxios.js";
 import axiosInstance from "@/config/axios/index.js";
-import { useProfileStore } from "@/stores/profile";
 
 export const useAllQuotesStore = defineStore("allQuotes", () => {
   const quotes = ref([]);
@@ -10,16 +9,12 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
   const quotesLikeActionStatus = ref(0);
 
   const getQuotes = async () => {
-    try {
-      const response = await axios.get(
-        import.meta.env.VITE_APP_ROOT_API +
-          "/quotes/read?page=" +
-          currentPage.value
-      );
-      quotes.value = quotes.value.concat(response.data.data);
-    } catch (e) {
-      console.log(e);
-    }
+    const response = await axios.get(
+      import.meta.env.VITE_APP_ROOT_API +
+        "/quotes/read?page=" +
+        currentPage.value
+    );
+    quotes.value = quotes.value.concat(response.data.data);
   };
 
   const getNumberQuotes = async (search) => {
@@ -33,6 +28,7 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
       );
       quotes.value = response.data;
     } catch (e) {
+      console.log(e);
     }
   };
 
@@ -51,7 +47,7 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
         searchedQuotes.value = searchedQuotes.value.concat(response.data.data);
         quotes.value = searchedQuotes.value;
       } catch (e) {
-        if(currentPage.value === 1 && search.search !== "") {
+        if (currentPage.value === 1 && search.search !== "") {
           searchedQuotes.value = [];
           quotes.value = searchedQuotes.value;
         }

@@ -6,7 +6,7 @@
   </router-link>
   <div class="h-screen w-screen">
     <div
-      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pb-4 pt-7 font-helvetica lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
+      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pb-4 pt-7  lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">

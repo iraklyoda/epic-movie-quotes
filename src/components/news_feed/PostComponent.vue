@@ -50,7 +50,7 @@
         <PostComment
           :quoteId="props.quoteId"
           :quote-author="quoteAuthor"
-          class="pr-6 h-full w-full"
+          class="h-full w-full pr-6"
         />
       </section>
     </div>

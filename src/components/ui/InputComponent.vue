@@ -13,8 +13,12 @@
         :rules="rules"
         class="w-full rounded-md bg-lightGrey px-2.5 py-1 placeholder-niceGrey focus:outline-none focus:ring-4 focus:ring-lightGrey focus:ring-opacity-30 lg:py-2"
         :class="{
-          'ring-1 ring-niceRed': errors,
-          'ring-2 ring-validGreen': !errors && focused,
+          'ring-1 ring-niceRed':
+            errors || (name === 'username' && store.usernameExists) || (name === 'email' && store.emailExists),
+          'ring-2 ring-validGreen':
+            !errors &&
+            focused &&
+            (name !== 'username' || !store.usernameExists) && (name !== 'email' || !store.emailExists),
         }"
         :type="type"
         :id="name"
@@ -28,13 +32,15 @@
           :class="{ 'right-7': isPassword }"
         ></invalid-icon>
         <valid-icon
-          v-if="!errors && focused"
+          v-if="
+            !errors && focused && (name !== 'username' || !store.usernameExists) && (name !== 'email' || !store.emailExists)
+          "
           class="absolute top-2 right-2 lg:top-3"
           :class="{ 'right-7': isPassword }"
         ></valid-icon>
       </div>
     </div>
-    <ErrorMessage :name="name" class="mt-1 text-xs text-red-300 lg:text-base" />
+    <ErrorMessage :name="name" class="mt-1 text-sm text-red-300 lg:text-base" />
   </div>
 </template>
 

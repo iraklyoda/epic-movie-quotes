@@ -28,11 +28,12 @@ module.exports = {
         22.5: "5.625rem",
       },
       fontSize: {
-        xxs: "8px",
+        xxs: "9px",
         xs: "10px",
       },
       fontFamily: {
-        helvetica: ["Helvetica Neue", "sans-serif"],
+        helvetica_eng: ["Helvetica Neue Eng", "mono"],
+        helvetica_geo: ["Helvetica Neue Geo", "mono"],
       },
       colors: {
         vermilion: "#E33812",
@@ -71,7 +72,7 @@ module.exports = {
         300: "75rem",
       },
       maxHeight: {
-        150: '37.5rem',
+        150: "37.5rem",
         176: "52rem",
       },
       width: {
