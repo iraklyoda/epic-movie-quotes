@@ -47,7 +47,6 @@
           class="mx-9 mt-7 lg:mx-0 lg:w-full lg:px-9"
           v-slot="{ errors }"
         >
-          <Field name="movie_id" :value="quote.movie_id" class="hidden" />
           <MovieInput
             type="textarea"
             id="quoteEn"
@@ -186,7 +185,6 @@ function onDrop(e) {
 
 function onSubmit(values) {
   const quote = {
-    movie_id: values.movie_id,
     quote_en: values.quote_en,
     quote_ka: values.quote_ka,
   };

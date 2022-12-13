@@ -18,18 +18,10 @@ import { Form, Field } from "vee-validate";
 import axiosInstance from "@/config/axios/index.js";
 import { useProfileStore } from "@/stores/profile.js";
 
-const profile = useProfileStore();
 
 const bodyInput = ref("");
 
 function onSubmit(values) {
-  const quote = ref({
-    body: values.body,
-    user_id: profile.user.id,
-    quote_author: props.quoteAuthor,
-    type: "comment",
-  });
-  console.log(quote.value);
   const postComment = async () => {
     try {
       const response = await axiosInstance.post(
@@ -37,7 +29,7 @@ function onSubmit(values) {
           "/quotes/" +
           props.quoteId +
           "/comments",
-        quote.value
+        values
       );
       console.log(response);
       bodyInput.value = "";
