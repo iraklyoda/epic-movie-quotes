@@ -80,7 +80,7 @@ export const useUserStore = defineStore("user", () => {
         import.meta.env.VITE_APP_ROOT_API + "/reset-password",
         newPassword
       );
-      router.push({ name: "Landing" });
+      router.push({ name: "Login" });
     } catch (e) {
       console.log(e);
     }

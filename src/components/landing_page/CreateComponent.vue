@@ -2,14 +2,18 @@
   <dialog-component>
     <div class="h-0.5"></div>
     <div class="text-center">
-      <h2 class="mt-20 text-2xl text-white font-medium lg:text-3xl lg:mt-16">
+      <h2 class="mt-20 text-2xl font-medium text-white lg:mt-16 lg:text-3xl">
         {{ $t("createNewPassword") }}
       </h2>
-      <p class="mt-3 text-niceGrey w-96 mx-auto">
+      <p class="mx-auto mt-3 w-96 text-niceGrey">
         {{ $t("newPasswordMustBe") }}
       </p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto w-4/5 mt-8 lg:w-3/5" v-slot="{ errors }">
+    <Form
+      @submit="onSubmit"
+      class="mx-auto mt-8 w-4/5 lg:w-3/5"
+      v-slot="{ errors }"
+    >
       <input-component
         name="password"
         :errors="errors.password"
@@ -29,8 +33,8 @@
         </button>
       </input-component>
       <input-component
-        name="confirmation"
-        :errors="errors.confirmation"
+        name="password_confirmation"
+        :errors="errors.password_confirmation"
         :label="$t('confirmPassword')"
         :placeholder="$t('confirmYourPassword')"
         :type="passwordFieldType"
@@ -45,13 +49,13 @@
           <visibility-icon />
         </button>
       </input-component>
-      <button class="bg-niceRed py-1 w-full rounded-md text-white lg:p-2">
+      <button class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2">
         {{ $t("resetPassword") }}
       </button>
       <button
         type="button"
         @click="router.push({ name: 'Login' })"
-        class="w-full flex justify-center items-center gap-2 my-8"
+        class="my-8 flex w-full items-center justify-center gap-2"
       >
         <left-arrow-icon></left-arrow-icon>
         <span class="text-niceGrey">{{ $t("backToLogIn") }}</span>
@@ -82,6 +86,7 @@ function onSubmit(values) {
   const newPassword = {
     email: route.params.email,
     password: values.password,
+    password_confirmation: values.password_confirmation,
     token: route.params.token,
   };
   console.log(values);
