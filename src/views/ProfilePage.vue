@@ -73,8 +73,8 @@
           <!--        Add Email -->
           <!--    Username-->
           <div class="px-9 pt-12 lg:pl-20">
-            <p>{{ $t("username") }}</p>
-            <div
+            <p v-if="!editUsername">{{ $t("username") }}</p>
+            <div v-if="!editUsername"
               class="mt-1 flex justify-between gap-6 lg:items-center lg:justify-start"
             >
               <p
@@ -99,11 +99,12 @@
               </button>
             </div>
             <div v-if="editUsername">
-              <div class="mt-4 flex flex-col">
+              <div class="flex flex-col mt-1">
                 <label for="username" class="pb-2">{{
                   $t("enterNewUsername")
                 }}</label>
                 <Field
+                  :placeholder="userStore.user.username"
                   name="username"
                   id="username"
                   class="mb-2 text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
@@ -126,6 +127,24 @@
               class="mt-4 border-b-2 border-fadeGrey lg:mt-10 lg:w-10/12 lg:border-fadeLightGray"
             ></div>
           </div>
+          <!--          Google Email-->
+          <div class="px-9 pt-2 lg:pl-20" v-if="userStore.user.google_id">
+            <p>{{ $t("email") }}</p>
+            <div
+              class="mt-1 flex justify-between gap-6 lg:items-center lg:justify-start"
+            >
+              <p
+                class="text-lg lg:w-8/12 lg:rounded-md lg:bg-lightGrey lg:py-2 lg:pl-4 lg:text-black"
+              >
+                {{ userStore.user.email }}
+              </p>
+              <!--          Mobile Version -->
+            </div>
+          </div>
+          <div
+            class="relative flex items-center gap-6 py-4 pl-20 pr-8"
+            v-if="userStore.user.google_id"
+          ></div>
           <!--        Email-->
           <div
             class="hidden px-9 pt-12 lg:block lg:pl-20"
@@ -200,7 +219,7 @@
             ></div>
           </div>
           <!--    Password-->
-          <div class="px-9 pt-8 lg:pl-20">
+          <div class="px-9 pt-8 lg:pl-20" v-if="!userStore.user.google_id">
             <p>{{ $t("password") }}</p>
             <div
               class="mt-1 flex justify-between lg:items-center lg:justify-start lg:gap-6"

@@ -195,7 +195,7 @@ window.Echo.channel("add-comment").listen(".new-comment", () => {
 
 onMounted(() => {
   if (quotesStore.quotes.length) {
-    quotesStore.getNumberQuotes(quotesStore.quotes.length);
+    quotesStore.getNumberQuotes();
   } else {
     quotesStore.getQuotes();
   }

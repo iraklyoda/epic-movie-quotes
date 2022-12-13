@@ -85,16 +85,10 @@ function getActive() {
 }
 
 function like() {
-  const values = {
-    quote_author: props.quoteAuthor,
-    user_id: profile.user.id,
-    type: "like",
-  };
   const like = async () => {
     try {
       axiosInstance.post(
         import.meta.env.VITE_APP_ROOT_API + "/quote/" + props.quoteId + "/like",
-        values
       );
     } catch (e) {
       console.log(e);

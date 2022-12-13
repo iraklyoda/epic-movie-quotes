@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, onMounted } from "vue";
 import axios from "@/config/axios/jwtAxios.js";
+import axiosInstance from "@/config/axios/index.js";
 
 export const useMovieStore = defineStore("movie", () => {
   const movies = ref([]);
@@ -19,7 +20,7 @@ export const useMovieStore = defineStore("movie", () => {
   const searchMovies = async (search) => {
     if (search !== "") {
       try {
-        await axios.post(
+        const response = await axiosInstance.post(
           import.meta.env.VITE_APP_ROOT_API + "/movies/search",
           search
         );
