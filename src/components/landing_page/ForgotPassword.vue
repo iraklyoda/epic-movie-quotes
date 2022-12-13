@@ -16,7 +16,7 @@
     >
       <input-component
         v-model="emailInput"
-        :errors="errors.emailInput"
+        :errors="errors.email"
         name="email"
         type="email"
         :label="$t('email')"

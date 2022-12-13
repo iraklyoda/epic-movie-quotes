@@ -1,4 +1,4 @@
-# epic-movie-quotes
+# Epic Movie QUotes
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -12,6 +12,27 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
+
+# Table of Contents
+- [Table of Contents](#table-of-contents)
+    - [Introduction](#introduction)
+    - [Tech Stack](#tech-stack)
+    - [Getting Started](#getting-started)
+    - [Resources](#resources)
+
+## Introduction
+### Covid Questionaire
+Web-application questionaire about covid-19
+
+
+## Tech Stack
+* vue 3
+
+## Getting Started
+* Clone this repository
+```bash
+git clone https://github.com/RedberryInternship/irakli-iobashvili-epic-movie-quotes.git
+```
 ```sh
 npm install
 ```
@@ -33,3 +54,6 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Resources
+* [Figma](#)
