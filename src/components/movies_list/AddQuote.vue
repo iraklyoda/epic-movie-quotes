@@ -151,7 +151,7 @@
           </div>
         </Field>
         <button
-          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-3 text-white lg:p-2"
         >
           {{ $t("addQuote") }}
         </button>

@@ -18,7 +18,7 @@
               <LanguageChange class="mt-8 mr-2" />
               <button
                 @click="router.push({ name: 'Register' })"
-                class="mx-auto mt-6 block hidden rounded bg-niceRed px-6 py-1 lg:block"
+                class="mx-auto mt-6 block hidden rounded bg-niceRed px-6 py-1 hover:bg-hoverRed active:bg-activeRed lg:block"
               >
                 {{ $t("signUp") }}
               </button>
@@ -38,7 +38,7 @@
         </p>
         <button
           @click="router.push({ name: 'Login' })"
-          class="mx-auto mt-6 block rounded bg-niceRed px-3 py-1.5 lg:px-4 lg:py-2"
+          class="mx-auto mt-6 block rounded bg-niceRed px-3 py-1.5 hover:bg-hoverRed active:bg-activeRed lg:px-4 lg:py-2"
         >
           {{ $t("getStarted") }}
         </button>

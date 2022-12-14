@@ -29,7 +29,7 @@
             <div class="h-6 border-l-2 border-l-niceGrey text-sm"></div>
             <router-link
               :to="{ name: 'MovieQuote' }"
-              class="hidden w-36 items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 lg:flex lg:w-auto"
+              class="hidden w-36 items-center gap-2 whitespace-nowrap rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-2 px-3 lg:flex lg:w-auto"
             >
               <AddIcon />
               <p>{{ $t("addQuote") }}</p>

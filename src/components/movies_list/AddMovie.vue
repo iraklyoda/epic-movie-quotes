@@ -171,9 +171,9 @@
           </div>
         </Field>
         <button
-          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white hover:bg-hoverRed active:bg-activeRed lg:p-2"
         >
-          {{ $t("getStarted") }}
+          {{ $t("addMovie") }}
         </button>
       </Form>
     </div>

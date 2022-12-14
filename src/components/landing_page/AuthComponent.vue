@@ -60,7 +60,7 @@
           </button>
         </div>
       </div>
-      <button class="w-full rounded-md bg-niceRed py-1 text-white lg:p-2">
+      <button class="w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-1 text-white lg:p-2">
         {{ $t("getStarted") }}
       </button>
       <form :action="googleLogin">
