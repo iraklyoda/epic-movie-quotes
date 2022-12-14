@@ -272,7 +272,6 @@ function onSubmit(values) {
   if (img.value) {
     movie.image = values.image;
   }
-  console.log(movie);
   const editMovie = async () => {
     try {
       const response = await axiosInstance.post(
@@ -286,7 +285,6 @@ function onSubmit(values) {
       );
       singleMovie.getMovie(route.params.id);
       router.push({name: "MoviePage"});
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

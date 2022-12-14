@@ -23,14 +23,14 @@ defineRule("lowercase", (value) => {
 });
 
 defineRule("geo_char", (value) => {
-  if (!/^[ა-ჰა-ჰ0-9_.,\-–—IVX&\n '()?:]+$/.test(value)){
+  if (!/^[ა-ჰა-ჰ0-9_.,\-–—IVX&\n '()?:"]+$/.test(value)){
     return false;
   }
   return true;
 });
 
 defineRule("eng_char", (value) => {
-  if (!/^[A-Za-z0-9_.,\-–—\n 'ō()?:]+$/.test(value)){
+  if (!/^[A-Za-z0-9_.,\-–—\n 'ō()?:ä"]+$/.test(value)){
     return false;
   }
   return true;

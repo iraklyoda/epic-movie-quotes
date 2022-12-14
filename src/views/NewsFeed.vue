@@ -122,7 +122,6 @@ const first = ref(false);
 
 let timeOut = setTimeout(() => {
   if (first.value) {
-    console.log(searchValue.value);
     quotesStore.searchedQuotes = [];
     quotesStore.currentPage = 1;
     quotesStore.searchQuotes({
@@ -162,13 +161,11 @@ watch(hitBottom, () => {
       quotesStore.getQuotes(quotesStore.currentPage);
       hitBottom.value = false;
     } else {
-      console.log(quotesStore.currentPage);
       quotesStore.currentPage++;
       quotesStore.searchQuotes({
         search: searchValue.value,
       });
       hitBottom.value = false;
-      console.log(quotesStore.searchedQuotes);
     }
   }
 });

@@ -8,12 +8,14 @@
         route.name !== 'ViewQuote' &&
         route.name !== 'EditMovie' &&
         route.name !== 'MovieQuote' &&
+        route.name !== 'AddQuote' &&
         route.name !== 'AddMovie',
       'h-screen overflow-hidden lg:h-auto lg:min-h-screen':
         route.name === 'AddMovie' ||
         route.name === 'EditQuote' ||
         route.name === 'ViewQuote' ||
         route.name === 'EditMovie' ||
+        route.name !== 'AddQuote' ||
         route.name === 'MovieQuote' ||
         route.name !== 'AddMovie',
     }"

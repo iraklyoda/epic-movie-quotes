@@ -1,14 +1,10 @@
 <template>
-  <div class="max-w-5xl pl-9 lg:rounded-xl lg:bg-cinder lg:pb-4">
-    <div class="lg:ml-6">
-      <div class="mt-7 flex items-center gap-4 lg:pt-6">
+  <div class="max-w-5xl px-6 lg:rounded-xl lg:bg-cinder lg:pl-0">
+    <div class="lg:px-12">
+      <div class="mt-7 flex items-center gap-4 lg:pt-6 lg:pr-2">
         <img
           class="h-12 w-12 rounded-full object-cover object-center"
-          :src="
-            props.user.google_id
-              ? props.user.profile_picture
-              : root + props.user.profile_picture
-          "
+          :src="profilePicture"
           alt="profile picture"
         />
         <p>{{ props.user.username }}</p>
@@ -20,7 +16,7 @@
             {{ i18n.global.locale.value === "ka" ? movie.ka : movie.en }}
           </figcaption>
         </div>
-        <img :src="root + image" alt="movie" class="mt-4 w-11/12 max-w-3xl" />
+        <img :src="root + image" alt="movie" class="mt-4" />
       </figure>
       <section class="mt-5 flex items-center text-xl">
         <span>{{ props.comments.length }}</span>
@@ -32,16 +28,16 @@
           @click="like"
         />
       </section>
-      <div class="mt-4 w-11/12 max-w-3xl border-b-2 border-fadeGrey"></div>
+      <div class="mt-4 border-b-2 border-fadeGrey lg:w-auto"></div>
       <div class="max-h-72 overflow-scroll">
         <CommentComponent
           v-for="(comment, index) in props.comments"
           v-bind:key="index"
           :comment="comment"
-          class="pr-6 lg:pr-14"
+          class="lg:pr-14"
         />
       </div>
-      <section class="mt-4 mb-4 flex w-11/12 max-w-3xl lg:pb-6">
+      <section class="mt-4 mb-4 flex lg:w-auto lg:pb-6">
         <img
           :src="profile.profilePicture"
           alt="profile picture"
@@ -67,7 +63,7 @@ import PostComment from "@/components/news_feed/PostComment.vue";
 import { useProfileStore } from "@/stores/profile.js";
 import i18n from "@/config/i18n";
 import axiosInstance from "@/config/axios/index.js";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const profile = useProfileStore();
 const root = ref(import.meta.env.VITE_APP_ROOT);
@@ -84,11 +80,19 @@ function getActive() {
   return active.value;
 }
 
+const profilePicture = computed(() => {
+  if (props.user.profile_picture.includes("https")) {
+    return props.user.profile_picture;
+  } else {
+    return root.value + props.user.profile_picture;
+  }
+});
+
 function like() {
   const like = async () => {
     try {
       axiosInstance.post(
-        import.meta.env.VITE_APP_ROOT_API + "/quote/" + props.quoteId + "/like",
+        import.meta.env.VITE_APP_ROOT_API + "/quote/" + props.quoteId + "/like"
       );
     } catch (e) {
       console.log(e);

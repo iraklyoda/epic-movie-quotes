@@ -80,6 +80,7 @@
                 v-model="categoryTag"
                 @keyup.,="addTag"
                 @keydown.enter.prevent="addTag"
+                @blur="addTag"
                 :placeholder="$t('category') + '...'"
                 class="placeholder-white focus:outline-none"
                 :class="{
@@ -194,7 +195,6 @@ const router = useRouter();
 const profileStore = useProfileStore();
 
 function onSubmit(values) {
-  console.log(values);
   const addMovie = async () => {
     try {
       const response = await axios.post(
@@ -206,7 +206,6 @@ function onSubmit(values) {
           },
         }
       );
-      console.log(response);
       movieList.getMovies();
       router.push({ name: "MovieList" });
     } catch (e) {

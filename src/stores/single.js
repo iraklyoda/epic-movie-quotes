@@ -22,7 +22,6 @@ export const useSingleStore = defineStore("single", () => {
       const response = await axiosInstance.post(
         import.meta.env.VITE_APP_ROOT_API + "/movies/movie/delete/" + id
       );
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

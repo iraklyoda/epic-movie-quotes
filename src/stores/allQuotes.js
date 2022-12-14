@@ -54,7 +54,6 @@ export const useAllQuotesStore = defineStore("allQuotes", () => {
         console.log(e);
       }
     } else {
-      console.log("wow");
       currentPage.value = 1;
       quotes.value = [];
       getQuotes();

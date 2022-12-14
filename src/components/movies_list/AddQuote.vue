@@ -1,12 +1,12 @@
 <template>
   <router-link
-      class="absolute top-0 z-30 h-auto w-full lg:h-screen"
-      :to="{ name: 'MoviePage' }"
+    class="absolute top-0 z-30 h-auto w-full lg:h-screen"
+    :to="{ name: 'MoviePage' }"
   >
   </router-link>
   <div class="h-screen w-screen">
     <div
-      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pb-4 pt-7  lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
+      class="absolute top-0 left-0 z-40 h-screen w-screen overflow-scroll bg-darkBlue pb-4 pt-7 lg:relative lg:ml-36 lg:mt-4 lg:h-4/5 lg:w-3/5 lg:overflow-scroll lg:rounded-xl lg:pb-8"
     >
       <div class="h-0.5"></div>
       <nav class="mx-9 flex items-center justify-between">
@@ -151,7 +151,7 @@
           </div>
         </Field>
         <button
-          class="mt-4 w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-3 text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white hover:bg-hoverRed active:bg-activeRed lg:p-2"
         >
           {{ $t("addQuote") }}
         </button>
@@ -234,7 +234,6 @@ function onSubmit(values) {
     }
   };
   addQuote();
-  console.log(values);
 }
 
 const isDragging = ref(false);

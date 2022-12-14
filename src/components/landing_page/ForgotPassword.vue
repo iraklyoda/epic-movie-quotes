@@ -63,6 +63,5 @@ const error = computed(() => {
 function onSubmit(values) {
   store.loading = true;
   store.resetRequest(values);
-  console.log(emailInput.value);
 }
 </script>

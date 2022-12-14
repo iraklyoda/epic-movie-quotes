@@ -10,7 +10,6 @@ export const useQuotesStore = defineStore("quotes", () => {
         import.meta.env.VITE_APP_ROOT_API + "/quotes/movie/" + id
       );
       quotes.value = response.data;
-      console.log(response.data);
     } catch (e) {
       console.log(e);
     }

@@ -53,7 +53,7 @@
               <p>{{ $t("cancel") }}</p>
             </router-link>
             <button
-              class="rounded-lg bg-niceRed px-2 py-2"
+              class="rounded-lg bg-niceRed hover:bg-hoverRed active:bg-activeRed px-2 py-2"
               :class="{ 'animate-spin': profileStore.loading }"
             >
               {{ $t("add") }}
@@ -92,10 +92,10 @@
             class="mt-24 flex items-center justify-between px-9 lg:mt-12 lg:justify-end lg:gap-4 lg:pb-4"
           >
             <router-link :to="{ name: 'ProfilePage' }">
-              <p>{{$t("cancel")}}</p>
+              <p>{{ $t("cancel") }}</p>
             </router-link>
             <button
-              class="rounded-lg bg-niceRed px-2 py-2"
+              class="rounded-lg bg-niceRed px-2 py-2 hover:bg-hoverRed active:bg-activeRed"
               :class="{ 'animate-spin': profileStore.loading }"
             >
               {{ $t("add") }}
@@ -122,7 +122,6 @@ const submitted = ref(false);
 const email = ref("");
 
 function onSubmit(values) {
-  console.log(values);
   submitted.value = true;
   const create = async () => {
     profileStore.loading = true;
@@ -152,7 +151,6 @@ function onSubmit(values) {
 }
 
 function onSubmitMobile(values) {
-  console.log(values);
   const change = async () => {
     profileStore.loading = true;
     try {
@@ -163,7 +161,6 @@ function onSubmitMobile(values) {
         }
       );
       profileStore.loading = false;
-      console.log(response);
       profileStore.successAddEmail = true;
       profileStore.getProfile();
       router.push({ name: "ProfileEmails" });

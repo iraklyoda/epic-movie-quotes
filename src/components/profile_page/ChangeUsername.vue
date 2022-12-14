@@ -97,7 +97,6 @@ function changeName() {
           username: username.value,
         }
       );
-      console.log(response);
       profileStore.getProfile();
       profileStore.successUsername = true;
       router.push({ name: "ProfilePage" });

@@ -176,8 +176,6 @@ const route = useRoute();
 const router = useRouter();
 const quote = useQuoteStore();
 
-console.log(movie.movie);
-
 const openQuoteId = ref("");
 
 function destroyQuote(id) {

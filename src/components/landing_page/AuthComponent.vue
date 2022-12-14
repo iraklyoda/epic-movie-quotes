@@ -7,7 +7,11 @@
       </h2>
       <p class="mt-3 text-niceGrey">{{ $t("welcomeBack") }}</p>
     </div>
-    <Form @submit="onSubmit" class="mx-auto mt-8 w-4/5 lg:w-3/5" v-slot="{ errors }">
+    <Form
+      @submit="onSubmit"
+      class="mx-auto mt-8 w-4/5 lg:w-3/5"
+      v-slot="{ errors }"
+    >
       <input-component
         name="username"
         :errors="errors.username"
@@ -60,7 +64,9 @@
           </button>
         </div>
       </div>
-      <button class="w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-1 text-white lg:p-2">
+      <button
+        class="w-full rounded-md bg-niceRed py-1 text-white hover:bg-hoverRed active:bg-activeRed lg:p-2"
+      >
         {{ $t("getStarted") }}
       </button>
       <form :action="googleLogin">
@@ -68,7 +74,7 @@
           class="mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border py-1 text-white lg:p-2"
         >
           <google-icon class="mb-1" />
-          <p>{{ $t("signUpGoogle") }}</p>
+          <p>{{ $t("signInGoogle") }}</p>
         </button>
       </form>
       <p class="mt-3 text-center text-niceGrey lg:mt-9">
