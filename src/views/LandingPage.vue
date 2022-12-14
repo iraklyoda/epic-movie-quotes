@@ -15,7 +15,7 @@
           <p class="mt-8 text-skinWhite">{{ $t("movieQuotes") }}</p>
           <nav class="flex lg:gap-4">
             <div class="lg:flex">
-              <LanguageChange class="mt-8 mr-2" />
+              <LanguageChange class="mt-8 mr-4 lg:mr-2" />
               <button
                 @click="router.push({ name: 'Register' })"
                 class="mx-auto mt-6 block hidden rounded bg-niceRed px-6 py-1 hover:bg-hoverRed active:bg-activeRed lg:block"

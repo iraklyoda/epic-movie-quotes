@@ -45,6 +45,7 @@
               v-if="route.name === 'MovieList'"
               class="w-5 lg:hidden"
             ></SearchIcon>
+            <LanguageChange class="lg:hidden"/>
             <div @click="notificationState" class="relative cursor-pointer">
               <NotificationIcon class="w-5"></NotificationIcon>
               <div
@@ -91,7 +92,7 @@
                 </div>
               </div>
             </div>
-            <LanguageChange />
+            <LanguageChange class="hidden" />
             <button
               @click="logout"
               class="mx-auto -mt-1.5 block hidden rounded border-2 px-6 py-1.5 lg:block"

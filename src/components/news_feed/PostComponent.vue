@@ -29,7 +29,10 @@
         />
       </section>
       <div class="mt-4 border-b-2 border-fadeGrey lg:w-auto"></div>
-      <div class="max-h-72 overflow-scroll">
+      <div
+        class="max-h-72"
+        :class="{ 'overflow-scroll': props.comments.length > 3 }"
+      >
         <CommentComponent
           v-for="(comment, index) in props.comments"
           v-bind:key="index"
