@@ -8,12 +8,14 @@
         route.name !== 'ViewQuote' &&
         route.name !== 'EditMovie' &&
         route.name !== 'MovieQuote' &&
+        route.name !== 'AddQuote' &&
         route.name !== 'AddMovie',
       'h-screen overflow-hidden lg:h-auto lg:min-h-screen':
         route.name === 'AddMovie' ||
         route.name === 'EditQuote' ||
         route.name === 'ViewQuote' ||
         route.name === 'EditMovie' ||
+        route.name !== 'AddQuote' ||
         route.name === 'MovieQuote' ||
         route.name !== 'AddMovie',
     }"
@@ -43,6 +45,7 @@
               v-if="route.name === 'MovieList'"
               class="w-5 lg:hidden"
             ></SearchIcon>
+            <LanguageChange class="lg:hidden"/>
             <div @click="notificationState" class="relative cursor-pointer">
               <NotificationIcon class="w-5"></NotificationIcon>
               <div
@@ -89,7 +92,7 @@
                 </div>
               </div>
             </div>
-            <LanguageChange />
+            <LanguageChange class="hidden" />
             <button
               @click="logout"
               class="mx-auto -mt-1.5 block hidden rounded border-2 px-6 py-1.5 lg:block"

@@ -94,7 +94,6 @@ import router from "@/router";
 const quoteStore = useQuoteStore();
 const profile = useProfileStore();
 const movie = useSingleStore();
-console.log(quoteStore.quote.comments);
 const route = useRoute();
 onBeforeMount(() => {
   quoteStore.getQuote(route.params.quoteId);

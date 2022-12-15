@@ -191,7 +191,7 @@
           </div>
         </Field>
         <button
-          class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
+          class="mt-4 w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-3 text-white lg:p-2"
         >
           {{ $t("saveChanges") }}
         </button>
@@ -272,7 +272,6 @@ function onSubmit(values) {
   if (img.value) {
     movie.image = values.image;
   }
-  console.log(movie);
   const editMovie = async () => {
     try {
       const response = await axiosInstance.post(
@@ -286,7 +285,6 @@ function onSubmit(values) {
       );
       singleMovie.getMovie(route.params.id);
       router.push({name: "MoviePage"});
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

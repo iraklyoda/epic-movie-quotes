@@ -44,7 +44,6 @@ export const useProfileStore = defineStore("profile", () => {
         );
         getProfile();
         successChangePrimaryEmail.value = true;
-        console.log(response);
       } catch (e) {
         console.log(e);
       }
@@ -53,14 +52,12 @@ export const useProfileStore = defineStore("profile", () => {
   }
 
   function deleteEmail(id) {
-    console.log("delete");
     const deleteMail = async (id) => {
       try {
         const response = await axios.post(
           import.meta.env.VITE_APP_ROOT_API + "/profile/email/delete/" + id
         );
         getProfile();
-        console.log(response);
       } catch (e) {
         console.log(e);
       }

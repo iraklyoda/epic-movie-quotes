@@ -29,7 +29,7 @@
             <div class="h-6 border-l-2 border-l-niceGrey text-sm"></div>
             <router-link
               :to="{ name: 'MovieQuote' }"
-              class="hidden w-36 items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 lg:flex lg:w-auto"
+              class="hidden w-36 items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 hover:bg-hoverRed active:bg-activeRed lg:flex lg:w-auto"
             >
               <AddIcon />
               <p>{{ $t("addQuote") }}</p>
@@ -171,12 +171,11 @@ import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import EditIcon from "@/components/icons/EditIcon.vue";
 import { useQuoteStore } from "@/stores/quote.js";
 import { useSingleStore } from "@/stores/single.js";
+import { useMovieStore } from "@/stores/movie.js";
 const movie = useSingleStore();
 const route = useRoute();
 const router = useRouter();
 const quote = useQuoteStore();
-
-console.log(movie.movie);
 
 const openQuoteId = ref("");
 
@@ -184,7 +183,8 @@ function destroyQuote(id) {
   const destroy = async () => {
     await quote.deleteQuote(id);
     movie.getMovie(route.params.id);
-  }
+    useMovieStore().getMovies();
+  };
   destroy();
 }
 

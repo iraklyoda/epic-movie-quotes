@@ -11,7 +11,6 @@ export const useQuoteStore = defineStore("singleQuote", () => {
       const response = await axios.get(
         import.meta.env.VITE_APP_ROOT_API + "/quotes/quote/" + id
       );
-      console.log(response);
       quote[0] = response.data;
     } catch (e) {
       console.log(e);
@@ -23,7 +22,6 @@ export const useQuoteStore = defineStore("singleQuote", () => {
       const response = await axiosInstance.post(
         import.meta.env.VITE_APP_ROOT_API + "/quotes/quote/delete/" + id
       );
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

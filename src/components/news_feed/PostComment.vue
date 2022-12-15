@@ -31,7 +31,6 @@ function onSubmit(values) {
           "/comments",
         values
       );
-      console.log(response);
       bodyInput.value = "";
     } catch (e) {
       console.log(e);

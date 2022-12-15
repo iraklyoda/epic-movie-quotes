@@ -89,10 +89,6 @@ function onSubmit(values) {
     password_confirmation: values.password_confirmation,
     token: route.params.token,
   };
-  console.log(values);
-  console.log(route.params);
-  console.log(newPassword);
-  console.log(passwordFieldType.value);
   store.updatePassword(newPassword);
 }
 

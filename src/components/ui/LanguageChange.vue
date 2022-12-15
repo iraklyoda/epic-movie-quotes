@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden text-white lg:block">
+  <div class="text-white lg:block">
     <div
       v-if="store.langOpen"
       class="absolute top-0 left-0 flex h-screen w-full items-center justify-center"
@@ -10,7 +10,7 @@
     <button
       @click="store.langDropDown"
       type="button"
-      class="hidden items-center justify-center gap-2 px-6 lg:flex"
+      class="flex items-center justify-center gap-2 lg:px-6"
     >
       <p>{{ store.currentLanguage }}</p>
       <down-arrow
@@ -18,7 +18,7 @@
         :class="{ 'rotate-180': store.langOpen }"
       ></down-arrow>
     </button>
-    <div v-if="store.langOpen" class="absolute ml-6 hidden flex-col lg:flex">
+    <div v-if="store.langOpen" class="absolute lg:ml-6 flex flex-col">
       <button type="button" @click="store.changeLocale">
         {{ store.currentLanguage === "En" ? "Ka" : "En" }}
       </button>

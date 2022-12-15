@@ -128,7 +128,7 @@
             </div>
           </Field>
           <button
-            class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2"
+            class="mt-4 w-full rounded-md bg-niceRed hover:bg-hoverRed active:bg-activeRed py-3 text-white lg:p-2"
           >
             {{ $t("saveChanges") }}
           </button>
@@ -156,7 +156,6 @@ const movie = useSingleStore();
 const route = useRoute();
 
 const quoteEn = ref(quoteStore.quote);
-console.log(quoteEn.value);
 
 const isDragging = ref(false);
 const dragCount = ref(0);
@@ -191,7 +190,6 @@ function onSubmit(values) {
   if (img.value) {
     quote.thumbnail = values.thumbnail;
   }
-  console.log(quote);
 
   const editQuote = async () => {
     try {
@@ -211,7 +209,6 @@ function onSubmit(values) {
       quoteStore.getQuote(route.params.quoteId);
       quotesStore.getQuotes(route.params.id);
       router.push({ name: "MoviePage" });
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

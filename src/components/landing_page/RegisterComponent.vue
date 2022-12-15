@@ -79,7 +79,7 @@
         {{ $t(store.registerError) }}
       </p>
       <button
-        class="mt-1 w-full rounded-md bg-niceRed py-1 text-white lg:p-2"
+        class="mt-1 w-full rounded-md bg-niceRed hover:bg-hoverRed py-1 text-white lg:p-2"
         :class="{ 'animate-spin': store.loading }"
       >
         {{ $t("getStarted") }}

@@ -23,6 +23,7 @@ export default {
     enterEmail: "შეიყვანეთ ელ-ფოსტა",
     confirmYourPassword: "დაადასტურეთ პაროლი",
     signUpGoogle: "გუგლით რეგისტრაცია",
+    signInGoogle: "გუგლით ავტორიზაცია",
     alreadyHaveAnAccount: "უკვე გაქვთ ანგარიში?",
     dontHaveAnAccount: "არ გაქვთ ანგარიში?",
     rememberMe: "დამიმახსოვრე",

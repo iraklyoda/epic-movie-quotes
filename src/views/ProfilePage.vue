@@ -407,7 +407,6 @@ function switchVisibility() {
 }
 
 function onSubmit(values) {
-  console.log(values);
   const update = async () => {
     try {
       const response = await axios.post(
@@ -419,7 +418,6 @@ function onSubmit(values) {
           },
         }
       );
-      console.log(response);
       editUsername.value = false;
       editPassword.value = false;
       editPicture.value = false;

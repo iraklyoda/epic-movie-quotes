@@ -1,6 +1,6 @@
 <template>
   <router-link
-    class="absolute left-0 top-0 z-30 h-screen w-screen lg:h-screen"
+    class="absolute left-0 top-0 z-30 h-screen w-screen lg:h-full lg:min-h-screen"
     :to="{ name: 'NewsFeed' }"
   >
   </router-link>
@@ -127,7 +127,7 @@
                 <img
                   :src="root + chosenMovie.image"
                   alt="movie"
-                  class="w-32 rounded-lg"
+                  class="max-h-16 w-32 rounded-lg object-cover object-center"
                 />
                 <div>
                   <p>
@@ -166,7 +166,7 @@
               ><img
                 :src="root + movie.image"
                 alt="movie"
-                class="w-32 rounded-lg"
+                class="max-h-16 w-32 rounded-lg object-cover object-center"
               />
               <div>
                 <p>
@@ -196,7 +196,9 @@
           </div>
         </div>
       </Field>
-      <button class="mt-4 w-full rounded-md bg-niceRed py-3 text-white lg:p-2">
+      <button
+        class="mt-4 w-full rounded-md bg-niceRed py-3 text-white hover:bg-hoverRed active:bg-activeRed lg:p-2"
+      >
         {{ $t("addQuote") }}
       </button>
     </Form>
@@ -246,7 +248,6 @@ function onSubmit(values) {
       );
       useAllQuotesStore().getNumberQuotes();
       router.push({ name: "NewsFeed" });
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

@@ -62,7 +62,7 @@
         </section>
         <router-link
           :to="{ name: 'AddMovie' }"
-          class="ml-2 flex items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 text-xs lg:text-lg"
+          class="ml-2 flex items-center gap-2 whitespace-nowrap rounded-md bg-niceRed py-2 px-3 text-xs hover:bg-hoverRed active:bg-activeRed lg:text-lg"
         >
           <AddIcon />
           <p>{{ $t("addMovie") }}</p>
